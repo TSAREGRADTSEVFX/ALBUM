@@ -2,317 +2,528 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Her Photo Album • 相册</title>
+    <title>Her Photo Album • 锦瑟年华</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Cinzel:wght@400;700&family=Inter:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
         
-        :root {
-            --leather: #2c2118;
-            --gold: #d4af8a;
-            --deep-red: #9c2a2a;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
-        * { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
-        
-        body { background: #1a120d; overflow: hidden; font-family: 'Inter', system_ui, sans-serif; }
-        
-        .album-text { font-family: 'Playfair Display', serif; }
-        .chinese-title { font-family: 'Cinzel', serif; letter-spacing: 6px; }
-        
-        .album-container {
-            perspective: 3200px;
-            background: linear-gradient(145deg, #2c2118, #1f1812);
-            box-shadow: 0 0 0 18px #2c2118, 0 0 0 26px #d4af8a, 0 0 0 32px #9c2a2a,
-                        40px 40px 80px -25px rgba(0, 0, 0, 0.85),
-                        inset 0 0 140px rgba(212, 175, 138, 0.35);
-            border: 12px solid #d4af8a;
+        body {
+            background: radial-gradient(circle at 30% 20%, #1f1610, #0e0a07);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
         }
         
-        .page { box-shadow: 0 20px 55px -15px rgba(0,0,0,0.65), inset 0 0 80px rgba(0,0,0,0.2); border: 1px solid #d4af8a; }
+        /* China-themed emoji background overlay */
+        .china-bg-emoji {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.18;
+            overflow: hidden;
+        }
+        
+        .floating-emoji {
+            position: absolute;
+            font-size: 2.2rem;
+            animation: floatEmoji 22s infinite linear;
+            filter: drop-shadow(0 0 3px rgba(212,175,138,0.3));
+        }
+        
+        @keyframes floatEmoji {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
         
         .page-content {
-            background: linear-gradient(90deg, #f8f1e3 0%, #f5e9d4 100%);
-            box-shadow: inset 0 0 100px rgba(156,42,42,0.15), inset 0 0 40px rgba(212,175,138,0.25);
-            position: relative; overflow: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: #d4af8a #2c2118;
+        }
+        .page-content::-webkit-scrollbar {
+            width: 3px;
+        }
+        .page-content::-webkit-scrollbar-track {
+            background: #2c2118;
+            border-radius: 10px;
+        }
+        .page-content::-webkit-scrollbar-thumb {
+            background: #d4af8a;
+            border-radius: 10px;
         }
         
-        .chinese-decor {
-            position: absolute; opacity: 0.18; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
-            z-index: 2; pointer-events: none; user-select: none;
+        .album-text { font-family: 'Playfair Display', serif; }
+        .chinese-title { font-family: 'Cinzel', serif; letter-spacing: 4px; font-weight: 600; }
+        
+        .album-container {
+            perspective: 2000px;
+            background: linear-gradient(135deg, #2c2118, #1f1812);
+            box-shadow: 0 0 0 8px #2c2118, 0 0 0 14px #d4af8a, 0 0 0 20px #9c2a2a, 0 20px 40px rgba(0,0,0,0.6);
+            border-radius: 28px;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(1px);
         }
         
-        .polaroid, .video-circle {
-            background: white;
-            padding: 16px 16px 48px;
-            box-shadow: 14px 14px 32px -8px rgba(0,0,0,0.45), -10px -10px 25px -8px rgba(255,255,255,0.8);
+        .page {
+            background: #fdf7ed;
+            box-shadow: inset 0 0 0 1px rgba(212,175,138,0.6), 0 8px 25px rgba(0,0,0,0.3);
+            border-radius: 20px;
+        }
+        
+        .page-content {
+            background: linear-gradient(125deg, #fffaf0 0%, #fef5e4 100%);
+            border-radius: 18px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .polaroid {
+            background: #fffcf5;
+            padding: 8px 8px 20px 8px;
+            box-shadow: 8px 10px 20px -8px rgba(0,0,0,0.3);
+            border: 1px solid #e9dbc9;
+            transition: transform 0.25s ease;
+        }
+        .polaroid:active { transform: scale(0.98); }
+        
+        .circle-frame {
+            background: #fffcf0;
+            padding: 6px;
+            border-radius: 9999px;
+            box-shadow: 0 12px 20px -10px rgba(0,0,0,0.35), 0 0 0 3px #d4af8a, 0 0 0 6px #2c2118;
+        }
+        .circle-inner {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 9999px;
+            object-fit: cover;
+        }
+        
+        .nav-btn {
+            background: rgba(253,247,237,0.95);
+            backdrop-filter: blur(4px);
             border: 1px solid #d4af8a;
-            position: relative; z-index: 3;
-        }
-        
-        .video-circle {
-            padding: 12px;
-            border-radius: 9999px;
-            overflow: hidden;
-            width: 160px; height: 160px;
-        }
-        
-        .video-circle video {
-            width: 100%; height: 100%; object-fit: cover; border-radius: 9999px;
-        }
-        
-        .circle-photo {
-            border: 16px solid #d4af8a;
-            box-shadow: 0 0 0 7px #2c2118, 20px 20px 40px -12px rgba(0,0,0,0.55);
-            position: relative; z-index: 3;
-        }
-        
-        .intro-text, .ending-text { font-size: 1.25rem; line-height: 1.85; color: #3c2a22; max-width: 620px; position: relative; z-index: 3; }
-        
-        /* Music button */
-        #music-toggle {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 50;
-            background: rgba(255,255,255,0.9);
-            border: 2px solid #d4af8a;
-            color: #9c2a2a;
-            width: 52px; height: 52px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 9999px;
+            width: 42px;
+            height: 42px;
+            border-radius: 20px;
             font-size: 28px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .nav-btn:active { transform: scale(0.92); background: white; }
+        
+        #music-toggle {
+            background: rgba(44,33,24,0.9);
+            backdrop-filter: blur(8px);
+            border: 2px solid #d4af8a;
+            width: 44px;
+            height: 44px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            color: #d4af8a;
+            transition: all 0.2s;
+        }
+        #music-toggle:active { transform: scale(0.92); }
+        
+        .page-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 9999px;
+            background: #d4af8a/50;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .page-dot.active {
+            background: #d4af8a;
+            transform: scale(1.4);
+            box-shadow: 0 0 6px #ffddb0;
+        }
+        
+        @media (max-width: 640px) {
+            .polaroid { padding: 6px 6px 14px 6px; }
+            .circle-frame { padding: 4px; }
+            .nav-btn { width: 36px; height: 36px; font-size: 24px; }
+            #music-toggle { width: 38px; height: 38px; font-size: 20px; }
+        }
+        
+        /* Landscape mandatory hint */
+        .orientation-hint {
+            display: none;
+        }
+        @media (orientation: portrait) {
+            .album-main { display: none !important; }
+            .orientation-hint { display: flex !important; }
+        }
+        @media (orientation: landscape) {
+            .orientation-hint { display: none !important; }
+            .album-main { display: block !important; }
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-3 md:p-6">
+<body>
 
-    <!-- Portrait warning -->
-    <div id="portrait-warning" class="hidden fixed inset-0 bg-gradient-to-br from-[#1a120d] to-[#3c2a22] z-[9999] flex flex-col items-center justify-center text-[#d4af8a] text-center px-8">
-        <div class="text-8xl mb-6 animate-[rotate_2.5s_infinite_ease-in-out]">📱</div>
-        <h2 class="text-3xl font-light album-text">Please Rotate Your Device</h2>
-        <p class="mt-3 max-w-xs">This album is best viewed in landscape mode</p>
+<!-- China-themed floating emoji background -->
+<div class="china-bg-emoji" id="emoji-bg"></div>
+
+<!-- Orientation Warning -->
+<div class="orientation-hint fixed inset-0 bg-gradient-to-br from-[#1a120d] to-[#2f241d] z-[9999] flex flex-col items-center justify-center text-[#d4af8a] text-center p-6">
+    <div class="text-7xl mb-5 animate-pulse">📖🔄</div>
+    <h2 class="text-2xl font-light album-text">Rotate to Landscape</h2>
+    <div class="w-20 h-20 border-3 border-[#d4af8a] rounded-full mt-5 flex items-center justify-center rotate-90">
+        <span class="text-3xl">↻</span>
     </div>
+    <p class="mt-4 text-sm opacity-80 max-w-[220px]">For the best album experience</p>
+</div>
 
-    <!-- Album -->
-    <div id="album-wrapper" class="max-w-[98vw] w-full relative">
-        <div class="text-center mb-5">
-            <div class="inline-flex items-center gap-4 bg-[#2c2118] text-[#d4af8a] px-8 py-3 rounded-3xl text-xs font-medium tracking-[3px] border border-[#9c2a2a]/40">
-                <span class="w-2 h-2 bg-[#d4af8a] rounded-full animate-pulse"></span>
-                相册 • HER PHOTO ALBUM
-                <span class="w-2 h-2 bg-[#d4af8a] rounded-full animate-pulse"></span>
-            </div>
-        </div>
-
-        <div id="album" class="album-container relative mx-auto rounded-3xl overflow-hidden aspect-[16/9.6] max-h-[94vh] flex items-center justify-center">
+<!-- Main Album -->
+<div class="album-main w-full h-screen flex items-center justify-center p-2 sm:p-3">
+    <div class="w-full max-w-[98vw] relative">
+        <!-- Album Container -->
+        <div class="album-container relative mx-auto rounded-2xl overflow-hidden aspect-[16/9] max-h-[92vh] shadow-2xl">
             
-            <div id="page-container" class="page relative w-[94%] h-[92%] rounded-2xl overflow-hidden page-content flex flex-col">
-                
-                <div id="page-inner" class="flex-1 p-8 md:p-14 relative z-10 flex items-center justify-center overflow-auto">
-                    <!-- JS content -->
+            <!-- Page area -->
+            <div class="page relative w-[95%] h-[86%] mx-auto mt-[3%] rounded-xl overflow-hidden">
+                <div id="page-scroll-container" class="page-content w-full h-full overflow-y-auto">
+                    <div id="dynamic-page" class="w-full h-auto min-h-full p-4 md:p-6 relative">
+                        <!-- Dynamic content injected -->
+                    </div>
                 </div>
-                
-                <div class="absolute top-5 left-7 text-[#2c2118]/40 text-xs font-medium tracking-widest rotate-[-8deg] album-text">PAGE <span id="page-number" class="text-4xl font-bold text-[#2c2118]/60">01</span></div>
-                <div class="absolute top-5 right-7 text-[#2c2118]/40 text-xs font-medium tracking-widest rotate-[8deg] album-text">OF 08</div>
+                <div class="absolute bottom-2 left-3 bg-white/60 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-mono text-[#5e3a2a] z-20">
+                    <span id="page-number">01</span>/<span id="total-pages">16</span>
+                </div>
             </div>
             
-            <!-- Navigation -->
-            <button onclick="prevPage()" class="absolute left-5 bottom-8 bg-white/95 hover:bg-white text-[#2c2118] w-14 h-14 rounded-3xl flex items-center justify-center text-4xl shadow-2xl active:scale-95 z-20 border border-[#d4af8a]/40">←</button>
-            <button onclick="nextPage()" class="absolute right-5 bottom-8 bg-white/95 hover:bg-white text-[#2c2118] w-14 h-14 rounded-3xl flex items-center justify-center text-4xl shadow-2xl active:scale-95 z-20 border border-[#d4af8a]/40">→</button>
+            <!-- Navigation Buttons -->
+            <button id="prev-btn" class="nav-btn absolute left-2 bottom-1/2 translate-y-1/2 z-30">←</button>
+            <button id="next-btn" class="nav-btn absolute right-2 bottom-1/2 translate-y-1/2 z-30">→</button>
             
-            <!-- Music toggle button -->
-            <div id="music-toggle" onclick="toggleMusic()" title="Music on/off">♪</div>
+            <!-- Music Toggle -->
+            <div id="music-toggle" class="absolute bottom-3 left-1/2 -translate-x-1/2 z-40 shadow-xl">
+                <span id="music-icon">♪</span>
+            </div>
             
-            <!-- Dots -->
-            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2.5 z-30">
-                <div onclick="goToPage(0)" id="dot-0" class="w-3 h-3 rounded-full bg-[#d4af8a]"></div>
-                <div onclick="goToPage(1)" id="dot-1" class="w-3 h-3 rounded-full bg-[#d4af8a]/40"></div>
-                <div onclick="goToPage(2)" id="dot-2" class="w-3 h-3 rounded-full bg-[#d4af8a]/40"></div>
-                <div onclick="goToPage(3)" id="dot-3" class="w-3 h-3 rounded-full bg-[#d4af8a]/40"></div>
-                <div onclick="goToPage(4)" id="dot-4" class="w-3 h-3 rounded-full bg-[#d4af8a]/40"></div>
-                <div onclick="goToPage(5)" id="dot-5" class="w-3 h-3 rounded-full bg-[#d4af8a]/40"></div>
-                <div onclick="goToPage(6)" id="dot-6" class="w-3 h-3 rounded-full bg-[#d4af8a]/40"></div>
-                <div onclick="goToPage(7)" id="dot-7" class="w-3 h-3 rounded-full bg-[#d4af8a]/40"></div>
+            <!-- Dots navigation -->
+            <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-30 bg-[#2c2118]/50 px-3 py-1.5 rounded-full backdrop-blur-sm">
+                <div id="dots-container" class="flex gap-2"></div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Background Music -->
-    <audio id="bg-music" loop autoplay muted>
-        <!-- Замени на свою ссылку на китайскую инструментальную музыку (примерно 60% громкости ниже в JS) -->
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        <!-- Лучше используй спокойную китайскую мелодию, например с Pixabay или FesliyanStudios (прямую mp3 ссылку) -->
-    </audio>
+<!-- Background Music - music.mp3 at 35% volume -->
+<audio id="bg-music" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
+    <!-- Fallback in case music.mp3 is not found, but requirement is to use music.mp3 -->
+</audio>
 
-    <script>
-        // Музыка
-        const bgMusic = document.getElementById('bg-music');
-        let isMuted = true;
-        
-        function toggleMusic() {
-            isMuted = !isMuted;
-            bgMusic.muted = isMuted;
-            const btn = document.getElementById('music-toggle');
-            btn.style.opacity = isMuted ? '0.5' : '1';
-            btn.textContent = isMuted ? '♪' : '♫';
+<script>
+    // ---------- China-themed emoji background ----------
+    const chinaEmojis = [
+        "🐉", "🐲", "🏮", "🎋", "🌸", "🍵", "🀄", "🥢", "🍜", "🐼", "🎐", "⛩️", 
+        "🪭", "🎍", "🍊", "🧧", "🐅", "🌙", "☯️", "⚜️", "🏯", "🀆", "🦢", "🐧", "🎋", "🪷"
+    ];
+    
+    function createFloatingEmojis() {
+        const container = document.getElementById('emoji-bg');
+        if (!container) return;
+        container.innerHTML = '';
+        const emojiCount = window.innerWidth < 768 ? 28 : 45;
+        for (let i = 0; i < emojiCount; i++) {
+            const emoji = document.createElement('div');
+            emoji.className = 'floating-emoji';
+            const randomEmoji = chinaEmojis[Math.floor(Math.random() * chinaEmojis.length)];
+            emoji.textContent = randomEmoji;
+            const size = Math.random() * 1.8 + 1.2;
+            emoji.style.fontSize = `${size}rem`;
+            emoji.style.left = `${Math.random() * 100}%`;
+            emoji.style.animationDuration = `${Math.random() * 20 + 15}s`;
+            emoji.style.animationDelay = `${Math.random() * 20}s`;
+            emoji.style.opacity = Math.random() * 0.25 + 0.1;
+            container.appendChild(emoji);
         }
+    }
+    
+    window.addEventListener('resize', () => { createFloatingEmojis(); });
+    
+    // ---------- IMAGE & VIDEO PLACEHOLDERS ----------
+    const photoSet = [
+        "https://picsum.photos/id/20/500/500", "https://picsum.photos/id/22/500/500", "https://picsum.photos/id/26/500/500",
+        "https://picsum.photos/id/28/500/500", "https://picsum.photos/id/30/500/500", "https://picsum.photos/id/35/500/500",
+        "https://picsum.photos/id/42/500/500", "https://picsum.photos/id/55/500/500", "https://picsum.photos/id/60/500/500",
+        "https://picsum.photos/id/64/500/500", "https://picsum.photos/id/76/500/500", "https://picsum.photos/id/89/500/500",
+        "https://picsum.photos/id/96/500/500", "https://picsum.photos/id/100/500/500", "https://picsum.photos/id/104/500/500",
+        "https://picsum.photos/id/116/500/500", "https://picsum.photos/id/133/500/500", "https://picsum.photos/id/155/500/500",
+        "https://picsum.photos/id/169/500/500", "https://picsum.photos/id/177/500/500", "https://picsum.photos/id/180/500/500"
+    ];
+    
+    const videoSet = [
+        "https://assets.mixkit.co/videos/preview/mixkit-falling-sakura-petals-32886-large.mp4",
+        "https://assets.mixkit.co/videos/preview/mixkit-water-lily-and-carp-fish-3493-large.mp4",
+        "https://assets.mixkit.co/videos/preview/mixkit-forest-stream-4049-large.mp4",
+        "https://assets.mixkit.co/videos/preview/mixkit-koi-fish-swimming-39629-large.mp4",
+        "https://assets.mixkit.co/videos/preview/mixkit-blooming-pink-flower-close-up-32928-large.mp4",
+        "https://assets.mixkit.co/videos/preview/mixkit-girl-in-autumn-32927-large.mp4"
+    ];
+    
+    let imgIndex = 0;
+    let vidIndex = 0;
+    function nextImg() { let url = photoSet[imgIndex % photoSet.length]; imgIndex++; return url; }
+    function nextVid() { let url = videoSet[vidIndex % videoSet.length]; vidIndex++; return url; }
+    
+    // ----- Helper: create photo block (polaroid style) -----
+    function photoBlock(customClass = "") {
+        return `<div class="polaroid rounded-lg ${customClass}"><img src="${nextImg()}" class="w-full aspect-square object-cover rounded-md" loading="lazy"><div class="text-center text-[10px] mt-1 text-[#b0805a]">✦ 珍 藏 ✦</div></div>`;
+    }
+    function circlePhotoBlock() {
+        return `<div class="circle-frame w-full max-w-[130px] mx-auto"><img src="${nextImg()}" class="circle-inner" loading="lazy"></div>`;
+    }
+    function circleVideoBlock() {
+        return `<div class="circle-frame w-full max-w-[130px] mx-auto"><video autoplay loop muted playsinline class="circle-inner"><source src="${nextVid()}" type="video/mp4"></video></div>`;
+    }
+    function videoBlock() {
+        return `<div class="polaroid rounded-lg"><video autoplay loop muted playsinline class="w-full aspect-video object-cover rounded-md"><source src="${nextVid()}" type="video/mp4"></video><div class="text-center text-[10px] mt-1 text-[#9c2a2a]">🎬 光 影 诗 篇</div></div>`;
+    }
+    
+    // ----- 16 Pages definition -----
+    const pages = [];
+    
+    // 1. Cover
+    pages.push(`<div class="flex flex-col items-center justify-center h-full min-h-[400px] relative">
+        <div class="chinese-title text-5xl md:text-7xl text-[#9c2a2a] mb-3 drop-shadow-sm">錦瑟華年</div>
+        <div class="polaroid w-64 mx-auto my-4"><img src="${nextImg()}" class="w-full aspect-[4/5] object-cover rounded-md"><div class="text-center text-xs mt-2 font-serif">Her Photo Album</div></div>
+        <div class="album-text text-xl text-[#3c2a22] mt-2">光 阴 的 诗</div>
+    </div>`);
+    
+    // 2. Introduction
+    pages.push(`<div class="flex flex-col items-center justify-center h-full min-h-[380px] px-4 text-center">
+        <div class="circle-frame w-28 mb-4"><img src="${nextImg()}" class="circle-inner"></div>
+        <p class="album-text text-[#3a2820] text-base leading-relaxed max-w-md">每一帧都藏着时光的温柔。愿这些光影与旋律，勾勒出独属于她的故事，如泛黄信笺上的墨香，隽永而沉静。</p>
+        <div class="mt-4 text-[#d4af8a] text-sm">✦ 致 亲 爱 的 你 ✦</div>
+    </div>`);
+    
+    // 3. One single photo with caption "one"
+    pages.push(`<div class="flex flex-col items-center justify-center h-full min-h-[380px]">
+        <div class="polaroid w-72"><img src="${nextImg()}" class="w-full aspect-square object-cover rounded-md"><div class="text-center mt-2 text-lg font-serif text-[#9c2a2a] tracking-wider">one</div></div>
+    </div>`);
+    
+    // Patterns for pages 4-15
+    // A: 2 photos + 1 circle (photo circle)
+    // B: 2 circles (one photo + one video) + 1 photo
+    // C: 1 video + 1 photo
+    // D: 3 photos
+    const patterns = ['A','B','C','D'];
+    
+    for(let i = 4; i <= 15; i++) {
+        let pattern = patterns[(i-4) % 4];
+        let content = '';
+        if(pattern === 'A') {
+            content = `<div class="grid grid-cols-12 gap-3 items-center h-full min-h-[340px]">
+                <div class="col-span-5">${photoBlock()}</div>
+                <div class="col-span-5">${photoBlock()}</div>
+                <div class="col-span-2 flex justify-center">${circlePhotoBlock()}</div>
+            </div>`;
+        } 
+        else if(pattern === 'B') {
+            content = `<div class="grid grid-cols-12 gap-3 items-center h-full min-h-[340px]">
+                <div class="col-span-2 flex justify-center">${circlePhotoBlock()}</div>
+                <div class="col-span-2 flex justify-center">${circleVideoBlock()}</div>
+                <div class="col-span-8">${photoBlock()}</div>
+            </div>`;
+        }
+        else if(pattern === 'C') {
+            content = `<div class="grid grid-cols-12 gap-4 items-center h-full min-h-[340px]">
+                <div class="col-span-6">${videoBlock()}</div>
+                <div class="col-span-6">${photoBlock()}</div>
+            </div>`;
+        }
+        else if(pattern === 'D') {
+            content = `<div class="grid grid-cols-12 gap-3 items-center h-full min-h-[340px]">
+                <div class="col-span-4">${photoBlock()}</div>
+                <div class="col-span-4">${photoBlock()}</div>
+                <div class="col-span-4">${photoBlock()}</div>
+            </div>`;
+        }
+        pages.push(`<div class="relative">${content}</div>`);
+    }
+    
+    // 16. Conclusion
+    pages.push(`<div class="flex flex-col items-center justify-center h-full min-h-[380px] text-center px-5">
+        <div class="circle-frame w-28 mb-4"><img src="${nextImg()}" class="circle-inner"></div>
+        <p class="album-text text-2xl text-[#9c2a2a] mb-3">Thank You</p>
+        <p class="text-[#3a2a1f] leading-relaxed max-w-sm">愿每一页泛黄的温柔，都如初见。愿你眼眸有星辰，心中有山海。</p>
+        <div class="mt-5 text-[#b0805a] text-xs tracking-widest">✧ 永 远 的 时 光 ✧</div>
+    </div>`);
+    
+    // ---------- Album Logic ----------
+    let currentPage = 0;
+    let isTransitioning = false;
+    let musicMuted = false; // Start unmuted but volume 35%, we'll set volume first then play
+    const bgMusic = document.getElementById('bg-music');
+    const musicIcon = document.getElementById('music-icon');
+    
+    // IMPORTANT: Set volume to 35% (0.35) as requested
+    function initMusic() {
+        bgMusic.volume = 0.35;   // 35% volume exactly as required
+        bgMusic.loop = true;
+        bgMusic.muted = false;    // Not muted initially, but autoplay policies may block
+        musicMuted = false;
+        musicIcon.innerText = '♫';
         
-        // Автозапуск музыки (приглушённая)
-        window.addEventListener('load', () => {
-            bgMusic.volume = 0.6;   // 60% громкости
-            // На iOS иногда требуется жест пользователя, поэтому музыка стартует muted
+        // Attempt to play music.mp3
+        const playPromise = bgMusic.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log("Autoplay blocked by browser, waiting for user interaction");
+                // If autoplay fails, we set muted temporarily and show user that they need to tap
+                bgMusic.muted = true;
+                musicMuted = true;
+                musicIcon.innerText = '♪';
+                // Add a one-click listener on document to start music with correct volume
+                const startMusicOnInteraction = () => {
+                    bgMusic.muted = false;
+                    bgMusic.volume = 0.35;
+                    bgMusic.play().then(() => {
+                        musicMuted = false;
+                        musicIcon.innerText = '♫';
+                    }).catch(e => console.log("Still blocked"));
+                    document.removeEventListener('click', startMusicOnInteraction);
+                    document.removeEventListener('touchstart', startMusicOnInteraction);
+                };
+                document.addEventListener('click', startMusicOnInteraction);
+                document.addEventListener('touchstart', startMusicOnInteraction);
+            });
+        }
+    }
+    
+    function toggleMusic() {
+        if (musicMuted) {
+            bgMusic.muted = false;
+            bgMusic.volume = 0.35;
+            bgMusic.play().catch(e => console.log("play failed"));
+            musicIcon.innerText = '♫';
+            musicMuted = false;
+        } else {
+            bgMusic.muted = true;
+            musicIcon.innerText = '♪';
+            musicMuted = true;
+        }
+    }
+    document.getElementById('music-toggle')?.addEventListener('click', toggleMusic);
+    
+    function renderPage(index, direction = 'next') {
+        if (isTransitioning) return;
+        isTransitioning = true;
+        const container = document.getElementById('dynamic-page');
+        if (!container) return;
+        
+        container.style.transition = 'opacity 0.25s ease, transform 0.3s ease';
+        container.style.opacity = '0';
+        container.style.transform = direction === 'next' ? 'translateX(8px)' : 'translateX(-8px)';
+        
+        setTimeout(() => {
+            container.innerHTML = pages[index];
+            const videos = container.querySelectorAll('video');
+            videos.forEach(vid => { vid.muted = true; vid.play().catch(e=>{}); });
+            const scrollDiv = document.getElementById('page-scroll-container');
+            if(scrollDiv) scrollDiv.scrollTop = 0;
+            
+            container.style.transition = 'opacity 0.3s ease, transform 0.35s ease';
+            container.style.opacity = '1';
+            container.style.transform = 'translateX(0px)';
+            
+            document.getElementById('page-number').innerText = String(index + 1).padStart(2, '0');
+            updateDots(index);
+            currentPage = index;
+            setTimeout(() => { isTransitioning = false; }, 350);
+        }, 200);
+    }
+    
+    function updateDots(activeIdx) {
+        const dots = document.querySelectorAll('.page-dot');
+        dots.forEach((dot, i) => {
+            if (i === activeIdx) dot.classList.add('active');
+            else dot.classList.remove('active');
         });
-
-        // Китайские декоры (как раньше)
-        const decorElements = [
-            { emoji: '🏮', size: 'text-5xl' },
-            { emoji: '⛩️', size: 'text-6xl' },
-            { emoji: '☁️', size: 'text-7xl' },
-            { emoji: '🎋', size: 'text-5xl' },
-            { emoji: '🪭', size: 'text-6xl' },
-            { emoji: '🦩', size: 'text-5xl' },
-            { emoji: '🔖', size: 'text-5xl' }
-        ];
-
-        function getRandomDecor() {
-            return decorElements[Math.floor(Math.random() * decorElements.length)];
+    }
+    
+    function nextPage() { if(isTransitioning) return; let nxt = (currentPage + 1) % pages.length; renderPage(nxt, 'next'); }
+    function prevPage() { if(isTransitioning) return; let prv = (currentPage - 1 + pages.length) % pages.length; renderPage(prv, 'prev'); }
+    function goToPage(idx) { if(idx === currentPage || isTransitioning) return; renderPage(idx, idx > currentPage ? 'next' : 'prev'); }
+    
+    // Swipe gestures
+    let touchStartX = 0;
+    function onTouchStart(e) { touchStartX = e.changedTouches[0].screenX; }
+    function onTouchEnd(e) {
+        let diff = touchStartX - e.changedTouches[0].screenX;
+        if (Math.abs(diff) > 45) diff > 0 ? nextPage() : prevPage();
+    }
+    
+    function createDots() {
+        const dotsContainer = document.getElementById('dots-container');
+        if(!dotsContainer) return;
+        dotsContainer.innerHTML = '';
+        for(let i=0; i<pages.length; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('page-dot');
+            if(i === 0) dot.classList.add('active');
+            dot.addEventListener('click', (e) => { e.stopPropagation(); goToPage(i); });
+            dotsContainer.appendChild(dot);
         }
-
-        const pages = [
-            // 1. Cover
-            `<div class="flex flex-col items-center justify-center h-full text-center relative">
-                ${Array.from({length: 3}, () => {
-                    const d = getRandomDecor();
-                    const rot = Math.random()*40 - 20;
-                    return `<div class="chinese-decor ${d.size}" style="top:${15+Math.random()*30}%;left:${10+Math.random()*70}%;transform:rotate(${rot}deg)">${d.emoji}</div>`;
-                }).join('')}
-                <div class="polaroid w-[64%] mx-auto mb-8">
-                    <img src="https://picsum.photos/id/1015/900/1200" class="w-full aspect-[4/5] object-cover rounded-lg">
-                </div>
-                <div class="chinese-title text-7xl text-[#9c2a2a]">相册</div>
-                <div class="album-text text-4xl text-[#3c2a22]">Her Photo Album</div>
-            </div>`,
-
-            // 2. Introduction + video circle example
-            `<div class="flex items-center justify-center h-full px-8 relative">
-                ${Array.from({length: 3}, () => {
-                    const d = getRandomDecor();
-                    const rot = Math.random()*50 - 25;
-                    return `<div class="chinese-decor ${d.size}" style="top:${20+Math.random()*60}%;left:${15+Math.random()*70}%;transform:rotate(${rot}deg)">${d.emoji}</div>`;
-                }).join('')}
-                <div class="video-circle mx-auto mb-6">
-                    <video autoplay loop muted playsinline>
-                        <source src="https://assets.mixkit.co/videos/preview/12345/12345-small.mp4" type="video/mp4"> <!-- Замени на своё круглое видео -->
-                    </video>
-                </div>
-                <div class="intro-text text-center">
-                    <p>This album is a serene garden of memories dedicated to her.</p>
-                </div>
-            </div>`,
-
-            // 3–6. Остальные страницы с перемешанными фото, кружками и видео-кружками
-            `<div class="grid grid-cols-12 gap-8 h-full items-center relative">
-                ${Array.from({length: 3}, () => `<div class="chinese-decor text-6xl" style="top:${Math.random()*80}%;left:${Math.random()*80}%;transform:rotate(${Math.random()*50-25}deg)">🏮</div>`).join('')}
-                <div class="col-span-8 polaroid"><img src="https://picsum.photos/id/1040/1100/700" class="w-full aspect-video object-cover rounded-lg"></div>
-                <div class="col-span-4 flex flex-col gap-8 justify-center items-center">
-                    <div class="circle-photo w-40 h-40 rounded-full overflow-hidden"><img src="https://picsum.photos/id/133/500/500" class="w-full h-full object-cover"></div>
-                    <div class="video-circle"><video autoplay loop muted playsinline><source src="https://assets.mixkit.co/videos/preview/23456/23456-small.mp4" type="video/mp4"></video></div>
-                </div>
-            </div>`,
-
-            `<div class="flex flex-col h-full justify-center gap-10 relative">
-                ${Array.from({length: 4}, () => `<div class="chinese-decor text-5xl" style="top:${Math.random()*70}%;left:${Math.random()*80}%;transform:rotate(${Math.random()*60-30}deg)">☁️</div>`).join('')}
-                <div class="flex justify-center gap-10">
-                    <div class="circle-photo w-36 h-36 rounded-full overflow-hidden"><img src="https://picsum.photos/id/201/500/500" class="w-full h-full object-cover"></div>
-                    <div class="video-circle"><video autoplay loop muted playsinline><source src="https://assets.mixkit.co/videos/preview/34567/34567-small.mp4" type="video/mp4"></video></div>
-                </div>
-                <div class="polaroid mx-auto w-4/5"><img src="https://picsum.photos/id/1027/1100/650" class="w-full aspect-[16/9] object-cover rounded-lg"></div>
-            </div>`,
-
-            // Добавь ещё страницы по аналогии, чередуя фото и видео-кружки
-            // ... (я оставил 8 страниц, но сократил для примера)
-
-            // 7. Ending
-            `<div class="flex items-center justify-center h-full px-8 relative">
-                ${Array.from({length: 3}, () => `<div class="chinese-decor text-6xl" style="top:${Math.random()*80}%;left:${Math.random()*80}%;transform:rotate(${Math.random()*50-25}deg)">🦩</div>`).join('')}
-                <div class="ending-text text-center">
-                    <p>Thank you for being the light in every frame.</p>
-                    <p>May these moments bring you joy and serenity.</p>
-                </div>
-            </div>`
-        ];
-
-        // Остальной код (showPage, swipe, orientation и т.д.) остаётся таким же, как в предыдущей версии.
-
-        let currentPage = 0;
-
-        function showPage(index, direction = 1) {
-            const pageInner = document.getElementById('page-inner');
-            pageInner.style.transition = 'transform 780ms cubic-bezier(0.65, 0, 0.35, 1), opacity 380ms';
-            pageInner.style.transform = direction > 0 ? 'rotateY(-172deg)' : 'rotateY(172deg)';
-            pageInner.style.opacity = '0';
-            
-            setTimeout(() => {
-                pageInner.innerHTML = pages[index];
-                pageInner.style.transition = 'none';
-                pageInner.style.transform = direction > 0 ? 'rotateY(172deg)' : 'rotateY(-172deg)';
-                pageInner.offsetHeight;
-                pageInner.style.transition = 'transform 780ms cubic-bezier(0.65, 0, 0.35, 1), opacity 450ms';
-                pageInner.style.transform = 'rotateY(0deg)';
-                pageInner.style.opacity = '1';
-                
-                document.getElementById('page-number').textContent = String(index + 1).padStart(2, '0');
-                currentPage = index;
-                updateDots();
-            }, 390);
+    }
+    
+    // initialization
+    window.addEventListener('load', () => {
+        createFloatingEmojis();
+        createDots();
+        renderPage(0, 'next');
+        
+        document.getElementById('prev-btn')?.addEventListener('click', prevPage);
+        document.getElementById('next-btn')?.addEventListener('click', nextPage);
+        
+        const album = document.querySelector('.album-container');
+        if(album) {
+            album.addEventListener('touchstart', onTouchStart, {passive: true});
+            album.addEventListener('touchend', onTouchEnd);
         }
-
-        function updateDots() {
-            for (let i = 0; i < pages.length; i++) {
-                const dot = document.getElementById(`dot-${i}`);
-                if (dot) dot.classList.toggle('bg-[#d4af8a]', i === currentPage);
-            }
-        }
-
-        function nextPage() { let next = currentPage + 1; if (next >= pages.length) next = 0; showPage(next, 1); }
-        function prevPage() { let prev = currentPage - 1; if (prev < 0) prev = pages.length - 1; showPage(prev, -1); }
-        function goToPage(index) { if (index === currentPage) return; showPage(index, index > currentPage ? 1 : -1); }
-
-        function checkOrientation() {
-            const warning = document.getElementById('portrait-warning');
-            const wrapper = document.getElementById('album-wrapper');
-            if (window.matchMedia("(orientation: portrait)").matches) {
-                warning.classList.remove('hidden'); wrapper.style.display = 'none';
-            } else {
-                warning.classList.add('hidden'); wrapper.style.display = 'block';
-            }
-        }
-
-        function init() {
-            document.getElementById('page-inner').innerHTML = pages[0];
-            document.getElementById('page-number').textContent = '01';
-            updateDots();
-            
-            let startX = 0;
-            const album = document.getElementById('album');
-            album.addEventListener('touchstart', e => startX = e.changedTouches[0].screenX, {passive: true});
-            album.addEventListener('touchend', e => {
-                const diff = startX - e.changedTouches[0].screenX;
-                if (Math.abs(diff) > 65) diff > 0 ? nextPage() : prevPage();
-            }, {passive: true});
-            
-            window.addEventListener('resize', checkOrientation);
-            window.addEventListener('orientationchange', checkOrientation);
-            checkOrientation();
-        }
-
-        window.onload = init;
-    </script>
+        
+        initMusic();  // Starts music.mp3 at 35% volume
+        
+        setInterval(() => {
+            document.querySelectorAll('video').forEach(v => { if(v.paused && v.muted) v.play().catch(e=>{}); });
+        }, 800);
+    });
+    
+    document.getElementById('page-scroll-container')?.addEventListener('scroll', () => {
+        document.querySelectorAll('video').forEach(v => { if(v.paused && v.muted) v.play().catch(e=>{}); });
+    });
+</script>
 </body>
 </html>
