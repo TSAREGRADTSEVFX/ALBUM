@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>墨韵相册 · 锦瑟三十卷 | Telegram Video Circles</title>
+    <title>Тестовый альбом · none.png / none.mp4</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
@@ -50,7 +50,7 @@
         
         .floating-emoji {
             position: absolute;
-            font-size: 2rem;
+            font-size: 1.6rem;
             animation: floatEmoji 28s infinite linear;
             filter: drop-shadow(0 0 2px rgba(212,175,138,0.2));
         }
@@ -63,19 +63,11 @@
         }
         
         .page-content {
-            scrollbar-width: thin;
-            scrollbar-color: #9c2a2a #1a0f0c;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
         .page-content::-webkit-scrollbar {
-            width: 3px;
-        }
-        .page-content::-webkit-scrollbar-track {
-            background: #1a0f0c;
-            border-radius: 10px;
-        }
-        .page-content::-webkit-scrollbar-thumb {
-            background: #b5651e;
-            border-radius: 10px;
+            display: none;
         }
         
         .album-text { font-family: 'Playfair Display', serif; }
@@ -84,23 +76,22 @@
         .album-container {
             perspective: 2000px;
             background: linear-gradient(135deg, #1e1512, #0f0a08);
-            box-shadow: 0 0 0 6px #1a0f0c, 0 0 0 12px #8b691b, 0 0 0 18px #5c1a1a, 0 25px 50px rgba(0,0,0,0.8);
-            border-radius: 28px;
+            box-shadow: 0 0 0 5px #1a0f0c, 0 0 0 10px #8b691b, 0 0 0 15px #5c1a1a, 0 20px 40px rgba(0,0,0,0.8);
+            border-radius: 24px;
             position: relative;
             z-index: 2;
         }
         
         .page {
             background: #1c1411;
-            box-shadow: inset 0 0 0 1px rgba(180,130,70,0.4), 0 8px 25px rgba(0,0,0,0.5);
-            border-radius: 20px;
+            box-shadow: inset 0 0 0 1px rgba(180,130,70,0.4), 0 6px 20px rgba(0,0,0,0.5);
+            border-radius: 18px;
         }
         
         .page-content {
             background: linear-gradient(125deg, #201814 0%, #1a120e 100%);
-            border-radius: 18px;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            border-radius: 16px;
+            overflow: hidden;
             position: relative;
             z-index: 2;
             color: #e2d8c8;
@@ -108,69 +99,69 @@
         
         .polaroid {
             background: #2a201c;
-            padding: 8px 8px 20px 8px;
-            box-shadow: 8px 10px 20px -8px rgba(0,0,0,0.5);
+            padding: 6px 6px 14px 6px;
+            box-shadow: 5px 8px 15px -6px rgba(0,0,0,0.5);
             border: 1px solid #8b691b;
-            transition: transform 0.25s ease;
+            transition: transform 0.2s ease;
+            border-radius: 8px;
         }
-        .polaroid:active { transform: scale(0.98); }
+        .polaroid:active { transform: scale(0.97); }
         .polaroid img, .polaroid video {
-            filter: sepia(0.15) brightness(0.92) contrast(1.05);
+            border-radius: 6px;
+            background: #1a120e;
         }
         
-        /* Circle frame for Telegram videos */
         .circle-frame {
             background: #2a201c;
-            padding: 5px;
+            padding: 4px;
             border-radius: 9999px;
-            box-shadow: 0 12px 20px -10px rgba(0,0,0,0.5), 0 0 0 3px #b8860b, 0 0 0 6px #3a2018;
+            box-shadow: 0 8px 15px -8px rgba(0,0,0,0.5), 0 0 0 2px #b8860b, 0 0 0 5px #3a2018;
         }
         .circle-inner {
             width: 100%;
             aspect-ratio: 1/1;
             border-radius: 9999px;
             object-fit: cover;
-            filter: sepia(0.1) brightness(0.9);
+            background: #1a120e;
         }
         
         .nav-btn {
             background: rgba(30,20,16,0.95);
             backdrop-filter: blur(4px);
             border: 1px solid #b8860b;
-            width: 42px;
-            height: 42px;
-            border-radius: 20px;
-            font-size: 28px;
+            width: 38px;
+            height: 38px;
+            border-radius: 16px;
+            font-size: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.5);
             color: #d4a373;
         }
-        .nav-btn:active { transform: scale(0.92); background: #3a251e; color: #f0c674; }
+        .nav-btn:active { transform: scale(0.92); background: #3a251e; }
         
         #music-toggle {
             background: rgba(30,20,16,0.92);
             backdrop-filter: blur(8px);
             border: 2px solid #b8860b;
-            width: 44px;
-            height: 44px;
+            width: 38px;
+            height: 38px;
             border-radius: 9999px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
             color: #d4a373;
-            transition: all 0.2s;
         }
         #music-toggle:active { transform: scale(0.92); }
         
         .page-dot {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             border-radius: 9999px;
             background: #8b691b60;
             transition: all 0.2s;
@@ -178,18 +169,16 @@
         }
         .page-dot.active {
             background: #d4a373;
-            transform: scale(1.4);
-            box-shadow: 0 0 6px #e8b55a;
+            transform: scale(1.3);
+            box-shadow: 0 0 5px #e8b55a;
         }
         
-        .caption-gold { color: #d4a373; }
-        .caption-red { color: #b5654e; }
-        
         @media (max-width: 640px) {
-            .polaroid { padding: 6px 6px 14px 6px; }
-            .circle-frame { padding: 4px; }
-            .nav-btn { width: 36px; height: 36px; font-size: 24px; }
-            #music-toggle { width: 38px; height: 38px; font-size: 20px; }
+            .polaroid { padding: 4px 4px 10px 4px; }
+            .circle-frame { padding: 3px; }
+            .nav-btn { width: 32px; height: 32px; font-size: 20px; }
+            #music-toggle { width: 34px; height: 34px; font-size: 18px; }
+            .chinese-title { font-size: 1.8rem !important; }
         }
         
         @media (orientation: portrait) {
@@ -204,8 +193,9 @@
         .chinese-seal {
             font-family: 'Cinzel', serif;
             color: #b5654e;
-            opacity: 0.7;
+            opacity: 0.6;
             letter-spacing: 2px;
+            font-size: 10px;
         }
     </style>
 </head>
@@ -215,34 +205,36 @@
 <div class="china-bg-emoji" id="emoji-bg"></div>
 
 <div class="orientation-hint fixed inset-0 bg-gradient-to-br from-[#0a0705] to-[#1a0f0c] z-[9999] flex flex-col items-center justify-center text-[#d4a373] text-center p-6">
-    <div class="text-7xl mb-5 animate-pulse">📖🔄</div>
-    <h2 class="text-2xl font-light album-text">请横屏观看</h2>
-    <p class="text-sm mt-3 opacity-70">Rotate to Landscape</p>
+    <div class="text-6xl mb-4 animate-pulse">📖🔄</div>
+    <h2 class="text-xl font-light album-text">请横屏观看</h2>
+    <p class="text-xs mt-2 opacity-70">Rotate to Landscape</p>
 </div>
 
-<div class="album-main w-full h-screen flex items-center justify-center p-2 sm:p-3">
+<div class="album-main w-full h-screen flex items-center justify-center p-1 sm:p-2">
     <div class="w-full max-w-[98vw] relative">
-        <div class="album-container relative mx-auto rounded-2xl overflow-hidden aspect-[16/9] max-h-[92vh] shadow-2xl">
+        <div class="album-container relative mx-auto rounded-2xl overflow-hidden aspect-[16/9] max-h-[94vh] shadow-2xl">
             
-            <div class="page relative w-[95%] h-[86%] mx-auto mt-[3%] rounded-xl overflow-hidden">
-                <div id="page-scroll-container" class="page-content w-full h-full overflow-y-auto">
-                    <div id="dynamic-page" class="w-full h-auto min-h-full p-4 md:p-6 relative"></div>
+            <div class="page relative w-[95%] h-[88%] mx-auto mt-[2%] rounded-xl overflow-hidden">
+                <div id="page-scroll-container" class="page-content w-full h-full overflow-hidden">
+                    <div id="dynamic-page" class="w-full h-full p-3 md:p-4 relative flex items-center justify-center">
+                        <!-- Dynamic content injected -->
+                    </div>
                 </div>
-                <div class="absolute bottom-2 left-3 bg-black/50 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-mono text-[#d4a373] z-20">
+                <div class="absolute bottom-1 left-2 bg-black/50 backdrop-blur-sm px-1.5 py-0.5 rounded-full text-[9px] font-mono text-[#d4a373] z-20">
                     <span id="page-number">01</span>/<span id="total-pages">30</span>
                 </div>
-                <div class="absolute top-3 right-3 text-[#b5654e]/30 text-sm chinese-seal">❦ 珍藏 ❦</div>
+                <div class="absolute top-2 right-2 text-[#b5654e]/25 text-xs chinese-seal">❦ 珍藏 ❦</div>
             </div>
             
-            <button id="prev-btn" class="nav-btn absolute left-2 bottom-1/2 translate-y-1/2 z-30">←</button>
-            <button id="next-btn" class="nav-btn absolute right-2 bottom-1/2 translate-y-1/2 z-30">→</button>
+            <button id="prev-btn" class="nav-btn absolute left-1 bottom-1/2 translate-y-1/2 z-30">←</button>
+            <button id="next-btn" class="nav-btn absolute right-1 bottom-1/2 translate-y-1/2 z-30">→</button>
             
-            <div id="music-toggle" class="absolute bottom-3 left-1/2 -translate-x-1/2 z-40 shadow-xl">
+            <div id="music-toggle" class="absolute bottom-2 left-1/2 -translate-x-1/2 z-40 shadow-xl">
                 <span id="music-icon">♫</span>
             </div>
             
-            <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-30 bg-black/50 px-3 py-1.5 rounded-full backdrop-blur-sm">
-                <div id="dots-container" class="flex gap-2"></div>
+            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-30 bg-black/50 px-2 py-1 rounded-full backdrop-blur-sm">
+                <div id="dots-container" class="flex gap-1.5"></div>
             </div>
         </div>
     </div>
@@ -255,175 +247,138 @@
 <script>
     // ---------- China-themed emoji background ----------
     const chinaEmojis = [
-        "🐉", "🐲", "🏮", "🎋", "🌸", "🍵", "🀄", "🥢", "🍜", "🐼", "🎐", "⛩️", 
-        "🪭", "🎍", "🍊", "🧧", "🐅", "🌙", "☯️", "⚜️", "🏯", "🀆", "🦢", "🎋", "🪷", "🐧"
+        "🐉", "🐲", "🏮", "🎋", "🌸", "🍵", "🀄", "🥢", "🐼", "🎐", "⛩️", 
+        "🪭", "🎍", "🍊", "🧧", "🐅", "🌙", "☯️", "⚜️", "🏯", "🦢", "🪷"
     ];
     
     function createFloatingEmojis() {
         const container = document.getElementById('emoji-bg');
         if (!container) return;
         container.innerHTML = '';
-        const emojiCount = window.innerWidth < 768 ? 35 : 55;
+        const emojiCount = window.innerWidth < 768 ? 30 : 45;
         for (let i = 0; i < emojiCount; i++) {
             const emoji = document.createElement('div');
             emoji.className = 'floating-emoji';
             const randomEmoji = chinaEmojis[Math.floor(Math.random() * chinaEmojis.length)];
             emoji.textContent = randomEmoji;
-            const size = Math.random() * 1.6 + 1.0;
+            const size = Math.random() * 1.3 + 0.9;
             emoji.style.fontSize = `${size}rem`;
             emoji.style.left = `${Math.random() * 100}%`;
             emoji.style.animationDuration = `${Math.random() * 25 + 18}s`;
             emoji.style.animationDelay = `${Math.random() * 20}s`;
-            emoji.style.opacity = Math.random() * 0.2 + 0.08;
+            emoji.style.opacity = Math.random() * 0.18 + 0.06;
             container.appendChild(emoji);
         }
     }
     
     window.addEventListener('resize', () => { createFloatingEmojis(); });
     
-    // ---------- TELEGRAM VIDEO URLs (working direct video links from Telegram CDN) ----------
-    // Используем реальные видео из Telegram (публичные ссылки на видеофайлы)
-    // Это демонстрационные ссылки на короткие видео, совместимые с тематикой
-    const telegramVideoUrls = [
-        "https://cdn.pixabay.com/video/2023/06/26/169371-836932191_large.mp4",
-        "https://cdn.pixabay.com/video/2022/03/19/113149-692247580_large.mp4",
-        "https://cdn.pixabay.com/video/2021/11/21/101762-648873459_large.mp4",
-        "https://cdn.pixabay.com/video/2022/02/04/105168-672379227_large.mp4",
-        "https://cdn.pixabay.com/video/2023/04/12/158424-816477721_large.mp4",
-        "https://cdn.pixabay.com/video/2021/09/02/89823-595563783_large.mp4",
-        "https://cdn.pixabay.com/video/2020/06/30/44048-434295088_large.mp4",
-        "https://cdn.pixabay.com/video/2023/05/18/163894-828862392_large.mp4",
-        "https://cdn.pixabay.com/video/2022/10/19/135751-762107504_large.mp4",
-        "https://cdn.pixabay.com/video/2021/04/13/69891-530940645_large.mp4"
-    ];
+    // ═══════════════════════════════════════════════════════════════
+    // ВСЕ МЕДИАФАЙЛЫ ЗАМЕНЕНЫ НА ТЕСТОВЫЕ: none.png и none.mp4
+    // ═══════════════════════════════════════════════════════════════
     
-    // Стандартные фото для поляроидов
-    const photoSet = [
-        "https://picsum.photos/id/20/500/500", "https://picsum.photos/id/22/500/500", "https://picsum.photos/id/26/500/500",
-        "https://picsum.photos/id/28/500/500", "https://picsum.photos/id/30/500/500", "https://picsum.photos/id/35/500/500",
-        "https://picsum.photos/id/42/500/500", "https://picsum.photos/id/55/500/500", "https://picsum.photos/id/60/500/500",
-        "https://picsum.photos/id/64/500/500", "https://picsum.photos/id/76/500/500", "https://picsum.photos/id/89/500/500",
-        "https://picsum.photos/id/96/500/500", "https://picsum.photos/id/100/500/500", "https://picsum.photos/id/104/500/500",
-        "https://picsum.photos/id/116/500/500", "https://picsum.photos/id/133/500/500", "https://picsum.photos/id/155/500/500",
-        "https://picsum.photos/id/169/500/500", "https://picsum.photos/id/177/500/500", "https://picsum.photos/id/180/500/500",
-        "https://picsum.photos/id/186/500/500", "https://picsum.photos/id/192/500/500", "https://picsum.photos/id/200/500/500",
-        "https://picsum.photos/id/210/500/500", "https://picsum.photos/id/220/500/500", "https://picsum.photos/id/230/500/500",
-        "https://picsum.photos/id/240/500/500", "https://picsum.photos/id/250/500/500", "https://picsum.photos/id/260/500/500"
-    ];
+    const TEST_IMAGE = "none.png";
+    const TEST_VIDEO = "none.mp4";
     
-    const regularVideoSet = [
-        "https://assets.mixkit.co/videos/preview/mixkit-falling-sakura-petals-32886-large.mp4",
-        "https://assets.mixkit.co/videos/preview/mixkit-water-lily-and-carp-fish-3493-large.mp4",
-        "https://assets.mixkit.co/videos/preview/mixkit-forest-stream-4049-large.mp4",
-        "https://assets.mixkit.co/videos/preview/mixkit-koi-fish-swimming-39629-large.mp4"
-    ];
+    // Функции-заглушки, всегда возвращают тестовые пути
+    function nextImg() { return TEST_IMAGE; }
+    function nextRegularVideo() { return TEST_VIDEO; }
+    function nextTelegramVideo() { return TEST_VIDEO; }
     
-    let imgIndex = 0;
-    let vidIndex = 0;
-    let tgVideoIndex = 0;
-    
-    function nextImg() { let url = photoSet[imgIndex % photoSet.length]; imgIndex++; return url; }
-    function nextRegularVideo() { let url = regularVideoSet[vidIndex % regularVideoSet.length]; vidIndex++; return url; }
-    function nextTelegramVideo() { let url = telegramVideoUrls[tgVideoIndex % telegramVideoUrls.length]; tgVideoIndex++; return url; }
-    
-    // ----- Helper blocks -----
-    function photoBlock(customClass = "") {
-        return `<div class="polaroid rounded-lg ${customClass}"><img src="${nextImg()}" class="w-full aspect-square object-cover rounded-md" loading="lazy"><div class="text-center text-[10px] mt-1 text-[#d4a373]">✦ 墨 韵 ✦</div></div>`;
+    // ----- Компактные блоки с тестовыми медиа -----
+    function photoBlock() {
+        return `<div class="polaroid rounded-lg w-full h-full flex flex-col">
+                    <img src="${TEST_IMAGE}" class="w-full aspect-square object-cover rounded-md" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23302028%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%23d4a373%22 font-size=%2212%22%3Enone.png%3C/text%3E%3C/svg%3E'">
+                    <div class="text-center text-[9px] mt-1 text-[#d4a373]">✦ 墨韵 ✦</div>
+                </div>`;
     }
     
-    // ВИДЕО-КРУЖОК из Telegram (именно видео, не фото!)
     function circleVideoTelegram() {
-        const videoUrl = nextTelegramVideo();
-        return `<div class="circle-frame w-full max-w-[130px] mx-auto">
-                    <video autoplay loop muted playsinline class="circle-inner">
-                        <source src="${videoUrl}" type="video/mp4">
+        return `<div class="circle-frame w-full max-w-[110px] mx-auto">
+                    <video autoplay loop muted playsinline class="circle-inner" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23302028'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='%23d4a373' font-size='9'%3Enone.mp4%3C/text%3E%3C/svg%3E">
+                        <source src="${TEST_VIDEO}" type="video/mp4">
                     </video>
                 </div>`;
     }
     
-    // Обычный видео-блок для страниц типа C
     function videoBlock() {
-        return `<div class="polaroid rounded-lg"><video autoplay loop muted playsinline class="w-full aspect-video object-cover rounded-md"><source src="${nextRegularVideo()}" type="video/mp4"></video><div class="text-center text-[10px] mt-1 text-[#b5654e]">🎋 光影诗卷</div></div>`;
+        return `<div class="polaroid rounded-lg w-full h-full">
+                    <video autoplay loop muted playsinline class="w-full aspect-video object-cover rounded-md" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23302028'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='%23d4a373' font-size='9'%3Enone.mp4%3C/text%3E%3C/svg%3E">
+                        <source src="${TEST_VIDEO}" type="video/mp4">
+                    </video>
+                    <div class="text-center text-[9px] mt-1 text-[#b5654e]">🎋 光影诗卷</div>
+                </div>`;
     }
     
-    // Для страницы типа B нужны два кружка: оба из Telegram видео
-    function circleVideoTelegramPair() {
-        return circleVideoTelegram();
-    }
-    
-    // ----- 30 Pages construction -----
+    // ----- 30 страниц с тестовыми медиа (всё помещается без скролла) -----
     const pages = [];
     
     // 1. Cover
-    pages.push(`<div class="flex flex-col items-center justify-center h-full min-h-[400px] relative">
-        <div class="chinese-title text-5xl md:text-7xl text-[#b5654e] mb-3 drop-shadow-md">錦瑟華年</div>
-        <div class="polaroid w-64 mx-auto my-4 bg-[#1f1612]"><img src="${nextImg()}" class="w-full aspect-[4/5] object-cover rounded-md"><div class="text-center text-xs mt-2 font-serif text-[#d4a373]">三十卷 · 墨香集</div></div>
-        <div class="album-text text-xl text-[#c49a6c] mt-2">光 阴 的 诗</div>
+    pages.push(`<div class="flex flex-col items-center justify-center h-full w-full">
+        <div class="chinese-title text-4xl md:text-6xl text-[#b5654e] mb-2 drop-shadow-md">錦瑟華年</div>
+        <div class="polaroid w-48 mx-auto my-2 bg-[#1f1612]"><img src="${TEST_IMAGE}" class="w-full aspect-[4/5] object-cover rounded-md" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23302028%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%23d4a373%22 font-size=%2210%22%3Enone.png%3C/text%3E%3C/svg%3E'"><div class="text-center text-[9px] mt-1 font-serif text-[#d4a373]">三十卷 · 墨香集</div></div>
+        <div class="album-text text-base text-[#c49a6c] mt-1">光 阴 的 诗</div>
     </div>`);
     
-    // 2. Introduction with Telegram video circle
-    pages.push(`<div class="flex flex-col items-center justify-center h-full min-h-[380px] px-4 text-center">
-        <div class="circle-frame w-28 mb-4">${circleVideoTelegram().replace('w-full max-w-[130px] mx-auto', 'w-full h-full')}</div>
-        <p class="album-text text-[#d4c5b0] text-base leading-relaxed max-w-md">每一帧都藏着时光的温柔。愿这些光影与旋律，勾勒出独属于她的故事，如泛黄信笺上的墨香，隽永而沉静。</p>
-        <div class="mt-4 text-[#b8860b] text-sm">✦ 致 亲 爱 的 你 ✦</div>
+    // 2. Introduction
+    pages.push(`<div class="flex flex-col items-center justify-center h-full w-full px-3 text-center">
+        <div class="circle-frame w-24 mb-2">${circleVideoTelegram().replace('max-w-[110px]', 'w-full')}</div>
+        <p class="album-text text-[#d4c5b0] text-xs leading-relaxed max-w-md">每一帧都藏着时光的温柔。愿这些光影与旋律，勾勒出独属于她的故事，如泛黄信笺上的墨香，隽永而沉静。</p>
+        <div class="mt-2 text-[#b8860b] text-[11px]">✦ 致 亲 爱 的 你 ✦</div>
     </div>`);
     
-    // 3. One single photo with caption "one"
-    pages.push(`<div class="flex flex-col items-center justify-center h-full min-h-[380px]">
-        <div class="polaroid w-72 bg-[#1f1612]"><img src="${nextImg()}" class="w-full aspect-square object-cover rounded-md"><div class="text-center mt-2 text-lg font-serif text-[#d4a373] tracking-wider">one</div></div>
+    // 3. One single photo "one"
+    pages.push(`<div class="flex flex-col items-center justify-center h-full w-full">
+        <div class="polaroid w-56 bg-[#1f1612]"><img src="${TEST_IMAGE}" class="w-full aspect-square object-cover rounded-md" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23302028%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%23d4a373%22 font-size=%2210%22%3Enone.png%3C/text%3E%3C/svg%3E'"><div class="text-center mt-1 text-base font-serif text-[#d4a373] tracking-wider">one</div></div>
     </div>`);
     
-    // Patterns for pages 4-29
-    // A: 2 photos + 1 circle (видео из Telegram)
-    // B: 2 circles (оба видео из Telegram) + 1 photo
-    // C: 1 regular video + 1 photo
-    // D: 3 photos
+    // Patterns A,B,C,D for pages 4-29
     const patterns = ['A','B','C','D'];
     
     for(let i = 4; i <= 29; i++) {
         let pattern = patterns[(i-4) % 4];
         let content = '';
         if(pattern === 'A') {
-            // 2 photos + 1 круг (видео Telegram)
-            content = `<div class="grid grid-cols-12 gap-3 items-center h-full min-h-[340px]">
-                <div class="col-span-5">${photoBlock()}</div>
-                <div class="col-span-5">${photoBlock()}</div>
-                <div class="col-span-2 flex justify-center">${circleVideoTelegram()}</div>
+            // 2 photos + 1 круг (видео)
+            content = `<div class="grid grid-cols-12 gap-2 h-full w-full items-center">
+                <div class="col-span-5 h-full flex items-center">${photoBlock()}</div>
+                <div class="col-span-5 h-full flex items-center">${photoBlock()}</div>
+                <div class="col-span-2 flex justify-center items-center">${circleVideoTelegram()}</div>
             </div>`;
         } 
         else if(pattern === 'B') {
-            // 2 кружка (оба видео Telegram) + 1 фото
-            content = `<div class="grid grid-cols-12 gap-3 items-center h-full min-h-[340px]">
-                <div class="col-span-2 flex justify-center">${circleVideoTelegram()}</div>
-                <div class="col-span-2 flex justify-center">${circleVideoTelegram()}</div>
-                <div class="col-span-8">${photoBlock()}</div>
+            // 2 кружка + 1 фото
+            content = `<div class="grid grid-cols-12 gap-2 h-full w-full items-center">
+                <div class="col-span-2 flex justify-center items-center">${circleVideoTelegram()}</div>
+                <div class="col-span-2 flex justify-center items-center">${circleVideoTelegram()}</div>
+                <div class="col-span-8 h-full flex items-center">${photoBlock()}</div>
             </div>`;
         }
         else if(pattern === 'C') {
-            // 1 обычное видео + 1 фото
-            content = `<div class="grid grid-cols-12 gap-4 items-center h-full min-h-[340px]">
-                <div class="col-span-6">${videoBlock()}</div>
-                <div class="col-span-6">${photoBlock()}</div>
+            // 1 видео + 1 фото
+            content = `<div class="grid grid-cols-12 gap-2 h-full w-full items-center">
+                <div class="col-span-6 h-full flex items-center">${videoBlock()}</div>
+                <div class="col-span-6 h-full flex items-center">${photoBlock()}</div>
             </div>`;
         }
         else if(pattern === 'D') {
             // 3 фото
-            content = `<div class="grid grid-cols-12 gap-3 items-center h-full min-h-[340px]">
-                <div class="col-span-4">${photoBlock()}</div>
-                <div class="col-span-4">${photoBlock()}</div>
-                <div class="col-span-4">${photoBlock()}</div>
+            content = `<div class="grid grid-cols-12 gap-2 h-full w-full items-center">
+                <div class="col-span-4 h-full flex items-center">${photoBlock()}</div>
+                <div class="col-span-4 h-full flex items-center">${photoBlock()}</div>
+                <div class="col-span-4 h-full flex items-center">${photoBlock()}</div>
             </div>`;
         }
-        pages.push(`<div class="relative">${content}</div>`);
+        pages.push(`<div class="w-full h-full">${content}</div>`);
     }
     
-    // 30. Conclusion with Telegram video circle
-    pages.push(`<div class="flex flex-col items-center justify-center h-full min-h-[380px] text-center px-5">
-        <div class="circle-frame w-28 mb-4">${circleVideoTelegram().replace('w-full max-w-[130px] mx-auto', 'w-full h-full')}</div>
-        <p class="album-text text-2xl text-[#b5654e] mb-3">Thank You</p>
-        <p class="text-[#c4a27a] leading-relaxed max-w-sm">愿每一页泛黄的温柔，都如初见。愿你眼眸有星辰，心中有山海。</p>
-        <div class="mt-5 text-[#8b691b] text-xs tracking-widest">✧ 永 远 的 时 光 ✧</div>
-        <div class="mt-3 chinese-seal text-[10px]">三十卷 · 完</div>
+    // 30. Conclusion
+    pages.push(`<div class="flex flex-col items-center justify-center h-full w-full text-center px-4">
+        <div class="circle-frame w-24 mb-2">${circleVideoTelegram().replace('max-w-[110px]', 'w-full')}</div>
+        <p class="album-text text-xl text-[#b5654e] mb-1">Thank You</p>
+        <p class="text-[#c4a27a] text-xs leading-relaxed max-w-sm">愿每一页泛黄的温柔，都如初见。愿你眼眸有星辰，心中有山海。</p>
+        <div class="mt-2 text-[#8b691b] text-[10px] tracking-widest">✧ 永 远 的 时 光 ✧</div>
+        <div class="mt-1 chinese-seal text-[9px]">三十卷 · 完</div>
     </div>`);
     
     // ---------- Album Logic ----------
@@ -433,6 +388,8 @@
     const bgMusic = document.getElementById('bg-music');
     const musicIcon = document.getElementById('music-icon');
     
+    // АВТОМАТИЧЕСКИЙ ЗАПУСК МУЗЫКИ ПОСЛЕ ЗАГРУЗКИ СТРАНИЦЫ
+    // Громкость 35%, тихий фон
     function initMusic() {
         bgMusic.volume = 0.35;
         bgMusic.loop = true;
@@ -440,25 +397,35 @@
         musicMuted = false;
         musicIcon.innerText = '♫';
         
+        // Пытаемся запустить музыку автоматически
         const playPromise = bgMusic.play();
         if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.log("Autoplay blocked, waiting for gesture");
+            playPromise.then(() => {
+                console.log("Music playing automatically at 35% volume");
+                musicIcon.innerText = '♫';
+            }).catch(error => {
+                console.log("Autoplay blocked by browser, but we will try again on any user interaction");
+                // Браузер заблокировал автовоспроизведение, но музыка будет запущена при первом касании
                 bgMusic.muted = true;
                 musicMuted = true;
                 musicIcon.innerText = '♪';
-                const startMusic = () => {
+                
+                // Ждём первого взаимодействия пользователя для запуска музыки
+                const startMusicOnInteraction = () => {
                     bgMusic.muted = false;
                     bgMusic.volume = 0.35;
                     bgMusic.play().then(() => {
                         musicMuted = false;
                         musicIcon.innerText = '♫';
-                    }).catch(e => console.log("still blocked"));
-                    document.removeEventListener('click', startMusic);
-                    document.removeEventListener('touchstart', startMusic);
+                        console.log("Music started after user interaction");
+                    }).catch(e => console.log("Still blocked"));
+                    document.removeEventListener('click', startMusicOnInteraction);
+                    document.removeEventListener('touchstart', startMusicOnInteraction);
+                    document.removeEventListener('keydown', startMusicOnInteraction);
                 };
-                document.addEventListener('click', startMusic);
-                document.addEventListener('touchstart', startMusic);
+                document.addEventListener('click', startMusicOnInteraction);
+                document.addEventListener('touchstart', startMusicOnInteraction);
+                document.addEventListener('keydown', startMusicOnInteraction);
             });
         }
     }
@@ -484,30 +451,29 @@
         const container = document.getElementById('dynamic-page');
         if (!container) return;
         
-        container.style.transition = 'opacity 0.25s ease, transform 0.3s ease';
+        container.style.transition = 'opacity 0.2s ease, transform 0.25s ease';
         container.style.opacity = '0';
-        container.style.transform = direction === 'next' ? 'translateX(8px)' : 'translateX(-8px)';
+        container.style.transform = direction === 'next' ? 'translateX(6px)' : 'translateX(-6px)';
         
         setTimeout(() => {
             container.innerHTML = pages[index];
-            // Включаем все видео (кружки из Telegram и обычные)
             const videos = container.querySelectorAll('video');
             videos.forEach(vid => { 
                 vid.muted = true; 
                 vid.play().catch(e=>console.log("video autoplay issue"));
+                // Добавляем обработчик ошибок для видео
+                vid.onerror = () => { console.log("Video not found:", TEST_VIDEO); };
             });
-            const scrollDiv = document.getElementById('page-scroll-container');
-            if(scrollDiv) scrollDiv.scrollTop = 0;
             
-            container.style.transition = 'opacity 0.3s ease, transform 0.35s ease';
+            container.style.transition = 'opacity 0.25s ease, transform 0.3s ease';
             container.style.opacity = '1';
             container.style.transform = 'translateX(0px)';
             
             document.getElementById('page-number').innerText = String(index + 1).padStart(2, '0');
             updateDots(index);
             currentPage = index;
-            setTimeout(() => { isTransitioning = false; }, 350);
-        }, 200);
+            setTimeout(() => { isTransitioning = false; }, 280);
+        }, 180);
     }
     
     function updateDots(activeIdx) {
@@ -526,7 +492,7 @@
     function onTouchStart(e) { touchStartX = e.changedTouches[0].screenX; }
     function onTouchEnd(e) {
         let diff = touchStartX - e.changedTouches[0].screenX;
-        if (Math.abs(diff) > 45) diff > 0 ? nextPage() : prevPage();
+        if (Math.abs(diff) > 35) diff > 0 ? nextPage() : prevPage();
     }
     
     function createDots() {
@@ -542,6 +508,7 @@
         }
     }
     
+    // Запуск после полной загрузки страницы
     window.addEventListener('load', () => {
         createFloatingEmojis();
         createDots();
@@ -557,15 +524,13 @@
             album.addEventListener('touchend', onTouchEnd);
         }
         
+        // ЗАПУСК МУЗЫКИ АВТОМАТИЧЕСКИ
         initMusic();
         
+        // Поддержка видео
         setInterval(() => {
             document.querySelectorAll('video').forEach(v => { if(v.paused && v.muted) v.play().catch(e=>{}); });
         }, 800);
-    });
-    
-    document.getElementById('page-scroll-container')?.addEventListener('scroll', () => {
-        document.querySelectorAll('video').forEach(v => { if(v.paused && v.muted) v.play().catch(e=>{}); });
     });
 </script>
 </body>
