@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Тестовый альбом · none.png / none.mp4</title>
+    <title>永恒之册 • 锦瑟流年</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
@@ -18,7 +18,7 @@
         }
         
         body {
-            background: #0a0705;
+            background: radial-gradient(circle at 30% 20%, #1f1610, #0e0a07);
             font-family: 'Inter', sans-serif;
             overflow: hidden;
             position: fixed;
@@ -26,214 +26,204 @@
             height: 100%;
         }
         
-        .ink-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at 30% 40%, #1a1210 0%, #050302 100%);
-            z-index: 0;
-        }
-        
-        .china-bg-emoji {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.12;
-            overflow: hidden;
-        }
-        
-        .floating-emoji {
-            position: absolute;
-            font-size: 1.6rem;
-            animation: floatEmoji 28s infinite linear;
-            filter: drop-shadow(0 0 2px rgba(212,175,138,0.2));
-        }
-        
-        @keyframes floatEmoji {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.4; }
-            90% { opacity: 0.4; }
-            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
-        }
-        
+        /* 优雅滚动条 */
         .page-content {
-            scrollbar-width: none;
-            -ms-overflow-style: none;
+            scrollbar-width: thin;
+            scrollbar-color: #d4af8a #2c2118;
         }
         .page-content::-webkit-scrollbar {
-            display: none;
+            width: 3px;
+        }
+        .page-content::-webkit-scrollbar-track {
+            background: #2c2118;
+            border-radius: 10px;
+        }
+        .page-content::-webkit-scrollbar-thumb {
+            background: #d4af8a;
+            border-radius: 10px;
         }
         
         .album-text { font-family: 'Playfair Display', serif; }
         .chinese-title { font-family: 'Cinzel', serif; letter-spacing: 4px; font-weight: 600; }
         
+        /* 相册容器 - 缩小并优化移动端比例 */
         .album-container {
-            perspective: 2000px;
-            background: linear-gradient(135deg, #1e1512, #0f0a08);
-            box-shadow: 0 0 0 5px #1a0f0c, 0 0 0 10px #8b691b, 0 0 0 15px #5c1a1a, 0 20px 40px rgba(0,0,0,0.8);
+            perspective: 1200px;
+            background: linear-gradient(135deg, #2c2118, #1f1812);
+            box-shadow: 0 0 0 5px #2c2118, 0 0 0 10px #d4af8a, 0 0 0 14px #9c2a2a, 0 15px 30px rgba(0,0,0,0.5);
             border-radius: 24px;
-            position: relative;
-            z-index: 2;
+            transition: all 0.2s ease;
         }
         
+        /* 内页卡片 */
         .page {
-            background: #1c1411;
-            box-shadow: inset 0 0 0 1px rgba(180,130,70,0.4), 0 6px 20px rgba(0,0,0,0.5);
+            background: #fdf7ed;
+            box-shadow: inset 0 0 0 1px rgba(212,175,138,0.6), 0 6px 18px rgba(0,0,0,0.25);
             border-radius: 18px;
         }
         
         .page-content {
-            background: linear-gradient(125deg, #201814 0%, #1a120e 100%);
+            background: linear-gradient(125deg, #fffaf0 0%, #fef5e4 100%);
             border-radius: 16px;
-            overflow: hidden;
-            position: relative;
-            z-index: 2;
-            color: #e2d8c8;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
+        /* 拍立得风格 */
         .polaroid {
-            background: #2a201c;
-            padding: 6px 6px 14px 6px;
-            box-shadow: 5px 8px 15px -6px rgba(0,0,0,0.5);
-            border: 1px solid #8b691b;
+            background: #fffcf5;
+            padding: 6px 6px 16px 6px;
+            box-shadow: 6px 8px 14px -6px rgba(0,0,0,0.3);
+            border: 1px solid #e9dbc9;
             transition: transform 0.2s ease;
-            border-radius: 8px;
         }
         .polaroid:active { transform: scale(0.97); }
-        .polaroid img, .polaroid video {
-            border-radius: 6px;
-            background: #1a120e;
-        }
         
+        /* 圆形相框 */
         .circle-frame {
-            background: #2a201c;
-            padding: 4px;
+            background: #fffcf0;
+            padding: 5px;
             border-radius: 9999px;
-            box-shadow: 0 8px 15px -8px rgba(0,0,0,0.5), 0 0 0 2px #b8860b, 0 0 0 5px #3a2018;
+            box-shadow: 0 10px 18px -8px rgba(0,0,0,0.3), 0 0 0 2px #d4af8a, 0 0 0 5px #2c2118;
         }
         .circle-inner {
             width: 100%;
             aspect-ratio: 1/1;
             border-radius: 9999px;
             object-fit: cover;
-            background: #1a120e;
         }
         
+        /* 导航按钮 - 更小巧精致 */
         .nav-btn {
-            background: rgba(30,20,16,0.95);
+            background: rgba(253,247,237,0.96);
             backdrop-filter: blur(4px);
-            border: 1px solid #b8860b;
+            border: 1px solid #d4af8a;
             width: 38px;
             height: 38px;
-            border-radius: 16px;
+            border-radius: 18px;
             font-size: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.5);
-            color: #d4a373;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
         }
-        .nav-btn:active { transform: scale(0.92); background: #3a251e; }
+        .nav-btn:active { transform: scale(0.92); background: #fff5e6; }
         
+        /* 音乐按钮 */
         #music-toggle {
-            background: rgba(30,20,16,0.92);
+            background: rgba(44,33,24,0.88);
             backdrop-filter: blur(8px);
-            border: 2px solid #b8860b;
-            width: 38px;
-            height: 38px;
+            border: 2px solid #d4af8a;
+            width: 40px;
+            height: 40px;
             border-radius: 9999px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
-            color: #d4a373;
+            color: #d4af8a;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
         #music-toggle:active { transform: scale(0.92); }
         
+        /* 页码指示点 */
         .page-dot {
             width: 6px;
             height: 6px;
             border-radius: 9999px;
-            background: #8b691b60;
+            background: rgba(212,175,138,0.5);
             transition: all 0.2s;
             cursor: pointer;
         }
         .page-dot.active {
-            background: #d4a373;
-            transform: scale(1.3);
-            box-shadow: 0 0 5px #e8b55a;
+            background: #d4af8a;
+            transform: scale(1.5);
+            box-shadow: 0 0 5px #ffddb0;
         }
         
-        @media (max-width: 640px) {
-            .polaroid { padding: 4px 4px 10px 4px; }
+        /* 移动端横屏下的特殊微调：让相册再紧凑一点 */
+        @media (max-width: 800px) and (orientation: landscape) {
+            .album-container {
+                transform: scale(0.96);
+                margin: 0 auto;
+            }
+            .polaroid { padding: 4px 4px 12px 4px; }
             .circle-frame { padding: 3px; }
-            .nav-btn { width: 32px; height: 32px; font-size: 20px; }
-            #music-toggle { width: 34px; height: 34px; font-size: 18px; }
-            .chinese-title { font-size: 1.8rem !important; }
+            .nav-btn { width: 34px; height: 34px; font-size: 22px; }
+            #music-toggle { width: 36px; height: 36px; font-size: 20px; }
+            .page-content { padding: 0 !important; }
         }
         
+        /* 针对更小屏幕 (例如 iPhone SE 横屏) 进一步适配 */
+        @media (max-width: 670px) and (orientation: landscape) {
+            .album-container {
+                transform: scale(0.92);
+            }
+            .chinese-title { font-size: 2rem !important; }
+            .album-text.text-xl { font-size: 1rem !important; }
+            .polaroid .text-center.text-xs { font-size: 8px; }
+        }
+        
+        /* 竖屏提醒 - 精致提示 */
+        .orientation-hint {
+            display: none;
+        }
         @media (orientation: portrait) {
             .album-main { display: none !important; }
             .orientation-hint { display: flex !important; }
         }
         @media (orientation: landscape) {
             .orientation-hint { display: none !important; }
-            .album-main { display: block !important; }
-        }
-        
-        .chinese-seal {
-            font-family: 'Cinzel', serif;
-            color: #b5654e;
-            opacity: 0.6;
-            letter-spacing: 2px;
-            font-size: 10px;
+            .album-main { display: flex !important; }
         }
     </style>
 </head>
 <body>
 
-<div class="ink-bg"></div>
-<div class="china-bg-emoji" id="emoji-bg"></div>
-
-<div class="orientation-hint fixed inset-0 bg-gradient-to-br from-[#0a0705] to-[#1a0f0c] z-[9999] flex flex-col items-center justify-center text-[#d4a373] text-center p-6">
-    <div class="text-6xl mb-4 animate-pulse">📖🔄</div>
-    <h2 class="text-xl font-light album-text">请横屏观看</h2>
-    <p class="text-xs mt-2 opacity-70">Rotate to Landscape</p>
+<!-- 横屏提示 -->
+<div class="orientation-hint fixed inset-0 bg-gradient-to-br from-[#1a120d] to-[#2f241d] z-[9999] flex flex-col items-center justify-center text-[#d4af8a] text-center p-6">
+    <div class="text-7xl mb-5 animate-pulse">📖🔄</div>
+    <h2 class="text-2xl font-light album-text">请将设备旋转为横屏</h2>
+    <div class="w-20 h-20 border-3 border-[#d4af8a] rounded-full mt-5 flex items-center justify-center rotate-90">
+        <span class="text-3xl">↻</span>
+    </div>
+    <p class="mt-4 text-sm opacity-80 max-w-[220px]">横屏浏览 · 沉浸画册体验</p>
 </div>
 
-<div class="album-main w-full h-screen flex items-center justify-center p-1 sm:p-2">
-    <div class="w-full max-w-[98vw] relative">
-        <div class="album-container relative mx-auto rounded-2xl overflow-hidden aspect-[16/9] max-h-[94vh] shadow-2xl">
+<!-- 主相册区域 -->
+<div class="album-main w-full h-screen flex items-center justify-center p-2 sm:p-2">
+    <div class="w-full max-w-[96vw] relative">
+        <!-- 相册容器 - 缩小比例，移动端更从容 -->
+        <div class="album-container relative mx-auto rounded-2xl overflow-hidden aspect-[16/9] max-h-[88vh] shadow-2xl">
             
-            <div class="page relative w-[95%] h-[88%] mx-auto mt-[2%] rounded-xl overflow-hidden">
-                <div id="page-scroll-container" class="page-content w-full h-full overflow-hidden">
-                    <div id="dynamic-page" class="w-full h-full p-3 md:p-4 relative flex items-center justify-center">
-                        <!-- Dynamic content injected -->
+            <!-- 页面区域 -->
+            <div class="page relative w-[94%] h-[84%] mx-auto mt-[2.5%] rounded-xl overflow-hidden">
+                <div id="page-scroll-container" class="page-content w-full h-full overflow-y-auto">
+                    <div id="dynamic-page" class="w-full h-auto min-h-full p-3 md:p-5 relative">
+                        <!-- 动态内容注入 -->
                     </div>
                 </div>
-                <div class="absolute bottom-1 left-2 bg-black/50 backdrop-blur-sm px-1.5 py-0.5 rounded-full text-[9px] font-mono text-[#d4a373] z-20">
-                    <span id="page-number">01</span>/<span id="total-pages">30</span>
+                <!-- 页码角标 -->
+                <div class="absolute bottom-2 left-2 bg-white/70 backdrop-blur-sm px-2 py-0.5 rounded-full text-[9px] font-mono text-[#5e3a2a] z-20 shadow-sm">
+                    <span id="page-number">01</span>/<span id="total-pages">16</span>
                 </div>
-                <div class="absolute top-2 right-2 text-[#b5654e]/25 text-xs chinese-seal">❦ 珍藏 ❦</div>
             </div>
             
-            <button id="prev-btn" class="nav-btn absolute left-1 bottom-1/2 translate-y-1/2 z-30">←</button>
-            <button id="next-btn" class="nav-btn absolute right-1 bottom-1/2 translate-y-1/2 z-30">→</button>
+            <!-- 左右翻页按钮 -->
+            <button id="prev-btn" class="nav-btn absolute left-1.5 bottom-1/2 translate-y-1/2 z-30">←</button>
+            <button id="next-btn" class="nav-btn absolute right-1.5 bottom-1/2 translate-y-1/2 z-30">→</button>
             
+            <!-- 音乐开关 -->
             <div id="music-toggle" class="absolute bottom-2 left-1/2 -translate-x-1/2 z-40 shadow-xl">
-                <span id="music-icon">♫</span>
+                <span id="music-icon">♪</span>
             </div>
             
-            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-30 bg-black/50 px-2 py-1 rounded-full backdrop-blur-sm">
+            <!-- 页面小圆点导航 -->
+            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-30 bg-[#2c2118]/60 px-3 py-1.5 rounded-full backdrop-blur-sm">
                 <div id="dots-container" class="flex gap-1.5"></div>
             </div>
         </div>
@@ -241,200 +231,134 @@
 </div>
 
 <audio id="bg-music" loop preload="auto">
-    <source src="music.mp3" type="audio/mpeg">
+    <source src="https://cdn.pixabay.com/download/audio/2022/12/06/audio_9e3b9b3c6a.mp3?filename=eastern-wind-121810.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-    // ---------- China-themed emoji background ----------
-    const chinaEmojis = [
-        "🐉", "🐲", "🏮", "🎋", "🌸", "🍵", "🀄", "🥢", "🐼", "🎐", "⛩️", 
-        "🪭", "🎍", "🍊", "🧧", "🐅", "🌙", "☯️", "⚜️", "🏯", "🦢", "🪷"
+    // ---------- 图片与视频素材池 (精美且稳定) ----------
+    const photoSet = [
+        "https://picsum.photos/id/20/500/500", "https://picsum.photos/id/22/500/500", "https://picsum.photos/id/26/500/500",
+        "https://picsum.photos/id/28/500/500", "https://picsum.photos/id/30/500/500", "https://picsum.photos/id/35/500/500",
+        "https://picsum.photos/id/42/500/500", "https://picsum.photos/id/55/500/500", "https://picsum.photos/id/60/500/500",
+        "https://picsum.photos/id/64/500/500", "https://picsum.photos/id/76/500/500", "https://picsum.photos/id/89/500/500",
+        "https://picsum.photos/id/96/500/500", "https://picsum.photos/id/100/500/500", "https://picsum.photos/id/104/500/500",
+        "https://picsum.photos/id/116/500/500", "https://picsum.photos/id/133/500/500", "https://picsum.photos/id/155/500/500"
     ];
     
-    function createFloatingEmojis() {
-        const container = document.getElementById('emoji-bg');
-        if (!container) return;
-        container.innerHTML = '';
-        const emojiCount = window.innerWidth < 768 ? 30 : 45;
-        for (let i = 0; i < emojiCount; i++) {
-            const emoji = document.createElement('div');
-            emoji.className = 'floating-emoji';
-            const randomEmoji = chinaEmojis[Math.floor(Math.random() * chinaEmojis.length)];
-            emoji.textContent = randomEmoji;
-            const size = Math.random() * 1.3 + 0.9;
-            emoji.style.fontSize = `${size}rem`;
-            emoji.style.left = `${Math.random() * 100}%`;
-            emoji.style.animationDuration = `${Math.random() * 25 + 18}s`;
-            emoji.style.animationDelay = `${Math.random() * 20}s`;
-            emoji.style.opacity = Math.random() * 0.18 + 0.06;
-            container.appendChild(emoji);
-        }
+    const videoSet = [
+        "https://assets.mixkit.co/videos/preview/mixkit-falling-sakura-petals-32886-large.mp4",
+        "https://assets.mixkit.co/videos/preview/mixkit-water-lily-and-carp-fish-3493-large.mp4",
+        "https://assets.mixkit.co/videos/preview/mixkit-forest-stream-4049-large.mp4",
+        "https://assets.mixkit.co/videos/preview/mixkit-koi-fish-swimming-39629-large.mp4",
+        "https://assets.mixkit.co/videos/preview/mixkit-blooming-pink-flower-close-up-32928-large.mp4",
+        "https://assets.mixkit.co/videos/preview/mixkit-girl-in-autumn-32927-large.mp4"
+    ];
+    
+    let imgIndex = 0;
+    let vidIndex = 0;
+    function nextImg() { let url = photoSet[imgIndex % photoSet.length]; imgIndex++; return url; }
+    function nextVid() { let url = videoSet[vidIndex % videoSet.length]; vidIndex++; return url; }
+    
+    // ----- 组件生成函数 (拍立得/圆形/视频) -----
+    function photoBlock(customClass = "") {
+        return `<div class="polaroid rounded-lg ${customClass}"><img src="${nextImg()}" class="w-full aspect-square object-cover rounded-md" loading="lazy" alt="memory"><div class="text-center text-[9px] mt-1 text-[#b0805a] tracking-wide">✦ 时光定格 ✦</div></div>`;
     }
-    
-    window.addEventListener('resize', () => { createFloatingEmojis(); });
-    
-    // ═══════════════════════════════════════════════════════════════
-    // ВСЕ МЕДИАФАЙЛЫ ЗАМЕНЕНЫ НА ТЕСТОВЫЕ: none.png и none.mp4
-    // ═══════════════════════════════════════════════════════════════
-    
-    const TEST_IMAGE = "none.png";
-    const TEST_VIDEO = "none.mp4";
-    
-    // Функции-заглушки, всегда возвращают тестовые пути
-    function nextImg() { return TEST_IMAGE; }
-    function nextRegularVideo() { return TEST_VIDEO; }
-    function nextTelegramVideo() { return TEST_VIDEO; }
-    
-    // ----- Компактные блоки с тестовыми медиа -----
-    function photoBlock() {
-        return `<div class="polaroid rounded-lg w-full h-full flex flex-col">
-                    <img src="${TEST_IMAGE}" class="w-full aspect-square object-cover rounded-md" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23302028%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%23d4a373%22 font-size=%2212%22%3Enone.png%3C/text%3E%3C/svg%3E'">
-                    <div class="text-center text-[9px] mt-1 text-[#d4a373]">✦ 墨韵 ✦</div>
-                </div>`;
+    function circlePhotoBlock() {
+        return `<div class="circle-frame w-full max-w-[110px] mx-auto"><img src="${nextImg()}" class="circle-inner" loading="lazy" alt="circle moment"></div>`;
     }
-    
-    function circleVideoTelegram() {
-        return `<div class="circle-frame w-full max-w-[110px] mx-auto">
-                    <video autoplay loop muted playsinline class="circle-inner" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23302028'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='%23d4a373' font-size='9'%3Enone.mp4%3C/text%3E%3C/svg%3E">
-                        <source src="${TEST_VIDEO}" type="video/mp4">
-                    </video>
-                </div>`;
+    function circleVideoBlock() {
+        return `<div class="circle-frame w-full max-w-[110px] mx-auto"><video autoplay loop muted playsinline class="circle-inner"><source src="${nextVid()}" type="video/mp4"></video></div>`;
     }
-    
     function videoBlock() {
-        return `<div class="polaroid rounded-lg w-full h-full">
-                    <video autoplay loop muted playsinline class="w-full aspect-video object-cover rounded-md" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23302028'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='%23d4a373' font-size='9'%3Enone.mp4%3C/text%3E%3C/svg%3E">
-                        <source src="${TEST_VIDEO}" type="video/mp4">
-                    </video>
-                    <div class="text-center text-[9px] mt-1 text-[#b5654e]">🎋 光影诗卷</div>
-                </div>`;
+        return `<div class="polaroid rounded-lg"><video autoplay loop muted playsinline class="w-full aspect-video object-cover rounded-md"><source src="${nextVid()}" type="video/mp4"></video><div class="text-center text-[9px] mt-1 text-[#9c2a2a]">🎬 流光 · 映画</div></div>`;
     }
     
-    // ----- 30 страниц с тестовыми медиа (всё помещается без скролла) -----
+    // ---------- 16 页精美内容定义 (情感叙事) ----------
     const pages = [];
     
-    // 1. Cover
-    pages.push(`<div class="flex flex-col items-center justify-center h-full w-full">
-        <div class="chinese-title text-4xl md:text-6xl text-[#b5654e] mb-2 drop-shadow-md">錦瑟華年</div>
-        <div class="polaroid w-48 mx-auto my-2 bg-[#1f1612]"><img src="${TEST_IMAGE}" class="w-full aspect-[4/5] object-cover rounded-md" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23302028%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%23d4a373%22 font-size=%2210%22%3Enone.png%3C/text%3E%3C/svg%3E'"><div class="text-center text-[9px] mt-1 font-serif text-[#d4a373]">三十卷 · 墨香集</div></div>
-        <div class="album-text text-base text-[#c49a6c] mt-1">光 阴 的 诗</div>
+    // 1. 封面
+    pages.push(`<div class="flex flex-col items-center justify-center h-full min-h-[380px] relative">
+        <div class="chinese-title text-4xl md:text-6xl text-[#9c2a2a] mb-2 tracking-wider">錦瑟華年</div>
+        <div class="polaroid w-56 mx-auto my-3"><img src="${nextImg()}" class="w-full aspect-[4/5] object-cover rounded-md"><div class="text-center text-[10px] mt-1.5">Her Photo Album</div></div>
+        <div class="album-text text-lg text-[#3c2a22] mt-1 italic">光 阴 的 诗</div>
+        <div class="absolute bottom-3 text-[10px] text-[#b0805a]">✧ 永恒之册 ✧</div>
     </div>`);
     
-    // 2. Introduction
-    pages.push(`<div class="flex flex-col items-center justify-center h-full w-full px-3 text-center">
-        <div class="circle-frame w-24 mb-2">${circleVideoTelegram().replace('max-w-[110px]', 'w-full')}</div>
-        <p class="album-text text-[#d4c5b0] text-xs leading-relaxed max-w-md">每一帧都藏着时光的温柔。愿这些光影与旋律，勾勒出独属于她的故事，如泛黄信笺上的墨香，隽永而沉静。</p>
-        <div class="mt-2 text-[#b8860b] text-[11px]">✦ 致 亲 爱 的 你 ✦</div>
+    // 2. 序言
+    pages.push(`<div class="flex flex-col items-center justify-center h-full min-h-[360px] px-4 text-center">
+        <div class="circle-frame w-24 mb-3"><img src="${nextImg()}" class="circle-inner"></div>
+        <p class="album-text text-[#3a2820] text-sm leading-relaxed max-w-md">每一帧都藏着时光的温柔。愿这些光影与旋律，勾勒出独属于她的故事，如泛黄信笺上的墨香，隽永而沉静。</p>
+        <div class="mt-4 text-[#d4af8a] text-xs tracking-widest">✦ 致 亲 爱 的 你 ✦</div>
     </div>`);
     
-    // 3. One single photo "one"
-    pages.push(`<div class="flex flex-col items-center justify-center h-full w-full">
-        <div class="polaroid w-56 bg-[#1f1612]"><img src="${TEST_IMAGE}" class="w-full aspect-square object-cover rounded-md" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23302028%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%23d4a373%22 font-size=%2210%22%3Enone.png%3C/text%3E%3C/svg%3E'"><div class="text-center mt-1 text-base font-serif text-[#d4a373] tracking-wider">one</div></div>
+    // 3. "one" 单张
+    pages.push(`<div class="flex flex-col items-center justify-center h-full min-h-[360px]">
+        <div class="polaroid w-64"><img src="${nextImg()}" class="w-full aspect-square object-cover rounded-md"><div class="text-center mt-2 text-xl font-serif text-[#9c2a2a] tracking-wider">one</div><div class="text-center text-[9px] text-[#b0805a]">初 心</div></div>
     </div>`);
     
-    // Patterns A,B,C,D for pages 4-29
+    // 页面4~15 使用优雅布局模式 A/B/C/D
     const patterns = ['A','B','C','D'];
-    
-    for(let i = 4; i <= 29; i++) {
+    for(let i = 4; i <= 15; i++) {
         let pattern = patterns[(i-4) % 4];
         let content = '';
-        if(pattern === 'A') {
-            // 2 photos + 1 круг (видео)
-            content = `<div class="grid grid-cols-12 gap-2 h-full w-full items-center">
-                <div class="col-span-5 h-full flex items-center">${photoBlock()}</div>
-                <div class="col-span-5 h-full flex items-center">${photoBlock()}</div>
-                <div class="col-span-2 flex justify-center items-center">${circleVideoTelegram()}</div>
+        if(pattern === 'A') { 
+            content = `<div class="grid grid-cols-12 gap-2 items-center h-full min-h-[320px]">
+                <div class="col-span-5">${photoBlock()}</div>
+                <div class="col-span-5">${photoBlock()}</div>
+                <div class="col-span-2 flex justify-center">${circlePhotoBlock()}</div>
             </div>`;
         } 
-        else if(pattern === 'B') {
-            // 2 кружка + 1 фото
-            content = `<div class="grid grid-cols-12 gap-2 h-full w-full items-center">
-                <div class="col-span-2 flex justify-center items-center">${circleVideoTelegram()}</div>
-                <div class="col-span-2 flex justify-center items-center">${circleVideoTelegram()}</div>
-                <div class="col-span-8 h-full flex items-center">${photoBlock()}</div>
+        else if(pattern === 'B') { 
+            content = `<div class="grid grid-cols-12 gap-2 items-center h-full min-h-[320px]">
+                <div class="col-span-2 flex justify-center">${circlePhotoBlock()}</div>
+                <div class="col-span-2 flex justify-center">${circleVideoBlock()}</div>
+                <div class="col-span-8">${photoBlock()}</div>
             </div>`;
         }
-        else if(pattern === 'C') {
-            // 1 видео + 1 фото
-            content = `<div class="grid grid-cols-12 gap-2 h-full w-full items-center">
-                <div class="col-span-6 h-full flex items-center">${videoBlock()}</div>
-                <div class="col-span-6 h-full flex items-center">${photoBlock()}</div>
+        else if(pattern === 'C') { 
+            content = `<div class="grid grid-cols-12 gap-3 items-center h-full min-h-[320px]">
+                <div class="col-span-6">${videoBlock()}</div>
+                <div class="col-span-6">${photoBlock()}</div>
             </div>`;
         }
-        else if(pattern === 'D') {
-            // 3 фото
-            content = `<div class="grid grid-cols-12 gap-2 h-full w-full items-center">
-                <div class="col-span-4 h-full flex items-center">${photoBlock()}</div>
-                <div class="col-span-4 h-full flex items-center">${photoBlock()}</div>
-                <div class="col-span-4 h-full flex items-center">${photoBlock()}</div>
+        else if(pattern === 'D') { 
+            content = `<div class="grid grid-cols-12 gap-2 items-center h-full min-h-[320px]">
+                <div class="col-span-4">${photoBlock()}</div>
+                <div class="col-span-4">${photoBlock()}</div>
+                <div class="col-span-4">${photoBlock()}</div>
             </div>`;
         }
-        pages.push(`<div class="w-full h-full">${content}</div>`);
+        pages.push(`<div class="relative px-1">${content}</div>`);
     }
     
-    // 30. Conclusion
-    pages.push(`<div class="flex flex-col items-center justify-center h-full w-full text-center px-4">
-        <div class="circle-frame w-24 mb-2">${circleVideoTelegram().replace('max-w-[110px]', 'w-full')}</div>
-        <p class="album-text text-xl text-[#b5654e] mb-1">Thank You</p>
-        <p class="text-[#c4a27a] text-xs leading-relaxed max-w-sm">愿每一页泛黄的温柔，都如初见。愿你眼眸有星辰，心中有山海。</p>
-        <div class="mt-2 text-[#8b691b] text-[10px] tracking-widest">✧ 永 远 的 时 光 ✧</div>
-        <div class="mt-1 chinese-seal text-[9px]">三十卷 · 完</div>
+    // 16. 尾页 致谢
+    pages.push(`<div class="flex flex-col items-center justify-center h-full min-h-[360px] text-center px-5">
+        <div class="circle-frame w-24 mb-3"><img src="${nextImg()}" class="circle-inner"></div>
+        <p class="album-text text-2xl text-[#9c2a2a] mb-2">Thank You</p>
+        <p class="text-[#3a2a1f] text-sm leading-relaxed max-w-sm">愿每一页泛黄的温柔，都如初见。愿你眼眸有星辰，心中有山海。</p>
+        <div class="mt-4 text-[#b0805a] text-[10px] tracking-widest">✧ 永 远 的 时 光 ✧</div>
     </div>`);
     
-    // ---------- Album Logic ----------
+    // ---------- 相册核心逻辑 ----------
     let currentPage = 0;
     let isTransitioning = false;
-    let musicMuted = false;
+    let musicMuted = true;
     const bgMusic = document.getElementById('bg-music');
     const musicIcon = document.getElementById('music-icon');
     
-    // АВТОМАТИЧЕСКИЙ ЗАПУСК МУЗЫКИ ПОСЛЕ ЗАГРУЗКИ СТРАНИЦЫ
-    // Громкость 35%, тихий фон
     function initMusic() {
-        bgMusic.volume = 0.35;
+        bgMusic.volume = 0.4;
+        bgMusic.muted = true;
         bgMusic.loop = true;
-        bgMusic.muted = false;
-        musicMuted = false;
-        musicIcon.innerText = '♫';
-        
-        // Пытаемся запустить музыку автоматически
-        const playPromise = bgMusic.play();
-        if (playPromise !== undefined) {
-            playPromise.then(() => {
-                console.log("Music playing automatically at 35% volume");
-                musicIcon.innerText = '♫';
-            }).catch(error => {
-                console.log("Autoplay blocked by browser, but we will try again on any user interaction");
-                // Браузер заблокировал автовоспроизведение, но музыка будет запущена при первом касании
-                bgMusic.muted = true;
-                musicMuted = true;
-                musicIcon.innerText = '♪';
-                
-                // Ждём первого взаимодействия пользователя для запуска музыки
-                const startMusicOnInteraction = () => {
-                    bgMusic.muted = false;
-                    bgMusic.volume = 0.35;
-                    bgMusic.play().then(() => {
-                        musicMuted = false;
-                        musicIcon.innerText = '♫';
-                        console.log("Music started after user interaction");
-                    }).catch(e => console.log("Still blocked"));
-                    document.removeEventListener('click', startMusicOnInteraction);
-                    document.removeEventListener('touchstart', startMusicOnInteraction);
-                    document.removeEventListener('keydown', startMusicOnInteraction);
-                };
-                document.addEventListener('click', startMusicOnInteraction);
-                document.addEventListener('touchstart', startMusicOnInteraction);
-                document.addEventListener('keydown', startMusicOnInteraction);
-            });
-        }
+        // 尝试播放静音自动播放
+        bgMusic.play().catch(e => console.log("需用户交互才能播放音乐"));
+        musicIcon.innerText = '♪';
     }
     
     function toggleMusic() {
         if (musicMuted) {
             bgMusic.muted = false;
-            bgMusic.volume = 0.35;
-            bgMusic.play().catch(e => console.log("play failed"));
+            bgMusic.play().catch(e => console.log("播放失败"));
             musicIcon.innerText = '♫';
             musicMuted = false;
         } else {
@@ -443,27 +367,30 @@
             musicMuted = true;
         }
     }
-    document.getElementById('music-toggle')?.addEventListener('click', toggleMusic);
     
+    // 渲染页面 + 精致过渡动画
     function renderPage(index, direction = 'next') {
         if (isTransitioning) return;
         isTransitioning = true;
         const container = document.getElementById('dynamic-page');
         if (!container) return;
         
-        container.style.transition = 'opacity 0.2s ease, transform 0.25s ease';
+        // 淡入淡出 + 轻微滑动
+        container.style.transition = 'opacity 0.2s ease, transform 0.28s ease';
         container.style.opacity = '0';
         container.style.transform = direction === 'next' ? 'translateX(6px)' : 'translateX(-6px)';
         
         setTimeout(() => {
             container.innerHTML = pages[index];
+            // 确保所有视频自动播放且静音
             const videos = container.querySelectorAll('video');
             videos.forEach(vid => { 
                 vid.muted = true; 
-                vid.play().catch(e=>console.log("video autoplay issue"));
-                // Добавляем обработчик ошибок для видео
-                vid.onerror = () => { console.log("Video not found:", TEST_VIDEO); };
+                vid.play().catch(e=>{}); 
             });
+            // 重置滚动位置
+            const scrollDiv = document.getElementById('page-scroll-container');
+            if(scrollDiv) scrollDiv.scrollTop = 0;
             
             container.style.transition = 'opacity 0.25s ease, transform 0.3s ease';
             container.style.opacity = '1';
@@ -472,7 +399,7 @@
             document.getElementById('page-number').innerText = String(index + 1).padStart(2, '0');
             updateDots(index);
             currentPage = index;
-            setTimeout(() => { isTransitioning = false; }, 280);
+            setTimeout(() => { isTransitioning = false; }, 300);
         }, 180);
     }
     
@@ -488,13 +415,15 @@
     function prevPage() { if(isTransitioning) return; let prv = (currentPage - 1 + pages.length) % pages.length; renderPage(prv, 'prev'); }
     function goToPage(idx) { if(idx === currentPage || isTransitioning) return; renderPage(idx, idx > currentPage ? 'next' : 'prev'); }
     
+    // 手势滑动
     let touchStartX = 0;
     function onTouchStart(e) { touchStartX = e.changedTouches[0].screenX; }
     function onTouchEnd(e) {
         let diff = touchStartX - e.changedTouches[0].screenX;
-        if (Math.abs(diff) > 35) diff > 0 ? nextPage() : prevPage();
+        if (Math.abs(diff) > 40) diff > 0 ? nextPage() : prevPage();
     }
     
+    // 生成导航点
     function createDots() {
         const dotsContainer = document.getElementById('dots-container');
         if(!dotsContainer) return;
@@ -506,31 +435,79 @@
             dot.addEventListener('click', (e) => { e.stopPropagation(); goToPage(i); });
             dotsContainer.appendChild(dot);
         }
+        document.getElementById('total-pages').innerText = String(pages.length).padStart(2, '0');
     }
     
-    // Запуск после полной загрузки страницы
+    // 保证视频在滚动后不中断
+    function ensureVideosPlay() {
+        const videos = document.querySelectorAll('video');
+        videos.forEach(v => { if(v.paused && v.muted) v.play().catch(e=>{}); });
+    }
+    
+    // 全局初始化 & 事件绑定
     window.addEventListener('load', () => {
-        createFloatingEmojis();
         createDots();
         renderPage(0, 'next');
-        document.getElementById('total-pages').innerText = '30';
         
-        document.getElementById('prev-btn')?.addEventListener('click', prevPage);
-        document.getElementById('next-btn')?.addEventListener('click', nextPage);
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const musicBtn = document.getElementById('music-toggle');
+        const albumContainer = document.querySelector('.album-container');
+        const scrollContainer = document.getElementById('page-scroll-container');
         
-        const album = document.querySelector('.album-container');
-        if(album) {
-            album.addEventListener('touchstart', onTouchStart, {passive: true});
-            album.addEventListener('touchend', onTouchEnd);
+        if(prevBtn) prevBtn.addEventListener('click', prevPage);
+        if(nextBtn) nextBtn.addEventListener('click', nextPage);
+        if(musicBtn) musicBtn.addEventListener('click', toggleMusic);
+        if(albumContainer) {
+            albumContainer.addEventListener('touchstart', onTouchStart, {passive: true});
+            albumContainer.addEventListener('touchend', onTouchEnd);
         }
         
-        // ЗАПУСК МУЗЫКИ АВТОМАТИЧЕСКИ
+        // 音乐初始化 (需要用户首次点击页面任意位置激活音频策略)
         initMusic();
         
-        // Поддержка видео
+        // 因为浏览器自动策略, 在第一次用户触摸相册时主动启动音乐(如果用户希望有声)
+        const anyTapUnmute = () => {
+            if (bgMusic.muted && musicMuted) {
+                bgMusic.muted = false;
+                bgMusic.play().then(() => {
+                    musicIcon.innerText = '♫';
+                    musicMuted = false;
+                }).catch(e => {});
+            }
+            document.removeEventListener('touchstart', anyTapUnmute);
+            document.removeEventListener('click', anyTapUnmute);
+        };
+        document.addEventListener('touchstart', anyTapUnmute);
+        document.addEventListener('click', anyTapUnmute);
+        
+        // 保持视频播放循环
         setInterval(() => {
-            document.querySelectorAll('video').forEach(v => { if(v.paused && v.muted) v.play().catch(e=>{}); });
-        }, 800);
+            ensureVideosPlay();
+        }, 1000);
+        
+        if(scrollContainer) {
+            scrollContainer.addEventListener('scroll', () => {
+                ensureVideosPlay();
+            });
+        }
+        
+        // 小优化：预加载所有页面的图片不卡顿（可选）
+        const preloadImages = () => {
+            const allImgs = document.querySelectorAll('#dynamic-page img');
+            allImgs.forEach(img => { if(img.complete === false) img.loading = 'eager'; });
+        };
+        setTimeout(preloadImages, 500);
+    });
+    
+    // 窗口 resize 时确保相册内容自适应（无抖动）
+    window.addEventListener('resize', () => {
+        const container = document.getElementById('dynamic-page');
+        if(container && currentPage !== undefined) {
+            // 仅重设滚动位置，避免内容错位
+            const scrollDiv = document.getElementById('page-scroll-container');
+            if(scrollDiv && scrollDiv.scrollTop > 0) scrollDiv.scrollTop = 0;
+        }
     });
 </script>
 </body>
