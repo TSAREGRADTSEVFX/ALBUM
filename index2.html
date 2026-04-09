@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Её альбом | воспоминания</title>
+    <title>Её альбом | Твоё путешествие</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&amp;family=Inter:opsz,wght@14..32,200;14..32,300;14..32,400;14..32,500&amp;display=swap');
@@ -101,12 +101,22 @@
             box-shadow: 0 25px 35px -16px rgba(110, 40, 70, 0.25);
         }
         
+        /* ИСПРАВЛЕНИЕ: идеально круглые элементы без квадратных углов */
         .circle-video-item {
             position: relative;
-            border-radius: 9999px;
+            border-radius: 9999px !important;
             background: #fff;
             box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2), 0 0 0 6px #fff, 0 0 0 10px #ffb0c8;
-            transition: all 0.2s;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;
+        }
+        
+        .circle-video-item video,
+        .circle-video-item img {
+            border-radius: 9999px !important;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
         }
         
         .full-video-item {
@@ -169,7 +179,7 @@
             color: transparent;
         }
 
-        /* Стиль для заглушек (можно добавить визуальный индикатор, что это тестовые данные) */
+        /* Стиль для заглушек */
         .test-badge {
             position: absolute;
             bottom: 8px;
@@ -184,6 +194,12 @@
             z-index: 2;
             pointer-events: none;
         }
+        
+        /* дополнительный фикс для круглых контейнеров */
+        .rounded-full-fix {
+            border-radius: 9999px !important;
+            overflow: hidden !important;
+        }
     </style>
 </head>
 <body class="relative flex flex-col items-center justify-start">
@@ -191,7 +207,7 @@
     <div class="soft-glow"></div>
     <div class="soft-glow soft-glow-right"></div>
 
-    <!-- НОВАЯ ОБЛОЖКА – элегантная, воздушная, с оттенком ностальгии -->
+    <!-- НОВАЯ ОБЛОЖКА – "Твое путешествие" -->
     <div id="cover" class="relative z-10 w-full max-w-[440px] mx-auto px-5 mt-12 md:mt-16">
         <div class="cover-card px-8 py-12 text-center">
             <!-- декоративный элемент: две нежные линии и точка -->
@@ -201,24 +217,24 @@
                 <div class="w-12 h-px bg-gradient-to-l from-transparent to-[#e27b9e]"></div>
             </div>
             
-            <!-- главный заголовок: более камерный -->
+            <!-- главный заголовок: Твое путешествие -->
             <div class="relative inline-block">
-                <h1 class="cover-title text-[64px] leading-[1.05] tracking-[-0.02em] font-black">
-                    её<br>свет
+                <h1 class="cover-title text-[58px] leading-[1.08] tracking-[-0.02em] font-black">
+                    Твоё<br>путешествие
                 </h1>
                 <div class="absolute -top-4 -right-8 text-6xl text-[#ffb7cf] opacity-40">✦</div>
             </div>
             
-            <p class="text-[#a5446b] text-[18px] font-light mt-4 tracking-wide italic">
-                альбом воспоминаний
+            <p class="text-[#a5446b] text-[17px] font-light mt-4 tracking-wide italic">
+                альбом дороги и открытий
             </p>
             
             <!-- нежный разделитель -->
             <div class="signature-line my-8"></div>
             
-            <!-- подпись / цитата -->
+            <!-- подпись / цитата - новая, вдохновляющая -->
             <p class="text-[#6b3e50] text-[13px] font-light max-w-[240px] mx-auto leading-relaxed">
-                «каждый кадр хранит тепло твоей улыбки»
+                «каждый шаг — это новая глава»
             </p>
             
             <!-- кнопка, которая плавно открывает альбом -->
@@ -241,7 +257,7 @@
     <div id="album-content" class="hidden max-w-[500px] w-full mx-auto px-5 mt-6 z-10 relative">
         <div class="flex justify-center mb-3">
             <div class="bg-white/60 backdrop-blur-sm rounded-full px-5 py-1.5 text-[#b45a7a] text-sm font-medium shadow-sm">
-                ♡  моменты счастья  ♡
+                ♡  моменты пути  ♡
             </div>
         </div>
         <div id="gallery" class="gallery-grid"></div>
@@ -267,32 +283,33 @@
         // --------------------------------------------------------------
         // ТЕСТОВЫЙ РЕЖИМ: все фото заменены на "none.png", 
         // все видео и кружочки заменены на "none.mp4"
+        // ИСПРАВЛЕНЫ КРУГЛЫЕ УГЛЫ для элементов type "circle"
         // --------------------------------------------------------------
         
         const mediaLibrary = [
             // Фотографии — все используют none.png
-            { type: "photo", url: "none.png", caption: "рассветный свет" },
-            { type: "photo", url: "none.png", caption: "лёгкость момента" },
-            { type: "photo", url: "none.png", caption: "уют" },
-            { type: "photo", url: "none.png", caption: "золотой час" },
-            { type: "photo", url: "none.png", caption: "цветочное настроение" },
-            { type: "photo", url: "none.png", caption: "нежность" },
-            { type: "photo", url: "none.png", caption: "в её глазах" },
-            { type: "photo", url: "none.png", caption: "ленивое утро" },
-            { type: "photo", url: "none.png", caption: "шепот ветра" },
-            { type: "photo", url: "none.png", caption: "искренность" },
+            { type: "photo", url: "none.png", caption: "первый шаг" },
+            { type: "photo", url: "none.png", caption: "вдохновение" },
+            { type: "photo", url: "none.png", caption: "дорога" },
+            { type: "photo", url: "none.png", caption: "встречный ветер" },
+            { type: "photo", url: "none.png", caption: "новый горизонт" },
+            { type: "photo", url: "none.png", caption: "тишина в пути" },
+            { type: "photo", url: "none.png", caption: "момент истины" },
+            { type: "photo", url: "none.png", caption: "свет в конце" },
+            { type: "photo", url: "none.png", caption: "отражение" },
+            { type: "photo", url: "none.png", caption: "свобода" },
             
-            // Круглые видео (все заменены на none.mp4)
-            { type: "circle", url: "none.mp4", caption: "летняя прогулка" },
-            { type: "circle", url: "none.mp4", caption: "облака" },
-            { type: "circle", url: "none.mp4", caption: "дорога к мечте" },
-            { type: "circle", url: "none.mp4", caption: "эмоции" },
+            // Круглые видео (все заменены на none.mp4) — теперь идеально круглые!
+            { type: "circle", url: "none.mp4", caption: "рассвет в пути" },
+            { type: "circle", url: "none.mp4", caption: "облака над дорогой" },
+            { type: "circle", url: "none.mp4", caption: "путь к мечте" },
+            { type: "circle", url: "none.mp4", caption: "эмоции попутчика" },
             
             // Полноразмерные вертикальные видео (тоже none.mp4)
-            { type: "video", url: "none.mp4", caption: "волшебный кадр" },
-            { type: "video", url: "none.mp4", caption: "нежный миг" },
-            { type: "video", url: "none.mp4", caption: "безмятежность" },
-            { type: "video", url: "none.mp4", caption: "улыбка до неба" }
+            { type: "video", url: "none.mp4", caption: "кадры путешествия" },
+            { type: "video", url: "none.mp4", caption: "нежный миг в пути" },
+            { type: "video", url: "none.mp4", caption: "безмятежная дорога" },
+            { type: "video", url: "none.mp4", caption: "улыбка до горизонта" }
         ];
         
         // Функция перемешивания (рандомный порядок)
@@ -304,14 +321,13 @@
             return arr;
         }
         
-        // Создание DOM-элемента для сетки
+        // Создание DOM-элемента для сетки с полным исправлением круглых углов
         function createMediaCard(item, idx) {
             const card = document.createElement('div');
             card.className = `item cursor-pointer transform transition-all duration-300 hover:z-10 relative`;
             card.style.animationDelay = `${Math.min(idx * 35, 500)}ms`;
             
             if (item.type === "photo") {
-                // индивидуальный случайный наклон
                 const rotateVal = (Math.random() * 3 - 1.5).toFixed(1);
                 card.innerHTML = `
                     <div class="photo-frame-modern relative" style="transform: rotate(${rotateVal}deg);">
@@ -322,17 +338,22 @@
                 `;
             } 
             else if (item.type === "circle") {
+                // КРУГЛЫЙ ЭЛЕМЕНТ - исправлено: применяем принудительный border-radius и overflow hidden
+                // Дополнительно оборачиваем в контейнер с жесткими стилями, чтобы видео/заглушка не вылезали за границы
                 card.innerHTML = `
-                    <div class="circle-video-item aspect-square w-full overflow-hidden relative">
-                        <video src="${item.url}" 
-                               class="w-full h-full object-cover"
-                               muted loop playsinline preload="metadata"
-                               onerror="this.style.backgroundColor='#f5e2ec'; this.poster='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23d43f7a\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Ccircle cx=\'12\' cy=\'12\' r=\'10\'/%3E%3Cpolygon points=\'10 8 16 12 10 16 10 8\' fill=\'%23d43f7a\' fill-opacity=\'0.3\'/%3E%3C/svg%3E'; this.style.objectFit='contain';"></video>
-                        <div class="absolute inset-0 flex items-center justify-center bg-black/20 rounded-full backdrop-blur-[1px] transition group-hover:bg-black/30">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 4.01V8" />
-                            </svg>
+                    <div class="relative">
+                        <div class="circle-video-item w-full overflow-hidden rounded-full" style="border-radius: 9999px !important; overflow: hidden !important;">
+                            <video src="${item.url}" 
+                                   class="w-full h-full object-cover rounded-full"
+                                   style="border-radius: 9999px !important;"
+                                   muted loop playsinline preload="metadata"
+                                   onerror="this.style.backgroundColor='#f5e2ec'; this.poster='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23d43f7a\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Ccircle cx=\'12\' cy=\'12\' r=\'10\'/%3E%3Cpolygon points=\'10 8 16 12 10 16 10 8\' fill=\'%23d43f7a\' fill-opacity=\'0.3\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.borderRadius='9999px';"></video>
+                            <div class="absolute inset-0 flex items-center justify-center bg-black/20 rounded-full backdrop-blur-[1px] transition group-hover:bg-black/30" style="border-radius: 9999px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 4.01V8" />
+                                </svg>
+                            </div>
                         </div>
                         <div class="test-badge">🧪 TEST</div>
                         ${item.caption ? `<div class="flex justify-center mt-2"><span class="caption-text text-[11px]">${escapeHtml(item.caption)}</span></div>` : ''}
@@ -366,7 +387,7 @@
             return card;
         }
         
-        // простой экранинг чтобы избежать проблем с html
+        // простой экранинг
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/[&<>]/g, function(m) {
@@ -374,8 +395,6 @@
                 if (m === '<') return '&lt;';
                 if (m === '>') return '&gt;';
                 return m;
-            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-                return c;
             });
         }
         
@@ -403,10 +422,18 @@
                 const wrapper = document.createElement('div');
                 wrapper.className = `flex flex-col items-center w-full relative`;
                 const videoContainer = document.createElement('div');
-                videoContainer.className = `${isCircle ? 'rounded-full aspect-square' : 'rounded-3xl aspect-[9/16]'} max-w-[90vw] md:max-w-[420px] w-full overflow-hidden bg-black shadow-2xl relative`;
+                
+                if (isCircle) {
+                    videoContainer.className = `rounded-full aspect-square max-w-[90vw] md:max-w-[420px] w-full overflow-hidden bg-black shadow-2xl`;
+                    videoContainer.style.borderRadius = '9999px';
+                } else {
+                    videoContainer.className = `rounded-3xl aspect-[9/16] max-w-[90vw] md:max-w-[420px] w-full overflow-hidden bg-black shadow-2xl`;
+                }
+                
                 const video = document.createElement('video');
                 video.src = item.url;
                 video.className = "w-full h-full object-cover";
+                if (isCircle) video.style.borderRadius = '9999px';
                 video.controls = true;
                 video.autoplay = true;
                 video.muted = false;
@@ -461,7 +488,7 @@
                 const card = createMediaCard(item, index);
                 container.appendChild(card);
             });
-            // активируем hover-эффекты для видео (чтобы они стартовали muted)
+            // активируем hover-эффекты для видео
             const allVideos = document.querySelectorAll('#gallery video');
             allVideos.forEach(vid => {
                 vid.addEventListener('mouseenter', () => {
@@ -476,7 +503,6 @@
         function openAlbum() {
             const coverDiv = document.getElementById('cover');
             if (!coverDiv) return;
-            // Эффект исчезновения с поворотом и затуханием
             coverDiv.style.transition = 'transform 0.9s cubic-bezier(0.3, 0.9, 0.4, 1), opacity 0.7s ease';
             coverDiv.style.transform = 'perspective(600px) rotateX(25deg) translateY(40px)';
             coverDiv.style.opacity = '0';
@@ -487,14 +513,12 @@
                 albumContent.classList.remove('hidden');
                 albumContent.style.opacity = '0';
                 albumContent.style.transform = 'translateY(30px)';
-                // запуск рендера сетки
                 renderGallery();
                 
                 setTimeout(() => {
                     albumContent.style.transition = 'opacity 0.85s ease, transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.1)';
                     albumContent.style.opacity = '1';
                     albumContent.style.transform = 'translateY(0)';
-                    // дополнительная инициализация видео в галерее
                     const galleryVideos = document.querySelectorAll('#gallery video');
                     galleryVideos.forEach(v => {
                         v.muted = true;
@@ -504,10 +528,8 @@
             }, 700);
         }
         
-        // подготовка предзагрузки
         window.onload = () => {
-            console.log('✅ ТЕСТОВЫЙ РЕЖИМ: все фото → none.png, все видео → none.mp4');
-            // небольшая стилизация
+            console.log('✅ ТЕСТОВЫЙ РЕЖИМ: все фото → none.png, все видео → none.mp4 | КРУГЛЫЕ ЭЛЕМЕНТЫ ИСПРАВЛЕНЫ');
             const style = document.createElement('style');
             style.textContent = `
                 ::-webkit-scrollbar { width: 4px; }
