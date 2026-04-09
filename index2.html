@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Твоё путешествие</title>
+    <title>Её альбом | Путешествие</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&amp;family=Inter:opsz,wght@14..32,200;14..32,300;14..32,400;14..32,500;14..32,600&amp;display=swap');
@@ -132,7 +132,6 @@
             object-fit: cover;
         }
         
-        /* Стили для подписи и даты */
         .caption-text {
             font-family: 'Inter', sans-serif;
             font-size: 13px;
@@ -197,20 +196,6 @@
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-        }
-        
-        .test-badge {
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            background: rgba(255,42,109,0.8);
-            color: white;
-            font-size: 9px;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-family: monospace;
-            z-index: 2;
-            pointer-events: none;
         }
         
         .play-overlay {
@@ -297,7 +282,7 @@
         </div>
         <div class="relative inline-block">
             <h1 class="cover-title text-[58px] leading-[1.08] tracking-[-0.02em] font-black">
-                Твоё<br>путешествие
+                Путешествие
             </h1>
             <div class="absolute -top-4 -right-8 text-6xl text-[#ff2a6d] opacity-40">✦</div>
         </div>
@@ -453,7 +438,6 @@
         videoContainer.appendChild(video);
         container.appendChild(videoContainer);
         
-        // Добавляем подпись и дату в модалку
         const infoContainer = document.createElement('div');
         infoContainer.className = 'flex flex-col items-center mt-5 gap-2';
         
@@ -486,11 +470,9 @@
         container.innerHTML = `
             <div class="photo-frame-modern p-3 bg-[#1a1a1e] rounded-3xl border border-[#ff2a6d]/30">
                 <img src="${item.url}" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain" alt="large view" onerror="this.style.opacity='0.5'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1.2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.padding='40px';">
-                <div class="test-badge !bottom-auto !top-2 !right-2">\</div>
             </div>
         `;
         
-        // Добавляем подпись и дату под фото
         const infoContainer = document.createElement('div');
         infoContainer.className = 'flex flex-col items-center mt-5 gap-2';
         
@@ -578,7 +560,6 @@
             card.innerHTML = `
                 <div class="photo-frame-modern relative" style="transform: rotate(${rotate}deg); cursor: pointer;">
                     <img src="${item.url}" loading="lazy" class="w-full rounded-2xl aspect-[4/5] object-cover" alt="memory" onerror="this.style.opacity='0.4'; this.style.backgroundColor='#2a1a22'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='20%';">
-                    <div class="test-badge">🧪 TEST</div>
                     <div class="caption-wrapper">
                         <span class="caption-text">${escapeHtml(item.caption)}</span>
                         <span class="date-text">📅 ${escapeHtml(item.date)}</span>
@@ -599,7 +580,6 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="test-badge">🧪 TEST</div>
                     <div class="caption-wrapper">
                         <span class="caption-text">${escapeHtml(item.caption)}</span>
                         <span class="date-text">📅 ${escapeHtml(item.date)}</span>
@@ -625,7 +605,6 @@
                             <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none" />
                         </svg>
                     </div>
-                    <div class="test-badge">🧪 TEST</div>
                     <div class="caption-wrapper">
                         <span class="caption-text">${escapeHtml(item.caption)}</span>
                         <span class="date-text">📅 ${escapeHtml(item.date)}</span>
@@ -687,7 +666,7 @@
     }
 
     window.onload = () => {
-        console.log('✅ У каждого элемента есть и подпись, и дата');
+        console.log('✅ Альбом готов: у каждого элемента есть подпись и дата');
     };
 </script>
 </body>
