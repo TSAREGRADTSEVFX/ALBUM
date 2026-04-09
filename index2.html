@@ -104,9 +104,10 @@
             transition: all 0.2s ease;
         }
         
-        .circle-video-wrapper.active-sound {
-            box-shadow: 0 0 0 4px #ff2a6d, 0 0 0 16px rgba(255,42,109,0.6), 0 20px 35px -12px rgba(0,0,0,0.4);
+        .circle-video-wrapper.sound-playing {
+            box-shadow: 0 0 0 4px #ff2a6d, 0 0 0 16px rgba(255,42,109,0.7), 0 20px 35px -12px rgba(0,0,0,0.4);
             transform: scale(1.02);
+            transition: all 0.15s ease;
         }
         
         .circle-video-wrapper video {
@@ -145,6 +146,28 @@
             padding: 4px 12px;
             border-radius: 40px;
             backdrop-filter: blur(4px);
+        }
+        
+        .date-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 300;
+            color: #ff7eb3aa;
+            text-align: center;
+            margin-top: 6px;
+            letter-spacing: 0.5px;
+            background: rgba(0,0,0,0.3);
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            backdrop-filter: blur(2px);
+        }
+        
+        .caption-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
         }
         
         .modal-overlay {
@@ -214,16 +237,6 @@
         .circle-video-wrapper .play-overlay svg {
             width: 40px;
             height: 40px;
-        }
-        
-        /* Анимация пульсации */
-        @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 4px #ff2a6d, 0 0 0 8px rgba(255,42,109,0.4); }
-            100% { box-shadow: 0 0 0 4px #ff2a6d, 0 0 0 20px rgba(255,42,109,0); }
-        }
-        
-        .sound-pulse {
-            animation: pulse-ring 0.5s ease-out;
         }
     </style>
 </head>
@@ -311,27 +324,62 @@
 </div>
 
 <script>
-    // Медиатека с тестовыми файлами
-    const mediaItems = [
-        { type: "photo", url: "none.png", caption: "первый шаг" },
-        { type: "photo", url: "none.png", caption: "вдохновение" },
-        { type: "photo", url: "none.png", caption: "дорога" },
-        { type: "photo", url: "none.png", caption: "встречный ветер" },
-        { type: "photo", url: "none.png", caption: "новый горизонт" },
-        { type: "photo", url: "none.png", caption: "тишина в пути" },
-        { type: "photo", url: "none.png", caption: "момент истины" },
-        { type: "photo", url: "none.png", caption: "свет в конце" },
-        { type: "photo", url: "none.png", caption: "отражение" },
-        { type: "photo", url: "none.png", caption: "свобода" },
-        { type: "circle", url: "none.mp4", caption: "рассвет в пути" },
-        { type: "circle", url: "none.mp4", caption: "облака над дорогой" },
-        { type: "circle", url: "none.mp4", caption: "путь к мечте" },
-        { type: "circle", url: "none.mp4", caption: "эмоции попутчика" },
-        { type: "video", url: "none.mp4", caption: "кадры путешествия" },
-        { type: "video", url: "none.mp4", caption: "нежный миг в пути" },
-        { type: "video", url: "none.mp4", caption: "безмятежная дорога" },
-        { type: "video", url: "none.mp4", caption: "улыбка до горизонта" }
+    // Генерация случайной даты в формате ДД.ММ
+    function getRandomDate() {
+        const days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'];
+        const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+        const randomDay = days[Math.floor(Math.random() * days.length)];
+        const randomMonth = months[Math.floor(Math.random() * months.length)];
+        return `${randomDay}.${randomMonth}`;
+    }
+
+    // Базовые названия для фото/видео
+    const photoCaptions = [
+        "первый шаг", "вдохновение", "дорога", "встречный ветер", 
+        "новый горизонт", "тишина в пути", "момент истины", 
+        "свет в конце", "отражение", "свобода"
     ];
+    
+    const circleCaptions = [
+        "рассвет в пути", "облака над дорогой", "путь к мечте", "эмоции попутчика"
+    ];
+    
+    const videoCaptions = [
+        "кадры путешествия", "нежный миг в пути", "безмятежная дорога", "улыбка до горизонта"
+    ];
+    
+    // Создаем медиатеку с рандомными датами
+    const mediaItems = [];
+    
+    // Добавляем фото
+    for (let i = 0; i < 10; i++) {
+        mediaItems.push({
+            type: "photo",
+            url: "none.png",
+            caption: photoCaptions[i % photoCaptions.length],
+            date: getRandomDate()
+        });
+    }
+    
+    // Добавляем кружки
+    for (let i = 0; i < 4; i++) {
+        mediaItems.push({
+            type: "circle",
+            url: "none.mp4",
+            caption: circleCaptions[i % circleCaptions.length],
+            date: getRandomDate()
+        });
+    }
+    
+    // Добавляем видео
+    for (let i = 0; i < 4; i++) {
+        mediaItems.push({
+            type: "video",
+            url: "none.mp4",
+            caption: videoCaptions[i % videoCaptions.length],
+            date: getRandomDate()
+        });
+    }
 
     // Перемешивание массива
     function shuffle(arr) {
@@ -342,10 +390,11 @@
         return arr;
     }
 
-    // Запуск всех видео на странице (без звука)
+    // Запуск всех видео на странице (без звука, зацикленно)
     function playAllVideosMuted() {
         document.querySelectorAll('#gallery video').forEach(video => {
             video.muted = true;
+            video.loop = true;
             video.play().catch(e => console.log('auto-play muted failed:', e));
         });
     }
@@ -375,6 +424,7 @@
         video.autoplay = true;
         video.muted = false;
         video.playsInline = true;
+        video.loop = false;
         
         video.onerror = () => {
             video.style.backgroundColor = '#2a1a22';
@@ -384,12 +434,22 @@
         videoContainer.appendChild(video);
         container.appendChild(videoContainer);
         
+        // Добавляем подпись и дату в модалку
+        const infoContainer = document.createElement('div');
+        infoContainer.className = 'flex flex-col items-center mt-4 gap-1';
         if (item.caption) {
             const cap = document.createElement('div');
-            cap.className = 'text-center mt-5 text-[#ff7eb3] text-base bg-black/40 px-5 py-2 rounded-full';
+            cap.className = 'text-center text-[#ff7eb3] text-base bg-black/40 px-5 py-2 rounded-full';
             cap.innerText = item.caption;
-            container.appendChild(cap);
+            infoContainer.appendChild(cap);
         }
+        if (item.date) {
+            const dateEl = document.createElement('div');
+            dateEl.className = 'text-center text-[#ff7eb3aa] text-xs bg-black/30 px-4 py-1 rounded-full';
+            dateEl.innerText = item.date;
+            infoContainer.appendChild(dateEl);
+        }
+        container.appendChild(infoContainer);
         
         modalInner.appendChild(container);
         modal.classList.remove('hidden');
@@ -410,9 +470,26 @@
             <div class="photo-frame-modern p-3 bg-[#1a1a1e] rounded-3xl border border-[#ff2a6d]/30">
                 <img src="${item.url}" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain" alt="large view" onerror="this.style.opacity='0.5'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1.2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.padding='40px';">
                 <div class="test-badge !bottom-auto !top-2 !right-2">🧪 TEST</div>
-                ${item.caption ? `<div class="text-center mt-5 text-[#ff7eb3] text-base font-light italic">${escapeHtml(item.caption)}</div>` : ''}
             </div>
         `;
+        
+        // Добавляем подпись и дату под фото
+        const infoContainer = document.createElement('div');
+        infoContainer.className = 'flex flex-col items-center mt-4 gap-1';
+        if (item.caption) {
+            const cap = document.createElement('div');
+            cap.className = 'text-center text-[#ff7eb3] text-base bg-black/40 px-5 py-2 rounded-full';
+            cap.innerText = item.caption;
+            infoContainer.appendChild(cap);
+        }
+        if (item.date) {
+            const dateEl = document.createElement('div');
+            dateEl.className = 'text-center text-[#ff7eb3aa] text-xs bg-black/30 px-4 py-1 rounded-full';
+            dateEl.innerText = item.date;
+            infoContainer.appendChild(dateEl);
+        }
+        container.appendChild(infoContainer);
+        
         modalInner.appendChild(container);
         modal.classList.remove('hidden');
         modal.classList.add('flex');
@@ -436,6 +513,45 @@
         });
     }
 
+    // Обработчик клика по кружку: 1 раз со звуком, подсветка на время проигрывания
+    function setupCircleVideo(wrapper, video) {
+        let soundPlaying = false;
+        
+        function resetToMutedLoop() {
+            if (soundPlaying) {
+                soundPlaying = false;
+                wrapper.classList.remove('sound-playing');
+                video.muted = true;
+                video.loop = true;
+                video.currentTime = 0;
+                video.play().catch(e => console.log('reset play error:', e));
+            }
+        }
+        
+        video.addEventListener('ended', () => {
+            if (soundPlaying) {
+                resetToMutedLoop();
+            }
+        });
+        
+        wrapper.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (soundPlaying) return;
+            
+            video.pause();
+            video.muted = false;
+            video.loop = false;
+            video.currentTime = 0;
+            soundPlaying = true;
+            wrapper.classList.add('sound-playing');
+            
+            video.play().catch(err => {
+                console.log('sound play error:', err);
+                resetToMutedLoop();
+            });
+        });
+    }
+
     // Создание карточки
     function createCard(item, index) {
         const card = document.createElement('div');
@@ -448,13 +564,15 @@
                 <div class="photo-frame-modern relative" style="transform: rotate(${rotate}deg); cursor: pointer;">
                     <img src="${item.url}" loading="lazy" class="w-full rounded-2xl aspect-[4/5] object-cover" alt="memory" onerror="this.style.opacity='0.4'; this.style.backgroundColor='#2a1a22'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='20%';">
                     <div class="test-badge">🧪 TEST</div>
-                    ${item.caption ? `<div class="flex justify-center mt-3"><span class="caption-text">${escapeHtml(item.caption)}</span></div>` : ''}
+                    <div class="caption-wrapper">
+                        <span class="caption-text">${escapeHtml(item.caption)}</span>
+                        <span class="date-text">📅 ${escapeHtml(item.date)}</span>
+                    </div>
                 </div>
             `;
             card.querySelector('.photo-frame-modern').addEventListener('click', () => showPhotoModal(item));
         } 
         else if (item.type === 'circle') {
-            // Круглое видео с автовоспроизведением (без звука) и кликом для звука
             card.innerHTML = `
                 <div class="relative">
                     <div class="circle-video-wrapper">
@@ -467,41 +585,22 @@
                         </div>
                     </div>
                     <div class="test-badge">🧪 TEST</div>
-                    ${item.caption ? `<div class="flex justify-center mt-2"><span class="caption-text">${escapeHtml(item.caption)}</span></div>` : ''}
+                    <div class="caption-wrapper">
+                        <span class="caption-text">${escapeHtml(item.caption)}</span>
+                        <span class="date-text">📅 ${escapeHtml(item.date)}</span>
+                    </div>
                 </div>
             `;
             
             const wrapper = card.querySelector('.circle-video-wrapper');
             const video = card.querySelector('video');
             
-            // Запускаем видео без звука
             video.muted = true;
+            video.loop = true;
             video.play().catch(e => console.log('circle autoplay:', e));
-            
-            // Клик: включаем звук, перезапускаем, добавляем анимацию
-            wrapper.addEventListener('click', (e) => {
-                e.stopPropagation();
-                // Добавляем визуальный эффект
-                wrapper.classList.add('active-sound', 'sound-pulse');
-                setTimeout(() => {
-                    wrapper.classList.remove('active-sound', 'sound-pulse');
-                }, 500);
-                
-                // Включаем звук и перезапускаем
-                video.muted = false;
-                video.currentTime = 0;
-                video.play().catch(e => console.log('sound play error:', e));
-                
-                // Через 5 секунд возвращаем в беззвучный режим
-                setTimeout(() => {
-                    if (video && !video.paused) {
-                        video.muted = true;
-                    }
-                }, 5000);
-            });
+            setupCircleVideo(wrapper, video);
         } 
         else if (item.type === 'video') {
-            // Полноэкранное видео с автовоспроизведением без звука, клик -> модалка
             card.innerHTML = `
                 <div class="full-video-wrapper">
                     <video src="${item.url}" muted loop playsinline preload="auto" class="full-video"></video>
@@ -512,12 +611,16 @@
                         </svg>
                     </div>
                     <div class="test-badge">🧪 TEST</div>
-                    ${item.caption ? `<div class="flex justify-center mt-2"><span class="caption-text">${escapeHtml(item.caption)}</span></div>` : ''}
+                    <div class="caption-wrapper">
+                        <span class="caption-text">${escapeHtml(item.caption)}</span>
+                        <span class="date-text">📅 ${escapeHtml(item.date)}</span>
+                    </div>
                 </div>
             `;
             
             const video = card.querySelector('video');
             video.muted = true;
+            video.loop = true;
             video.play().catch(e => console.log('video autoplay:', e));
             
             const wrapper = card.querySelector('.full-video-wrapper');
@@ -540,7 +643,6 @@
             gallery.appendChild(card);
         });
         
-        // Запускаем все видео после рендера
         setTimeout(() => {
             playAllVideosMuted();
         }, 100);
@@ -570,7 +672,7 @@
     }
 
     window.onload = () => {
-        console.log('✅ Альбом загружен: кружочки и видео играют без звука автоматически');
+        console.log('✅ Альбом загружен: у каждого элемента есть случайная дата');
     };
 </script>
 </body>
