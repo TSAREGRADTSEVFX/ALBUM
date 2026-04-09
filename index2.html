@@ -8,7 +8,7 @@
     <title>Путешествие</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&amp;family=Inter:opsz,wght@14..32,200;14..32,300;14..32,400;14..32,500&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&amp;family=Inter:opsz,wght@14..32,200;14..32,300;14..32,400;14..32,500;14..32,600&amp;display=swap');
         
         * {
             margin: 0;
@@ -17,49 +17,64 @@
         }
         
         :root {
-            --rose-dust: #f9e7f3;
-            --blush: #ffb7cf;
-            --deep-rose: #d43f7a;
-            --charcoal: #2e2a2c;
-            --paper: #fffafd;
+            --dark-bg: #0a0a0c;
+            --black-rose: #111014;
+            --rose-neon: #ff2a6d;
+            --rose-soft: #ff7eb3;
+            --dark-pink: #b91c5c;
+            --charcoal-rose: #1e1a1f;
         }
         
         body {
-            background: linear-gradient(145deg, #fff3f8 0%, #ffeef4 100%);
+            background: var(--dark-bg);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
         }
         
-        /* новая изысканная обложка */
+        /* черно-розовый градиент для бэкграунда */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(255, 42, 109, 0.12) 0%, rgba(10, 10, 12, 0.98) 80%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* новая обложка в черно-розовой стилистике */
         .cover-card {
-            background: rgba(255, 250, 253, 0.96);
-            backdrop-filter: blur(2px);
+            background: rgba(17, 16, 20, 0.92);
+            backdrop-filter: blur(12px);
             border-radius: 48px;
-            box-shadow: 0 30px 50px -25px rgba(180, 60, 110, 0.25),
-                        0 0 0 1px rgba(255, 200, 220, 0.7),
-                        inset 0 1px 4px rgba(255,255,240,0.8);
+            box-shadow: 0 30px 50px -25px rgba(255, 42, 109, 0.35),
+                        0 0 0 1px rgba(255, 42, 109, 0.4),
+                        inset 0 1px 4px rgba(255, 255, 240, 0.05);
             transition: all 0.5s ease;
+            border: 1px solid rgba(255, 42, 109, 0.3);
         }
         
         .signature-line {
-            background: linear-gradient(90deg, transparent, var(--blush), var(--deep-rose), var(--blush), transparent);
+            background: linear-gradient(90deg, transparent, var(--rose-neon), var(--rose-soft), var(--rose-neon), transparent);
             height: 1px;
             width: 120px;
             margin: 0 auto;
         }
         
         .pearl-button {
-            background: var(--charcoal);
+            background: var(--rose-neon);
             transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: 0 6px 14px rgba(0,0,0,0.08), 0 0 0 1px rgba(255,210,225,0.5);
+            box-shadow: 0 6px 20px rgba(255, 42, 109, 0.3);
         }
         
         .pearl-button:hover {
-            background: var(--deep-rose);
+            background: #ff4d82;
             transform: scale(0.97);
-            box-shadow: 0 10px 20px -5px rgba(212, 63, 122, 0.4);
+            box-shadow: 0 10px 25px rgba(255, 42, 109, 0.5);
         }
         
         .gallery-grid {
@@ -67,6 +82,8 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 28px 20px;
             padding-bottom: 30px;
+            position: relative;
+            z-index: 2;
         }
         
         @media (max-width: 450px) {
@@ -85,28 +102,29 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* стили фото-рамки */
+        /* стили фото-рамки в темной теме */
         .photo-frame-modern {
-            background: #ffffff;
+            background: #1a1a1e;
             padding: 10px 10px 14px 10px;
             border-radius: 24px;
-            box-shadow: 0 15px 30px -12px rgba(0,0,0,0.15), 
-                        0 1px 2px rgba(0,0,0,0.02),
-                        inset 0 0 0 1px #ffffffcc;
+            box-shadow: 0 15px 30px -12px rgba(0,0,0,0.5), 
+                        0 1px 2px rgba(255,42,109,0.1),
+                        inset 0 0 0 1px rgba(255,42,109,0.2);
             transition: all 0.25s ease;
         }
         
         .photo-frame-modern:hover {
             transform: translateY(-5px);
-            box-shadow: 0 25px 35px -16px rgba(110, 40, 70, 0.25);
+            box-shadow: 0 25px 35px -16px rgba(255, 42, 109, 0.3);
+            border-color: rgba(255, 42, 109, 0.5);
         }
         
-        /* ИСПРАВЛЕНИЕ: идеально круглые элементы без квадратных углов */
+        /* идеально круглые элементы */
         .circle-video-item {
             position: relative;
             border-radius: 9999px !important;
-            background: #fff;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2), 0 0 0 6px #fff, 0 0 0 10px #ffb0c8;
+            background: #1a1a1e;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4), 0 0 0 4px #ff2a6d, 0 0 0 8px rgba(255,42,109,0.2);
             overflow: hidden;
             aspect-ratio: 1 / 1;
         }
@@ -122,8 +140,8 @@
         .full-video-item {
             position: relative;
             border-radius: 28px;
-            background: #fff;
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.2), 0 0 0 5px #fff, 0 0 0 9px #ffb0c8;
+            background: #1a1a1e;
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.4), 0 0 0 3px #ff2a6d, 0 0 0 7px rgba(255,42,109,0.15);
             overflow: hidden;
         }
         
@@ -131,60 +149,68 @@
             font-family: 'Inter', sans-serif;
             font-size: 13px;
             font-weight: 400;
-            color: #a13e63;
+            color: #ff7eb3;
             text-align: center;
             margin-top: 12px;
             letter-spacing: -0.2px;
-            font-style: normal;
-            background: rgba(255,245,245,0.6);
+            background: rgba(0,0,0,0.5);
             display: inline-block;
             padding: 4px 12px;
             border-radius: 40px;
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(4px);
         }
         
         .modal-overlay {
-            background: rgba(25, 10, 20, 0.94);
-            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.96);
+            backdrop-filter: blur(16px);
         }
         
-        /* мягкое сияние */
-        .soft-glow {
+        /* китайский фон для альбома (карта, иероглифы, путешествие) */
+        .album-bg {
             position: fixed;
-            width: 80vw;
-            height: 80vw;
-            background: radial-gradient(circle, rgba(255,160,190,0.2) 0%, rgba(255,210,225,0) 70%);
-            top: -20%;
-            left: -20%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
             z-index: 0;
+            opacity: 0.35;
         }
         
-        .soft-glow-right {
-            left: auto;
-            right: -20%;
-            top: auto;
-            bottom: -10%;
-            background: radial-gradient(circle, rgba(212,63,122,0.1) 0%, rgba(255,210,225,0) 70%);
+        .album-bg svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
-        /* типографика обложки */
+        /* дополнительная текстура */
+        .noise-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjUiIG51bU9jdGF2ZXM9IjMiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZikiIG9wYWNpdHk9IjAuMDYiLz48L3N2Zz4=');
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.3;
+        }
+        
         .cover-title {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             letter-spacing: -2px;
-            background: linear-gradient(135deg, #2c1a24, #5c2e46);
+            background: linear-gradient(135deg, #ff7eb3, #ff2a6d);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
         }
-
-        /* Стиль для заглушек */
+        
         .test-badge {
             position: absolute;
             bottom: 8px;
             right: 8px;
-            background: rgba(0,0,0,0.6);
+            background: rgba(255,42,109,0.8);
             color: white;
             font-size: 9px;
             padding: 2px 8px;
@@ -195,49 +221,99 @@
             pointer-events: none;
         }
         
-        /* дополнительный фикс для круглых контейнеров */
-        .rounded-full-fix {
-            border-radius: 9999px !important;
-            overflow: hidden !important;
+        /* стили для текста на обложке */
+        .cover-sub {
+            color: #ff7eb3;
+        }
+        
+        .cover-quote {
+            color: #ff7eb3cc;
+        }
+        
+        /* контейнер альбома с относительным позиционированием */
+        #album-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* фон для модалки */
+        .modal-content-custom {
+            background: #0f0f12;
+            border: 1px solid #ff2a6d;
         }
     </style>
 </head>
 <body class="relative flex flex-col items-center justify-start">
 
-    <div class="soft-glow"></div>
-    <div class="soft-glow soft-glow-right"></div>
+    <!-- Китайский фон для альбома (карта, иероглифы, путь) -->
+    <div class="album-bg">
+        <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <linearGradient id="chinaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ff2a6d" stop-opacity="0.15"/>
+                    <stop offset="50%" stop-color="#1a0a15" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#ff2a6d" stop-opacity="0.1"/>
+                </linearGradient>
+                <pattern id="chinesePattern" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+                    <path d="M40 0 L50 20 L70 25 L55 40 L60 60 L40 50 L20 60 L25 40 L10 25 L30 20 Z" fill="none" stroke="#ff2a6d" stroke-width="0.8" opacity="0.25"/>
+                    <circle cx="40" cy="40" r="3" fill="#ff7eb3" opacity="0.2"/>
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#chinaGrad)"/>
+            <rect width="100%" height="100%" fill="url(#chinesePattern)"/>
+            
+            <!-- Силуэт карты Китая (стилизованный) -->
+            <path d="M300,150 L400,120 L520,140 L600,110 L700,130 L780,100 L850,120 L920,110 L980,130 L1020,160 L1050,200 L1080,250 L1100,310 L1120,380 L1130,450 L1110,520 L1080,580 L1040,630 L980,670 L900,700 L820,720 L740,730 L660,740 L580,735 L500,720 L420,700 L350,670 L300,630 L260,580 L230,520 L210,450 L200,380 L210,310 L230,250 L260,200 L300,150Z" 
+                  fill="none" stroke="#ff2a6d" stroke-width="1.5" stroke-opacity="0.3" stroke-dasharray="8 4"/>
+            
+            <!-- Маршрут путешествия (нить пути) -->
+            <path d="M350,200 C450,180 520,250 600,220 C680,190 750,280 820,260 C890,240 950,320 1000,350" 
+                  fill="none" stroke="#ff7eb3" stroke-width="2" stroke-opacity="0.5" stroke-dasharray="6 6"/>
+            <circle cx="350" cy="200" r="5" fill="#ff2a6d" opacity="0.7"/>
+            <circle cx="1000" cy="350" r="5" fill="#ff2a6d" opacity="0.7"/>
+            
+            <!-- Иероглифы (стилизованные символы) -->
+            <text x="450" y="300" font-family="serif" font-size="32" fill="#ff7eb3" opacity="0.25">旅</text>
+            <text x="650" y="400" font-family="serif" font-size="38" fill="#ff7eb3" opacity="0.2">行</text>
+            <text x="800" y="280" font-family="serif" font-size="28" fill="#ff2a6d" opacity="0.3">夢</text>
+            <text x="280" y="450" font-family="serif" font-size="34" fill="#ff7eb3" opacity="0.2">道</text>
+            <text x="900" y="550" font-family="serif" font-size="30" fill="#ff2a6d" opacity="0.25">路</text>
+            <text x="520" y="600" font-family="serif" font-size="26" fill="#ff7eb3" opacity="0.2">心</text>
+            
+            <!-- декоративные волны / облака в китайском стиле -->
+            <path d="M100,600 Q150,580 200,600 Q250,620 300,600" fill="none" stroke="#ff2a6d" stroke-width="1" opacity="0.2"/>
+            <path d="M850,650 Q900,630 950,650 Q1000,670 1050,650" fill="none" stroke="#ff2a6d" stroke-width="1" opacity="0.2"/>
+            <path d="M150,250 Q200,230 250,250" fill="none" stroke="#ff7eb3" stroke-width="1" opacity="0.2"/>
+        </svg>
+    </div>
+    <div class="noise-texture"></div>
 
-    <!-- НОВАЯ ОБЛОЖКА – "Твое путешествие" -->
-    <div id="cover" class="relative z-10 w-full max-w-[440px] mx-auto px-5 mt-12 md:mt-16">
+    <!-- НОВАЯ ОБЛОЖКА – "Твое путешествие" в черно-розовом -->
+    <div id="cover" class="relative z-20 w-full max-w-[440px] mx-auto px-5 mt-12 md:mt-16">
         <div class="cover-card px-8 py-12 text-center">
-            <!-- декоративный элемент: две нежные линии и точка -->
             <div class="flex justify-center items-center gap-3 mb-7">
-                <div class="w-12 h-px bg-gradient-to-r from-transparent to-[#e27b9e]"></div>
-                <div class="w-1.5 h-1.5 rounded-full bg-[#e27b9e] opacity-70"></div>
-                <div class="w-12 h-px bg-gradient-to-l from-transparent to-[#e27b9e]"></div>
+                <div class="w-12 h-px bg-gradient-to-r from-transparent to-[#ff2a6d]"></div>
+                <div class="w-1.5 h-1.5 rounded-full bg-[#ff2a6d] opacity-80"></div>
+                <div class="w-12 h-px bg-gradient-to-l from-transparent to-[#ff2a6d]"></div>
             </div>
             
-            <!-- главный заголовок: Твое путешествие -->
             <div class="relative inline-block">
                 <h1 class="cover-title text-[58px] leading-[1.08] tracking-[-0.02em] font-black">
                     Твоё<br>путешествие
                 </h1>
-                <div class="absolute -top-4 -right-8 text-6xl text-[#ffb7cf] opacity-40">✦</div>
+                <div class="absolute -top-4 -right-8 text-6xl text-[#ff2a6d] opacity-40">✦</div>
             </div>
             
-            <p class="text-[#a5446b] text-[17px] font-light mt-4 tracking-wide italic">
+            <p class="cover-sub text-[17px] font-light mt-4 tracking-wide italic">
                 альбом дороги и открытий
             </p>
             
-            <!-- нежный разделитель -->
             <div class="signature-line my-8"></div>
             
-            <!-- подпись / цитата - новая, вдохновляющая -->
-            <p class="text-[#6b3e50] text-[13px] font-light max-w-[240px] mx-auto leading-relaxed">
+            <p class="cover-quote text-[13px] font-light max-w-[240px] mx-auto leading-relaxed">
                 «каждый шаг — это новая глава»
             </p>
             
-            <!-- кнопка, которая плавно открывает альбом -->
             <button onclick="openAlbum()" 
                     class="pearl-button mt-12 w-full py-5 text-white rounded-2xl text-lg font-medium tracking-wide flex items-center justify-center gap-2 transition-all active:scale-95">
                 <span>открыть альбом</span>
@@ -247,32 +323,32 @@
                 </svg>
             </button>
             
-            <div class="mt-10 text-[11px] text-[#c07b97]/40 font-mono tracking-widest">
+            <div class="mt-10 text-[11px] text-[#ff7eb3]/40 font-mono tracking-widest">
                 ✦ для неё одной ✦
             </div>
         </div>
     </div>
 
-    <!-- ГАЛЕРЕЯ (скрыта изначально) -->
+    <!-- ГАЛЕРЕЯ -->
     <div id="album-content" class="hidden max-w-[500px] w-full mx-auto px-5 mt-6 z-10 relative">
         <div class="flex justify-center mb-3">
-            <div class="bg-white/60 backdrop-blur-sm rounded-full px-5 py-1.5 text-[#b45a7a] text-sm font-medium shadow-sm">
+            <div class="bg-black/50 backdrop-blur-md rounded-full px-5 py-1.5 text-[#ff7eb3] text-sm font-medium shadow-sm border border-[#ff2a6d]/30">
                 ♡  моменты пути  ♡
             </div>
         </div>
         <div id="gallery" class="gallery-grid"></div>
     </div>
 
-    <div class="text-center mt-6 pb-8 text-[#c07b97]/40 text-[10px] tracking-wider font-light">
+    <div class="text-center mt-6 pb-8 text-[#ff7eb3]/30 text-[10px] tracking-wider font-light relative z-10">
         создано с бесконечной нежностью
     </div>
 
-    <!-- Модальное окно увеличенного просмотра -->
+    <!-- Модальное окно -->
     <div id="modal" onclick="if(event.target.id === 'modal') closeModal()" 
          class="hidden fixed inset-0 z-[200] modal-overlay flex items-center justify-center p-5 transition-all duration-300">
-        <div id="modal-content" class="max-w-[90%] w-full max-h-[85vh] bg-white/95 rounded-[44px] overflow-hidden shadow-2xl border border-white/50 backdrop-blur-sm">
+        <div id="modal-content" class="max-w-[90%] w-full max-h-[85vh] bg-[#0f0f12] rounded-[44px] overflow-hidden shadow-2xl border border-[#ff2a6d]/50 backdrop-blur-sm">
             <button onclick="closeModal()" 
-                    class="absolute -top-3 -right-3 w-11 h-11 bg-white shadow-xl text-[#5c2e46] rounded-full flex items-center justify-center text-2xl font-bold z-50 active:scale-90 hover:bg-gray-100 transition">
+                    class="absolute -top-3 -right-3 w-11 h-11 bg-[#ff2a6d] shadow-xl text-white rounded-full flex items-center justify-center text-2xl font-bold z-50 active:scale-90 hover:bg-[#ff4d82] transition">
                 ✕
             </button>
             <div id="modal-inner" class="p-5 flex flex-col items-center justify-center"></div>
@@ -281,13 +357,11 @@
 
     <script>
         // --------------------------------------------------------------
-        // ТЕСТОВЫЙ РЕЖИМ: все фото заменены на "none.png", 
-        // все видео и кружочки заменены на "none.mp4"
-        // ИСПРАВЛЕНЫ КРУГЛЫЕ УГЛЫ для элементов type "circle"
+        // ТЕСТОВЫЙ РЕЖИМ: none.png / none.mp4
+        // Черно-розовый стиль + китайский фон с картой и иероглифами
         // --------------------------------------------------------------
         
         const mediaLibrary = [
-            // Фотографии — все используют none.png
             { type: "photo", url: "none.png", caption: "первый шаг" },
             { type: "photo", url: "none.png", caption: "вдохновение" },
             { type: "photo", url: "none.png", caption: "дорога" },
@@ -299,20 +373,17 @@
             { type: "photo", url: "none.png", caption: "отражение" },
             { type: "photo", url: "none.png", caption: "свобода" },
             
-            // Круглые видео (все заменены на none.mp4) — теперь идеально круглые!
             { type: "circle", url: "none.mp4", caption: "рассвет в пути" },
             { type: "circle", url: "none.mp4", caption: "облака над дорогой" },
             { type: "circle", url: "none.mp4", caption: "путь к мечте" },
             { type: "circle", url: "none.mp4", caption: "эмоции попутчика" },
             
-            // Полноразмерные вертикальные видео (тоже none.mp4)
             { type: "video", url: "none.mp4", caption: "кадры путешествия" },
             { type: "video", url: "none.mp4", caption: "нежный миг в пути" },
             { type: "video", url: "none.mp4", caption: "безмятежная дорога" },
             { type: "video", url: "none.mp4", caption: "улыбка до горизонта" }
         ];
         
-        // Функция перемешивания (рандомный порядок)
         function shuffleArray(arr) {
             for (let i = arr.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -321,7 +392,16 @@
             return arr;
         }
         
-        // Создание DOM-элемента для сетки с полным исправлением круглых углов
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
         function createMediaCard(item, idx) {
             const card = document.createElement('div');
             card.className = `item cursor-pointer transform transition-all duration-300 hover:z-10 relative`;
@@ -331,15 +411,13 @@
                 const rotateVal = (Math.random() * 3 - 1.5).toFixed(1);
                 card.innerHTML = `
                     <div class="photo-frame-modern relative" style="transform: rotate(${rotateVal}deg);">
-                        <img src="${item.url}" loading="lazy" class="w-full rounded-2xl aspect-[4/5] object-cover" alt="memory" onerror="this.style.opacity='0.3'; this.style.backgroundColor='#f0dde5'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23d43f7a\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='20%';">
+                        <img src="${item.url}" loading="lazy" class="w-full rounded-2xl aspect-[4/5] object-cover" alt="memory" onerror="this.style.opacity='0.4'; this.style.backgroundColor='#2a1a22'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='20%';">
                         <div class="test-badge">🧪 TEST</div>
                         ${item.caption ? `<div class="flex justify-center mt-3"><span class="caption-text text-[12px]">${escapeHtml(item.caption)}</span></div>` : ''}
                     </div>
                 `;
             } 
             else if (item.type === "circle") {
-                // КРУГЛЫЙ ЭЛЕМЕНТ - исправлено: применяем принудительный border-radius и overflow hidden
-                // Дополнительно оборачиваем в контейнер с жесткими стилями, чтобы видео/заглушка не вылезали за границы
                 card.innerHTML = `
                     <div class="relative">
                         <div class="circle-video-item w-full overflow-hidden rounded-full" style="border-radius: 9999px !important; overflow: hidden !important;">
@@ -347,8 +425,8 @@
                                    class="w-full h-full object-cover rounded-full"
                                    style="border-radius: 9999px !important;"
                                    muted loop playsinline preload="metadata"
-                                   onerror="this.style.backgroundColor='#f5e2ec'; this.poster='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23d43f7a\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Ccircle cx=\'12\' cy=\'12\' r=\'10\'/%3E%3Cpolygon points=\'10 8 16 12 10 16 10 8\' fill=\'%23d43f7a\' fill-opacity=\'0.3\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.borderRadius='9999px';"></video>
-                            <div class="absolute inset-0 flex items-center justify-center bg-black/20 rounded-full backdrop-blur-[1px] transition group-hover:bg-black/30" style="border-radius: 9999px;">
+                                   onerror="this.style.backgroundColor='#2a1a22'; this.poster='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Ccircle cx=\'12\' cy=\'12\' r=\'10\'/%3E%3Cpolygon points=\'10 8 16 12 10 16 10 8\' fill=\'%23ff2a6d\' fill-opacity=\'0.3\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.borderRadius='9999px';"></video>
+                            <div class="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full backdrop-blur-[1px] transition group-hover:bg-black/50" style="border-radius: 9999px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 4.01V8" />
@@ -366,8 +444,8 @@
                         <video src="${item.url}" 
                                class="w-full h-full object-cover"
                                muted loop playsinline preload="metadata"
-                               onerror="this.style.backgroundColor='#f5e2ec'; this.poster='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23d43f7a\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='10%';"></video>
-                        <div class="absolute inset-0 flex items-center justify-center bg-black/25 transition group-hover:bg-black/35">
+                               onerror="this.style.backgroundColor='#2a1a22'; this.poster='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='10%';"></video>
+                        <div class="absolute inset-0 flex items-center justify-center bg-black/35 transition group-hover:bg-black/45">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white drop-shadow-xl" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z" />
                                 <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none" />
@@ -379,23 +457,11 @@
                 `;
             }
             
-            // клик по карточке — показать модалку
             card.addEventListener('click', (e) => {
                 e.stopPropagation();
                 showModal(item);
             });
             return card;
-        }
-        
-        // простой экранинг
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
         }
         
         let currentVideoElement = null;
@@ -409,10 +475,10 @@
                 const containerDiv = document.createElement('div');
                 containerDiv.className = "flex flex-col items-center relative";
                 containerDiv.innerHTML = `
-                    <div class="photo-frame-modern p-3 bg-white rounded-3xl relative">
-                        <img src="${item.url}" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain" alt="large view" onerror="this.style.opacity='0.5'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23d43f7a\' stroke-width=\'1.2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.padding='40px'; this.style.boxSizing='border-box';">
+                    <div class="photo-frame-modern p-3 bg-[#1a1a1e] rounded-3xl relative border border-[#ff2a6d]/30">
+                        <img src="${item.url}" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain" alt="large view" onerror="this.style.opacity='0.5'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1.2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.padding='40px'; this.style.boxSizing='border-box';">
                         <div class="test-badge !bottom-auto !top-2 !right-2">🧪 TEST</div>
-                        ${item.caption ? `<div class="text-center mt-5 text-[#b0456b] text-base font-light italic">${escapeHtml(item.caption)}</div>` : ''}
+                        ${item.caption ? `<div class="text-center mt-5 text-[#ff7eb3] text-base font-light italic">${escapeHtml(item.caption)}</div>` : ''}
                     </div>
                 `;
                 modalInner.appendChild(containerDiv);
@@ -440,14 +506,13 @@
                 video.playsInline = true;
                 video.loop = false;
                 video.onerror = function() {
-                    this.style.backgroundColor = '#f0dde5';
-                    this.poster = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%23d43f7a' stroke-width='1'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolygon points='10 8 16 12 10 16 10 8' fill='%23d43f7a' fill-opacity='0.3'/%3E%3C/svg%3E";
+                    this.style.backgroundColor = '#2a1a22';
+                    this.poster = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%23ff2a6d' stroke-width='1'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolygon points='10 8 16 12 10 16 10 8' fill='%23ff2a6d' fill-opacity='0.3'/%3E%3C/svg%3E";
                 };
                 
                 videoContainer.appendChild(video);
                 wrapper.appendChild(videoContainer);
                 
-                // добавляем метку теста в модалку
                 const testLabel = document.createElement('div');
                 testLabel.className = "test-badge !top-2 !right-2 !bottom-auto absolute z-10";
                 testLabel.innerText = "🧪 TEST";
@@ -455,13 +520,13 @@
                 
                 if (item.caption) {
                     const cap = document.createElement('div');
-                    cap.className = "text-center mt-5 text-[#c26e8a] text-base bg-white/60 px-5 py-2 rounded-full";
+                    cap.className = "text-center mt-5 text-[#ff7eb3] text-base bg-black/40 px-5 py-2 rounded-full";
                     cap.innerText = item.caption;
                     wrapper.appendChild(cap);
                 }
                 modalInner.appendChild(wrapper);
                 currentVideoElement = video;
-                video.play().catch(e => console.log("автоплей заблокирован (тестовый режим)", e));
+                video.play().catch(e => console.log("автоплей заблокирован", e));
             }
             
             modal.classList.remove('hidden');
@@ -488,7 +553,6 @@
                 const card = createMediaCard(item, index);
                 container.appendChild(card);
             });
-            // активируем hover-эффекты для видео
             const allVideos = document.querySelectorAll('#gallery video');
             allVideos.forEach(vid => {
                 vid.addEventListener('mouseenter', () => {
@@ -529,12 +593,12 @@
         }
         
         window.onload = () => {
-            console.log('✅ ТЕСТОВЫЙ РЕЖИМ: все фото → none.png, все видео → none.mp4 | КРУГЛЫЕ ЭЛЕМЕНТЫ ИСПРАВЛЕНЫ');
+            console.log('✅ Черно-розовый стиль + китайский фон с картой и иероглифами');
             const style = document.createElement('style');
             style.textContent = `
                 ::-webkit-scrollbar { width: 4px; }
-                ::-webkit-scrollbar-track { background: #ffe2ed; border-radius: 10px; }
-                ::-webkit-scrollbar-thumb { background: #e67a9e; border-radius: 10px; }
+                ::-webkit-scrollbar-track { background: #1a1a1e; border-radius: 10px; }
+                ::-webkit-scrollbar-thumb { background: #ff2a6d; border-radius: 10px; }
             `;
             document.head.appendChild(style);
         };
