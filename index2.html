@@ -92,7 +92,6 @@
             box-shadow: 0 25px 35px -16px rgba(255, 42, 109, 0.3);
         }
         
-        /* Круглый контейнер для видео */
         .circle-video-wrapper {
             position: relative;
             border-radius: 50%;
@@ -117,7 +116,6 @@
             border-radius: 50%;
         }
         
-        /* Полноэкранный видео-контейнер */
         .full-video-wrapper {
             position: relative;
             border-radius: 28px;
@@ -134,13 +132,13 @@
             object-fit: cover;
         }
         
+        /* Стили для подписи и даты */
         .caption-text {
             font-family: 'Inter', sans-serif;
             font-size: 13px;
-            font-weight: 400;
+            font-weight: 500;
             color: #ff7eb3;
             text-align: center;
-            margin-top: 12px;
             background: rgba(0,0,0,0.5);
             display: inline-block;
             padding: 4px 12px;
@@ -152,9 +150,8 @@
             font-family: 'Inter', sans-serif;
             font-size: 11px;
             font-weight: 300;
-            color: #ff7eb3aa;
+            color: #ff7eb3cc;
             text-align: center;
-            margin-top: 6px;
             letter-spacing: 0.5px;
             background: rgba(0,0,0,0.3);
             display: inline-block;
@@ -168,6 +165,7 @@
             flex-direction: column;
             align-items: center;
             margin-top: 10px;
+            gap: 4px;
         }
         
         .modal-overlay {
@@ -175,7 +173,6 @@
             backdrop-filter: blur(16px);
         }
         
-        /* Китайский фон */
         .china-bg {
             position: fixed;
             top: 0;
@@ -237,6 +234,26 @@
         .circle-video-wrapper .play-overlay svg {
             width: 40px;
             height: 40px;
+        }
+        
+        .modal-caption {
+            text-align: center;
+            color: #ff7eb3;
+            font-size: 18px;
+            font-weight: 500;
+            background: rgba(0,0,0,0.5);
+            padding: 8px 20px;
+            border-radius: 40px;
+            margin-bottom: 8px;
+        }
+        
+        .modal-date {
+            text-align: center;
+            color: #ff7eb3cc;
+            font-size: 14px;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 16px;
+            border-radius: 30px;
         }
     </style>
 </head>
@@ -312,7 +329,7 @@
     создано с бесконечной нежностью
 </div>
 
-<!-- Модальное окно для видео -->
+<!-- Модальное окно -->
 <div id="modal" onclick="if(event.target.id === 'modal') closeModal()" 
      class="hidden fixed inset-0 z-[200] modal-overlay flex items-center justify-center p-5">
     <div class="max-w-[90%] w-full max-h-[85vh] bg-[#0f0f12] rounded-[44px] overflow-hidden shadow-2xl border border-[#ff2a6d]/50">
@@ -333,25 +350,27 @@
         return `${randomDay}.${randomMonth}`;
     }
 
-    // Базовые названия для фото/видео
+    // Список подписей для фото
     const photoCaptions = [
         "первый шаг", "вдохновение", "дорога", "встречный ветер", 
         "новый горизонт", "тишина в пути", "момент истины", 
         "свет в конце", "отражение", "свобода"
     ];
     
+    // Список подписей для кружков
     const circleCaptions = [
         "рассвет в пути", "облака над дорогой", "путь к мечте", "эмоции попутчика"
     ];
     
+    // Список подписей для видео
     const videoCaptions = [
         "кадры путешествия", "нежный миг в пути", "безмятежная дорога", "улыбка до горизонта"
     ];
     
-    // Создаем медиатеку с рандомными датами
+    // Создаем медиатеку с подписью и датой для КАЖДОГО элемента
     const mediaItems = [];
     
-    // Добавляем фото
+    // Фото (10 штук)
     for (let i = 0; i < 10; i++) {
         mediaItems.push({
             type: "photo",
@@ -361,7 +380,7 @@
         });
     }
     
-    // Добавляем кружки
+    // Кружки (4 штуки)
     for (let i = 0; i < 4; i++) {
         mediaItems.push({
             type: "circle",
@@ -371,7 +390,7 @@
         });
     }
     
-    // Добавляем видео
+    // Видео (4 штуки)
     for (let i = 0; i < 4; i++) {
         mediaItems.push({
             type: "video",
@@ -399,7 +418,7 @@
         });
     }
 
-    // Показать модальное окно с видео (полноэкранный режим)
+    // Показать модальное окно с видео
     function showVideoModal(item) {
         const modal = document.getElementById('modal');
         const modalInner = document.getElementById('modal-inner');
@@ -436,21 +455,19 @@
         
         // Добавляем подпись и дату в модалку
         const infoContainer = document.createElement('div');
-        infoContainer.className = 'flex flex-col items-center mt-4 gap-1';
-        if (item.caption) {
-            const cap = document.createElement('div');
-            cap.className = 'text-center text-[#ff7eb3] text-base bg-black/40 px-5 py-2 rounded-full';
-            cap.innerText = item.caption;
-            infoContainer.appendChild(cap);
-        }
-        if (item.date) {
-            const dateEl = document.createElement('div');
-            dateEl.className = 'text-center text-[#ff7eb3aa] text-xs bg-black/30 px-4 py-1 rounded-full';
-            dateEl.innerText = item.date;
-            infoContainer.appendChild(dateEl);
-        }
-        container.appendChild(infoContainer);
+        infoContainer.className = 'flex flex-col items-center mt-5 gap-2';
         
+        const captionEl = document.createElement('div');
+        captionEl.className = 'modal-caption';
+        captionEl.innerText = item.caption;
+        infoContainer.appendChild(captionEl);
+        
+        const dateEl = document.createElement('div');
+        dateEl.className = 'modal-date';
+        dateEl.innerText = `📅 ${item.date}`;
+        infoContainer.appendChild(dateEl);
+        
+        container.appendChild(infoContainer);
         modalInner.appendChild(container);
         modal.classList.remove('hidden');
         modal.classList.add('flex');
@@ -475,21 +492,19 @@
         
         // Добавляем подпись и дату под фото
         const infoContainer = document.createElement('div');
-        infoContainer.className = 'flex flex-col items-center mt-4 gap-1';
-        if (item.caption) {
-            const cap = document.createElement('div');
-            cap.className = 'text-center text-[#ff7eb3] text-base bg-black/40 px-5 py-2 rounded-full';
-            cap.innerText = item.caption;
-            infoContainer.appendChild(cap);
-        }
-        if (item.date) {
-            const dateEl = document.createElement('div');
-            dateEl.className = 'text-center text-[#ff7eb3aa] text-xs bg-black/30 px-4 py-1 rounded-full';
-            dateEl.innerText = item.date;
-            infoContainer.appendChild(dateEl);
-        }
-        container.appendChild(infoContainer);
+        infoContainer.className = 'flex flex-col items-center mt-5 gap-2';
         
+        const captionEl = document.createElement('div');
+        captionEl.className = 'modal-caption';
+        captionEl.innerText = item.caption;
+        infoContainer.appendChild(captionEl);
+        
+        const dateEl = document.createElement('div');
+        dateEl.className = 'modal-date';
+        dateEl.innerText = `📅 ${item.date}`;
+        infoContainer.appendChild(dateEl);
+        
+        container.appendChild(infoContainer);
         modalInner.appendChild(container);
         modal.classList.remove('hidden');
         modal.classList.add('flex');
@@ -672,7 +687,7 @@
     }
 
     window.onload = () => {
-        console.log('✅ Альбом загружен: у каждого элемента есть случайная дата');
+        console.log('✅ У каждого элемента есть и подпись, и дата');
     };
 </script>
 </body>
