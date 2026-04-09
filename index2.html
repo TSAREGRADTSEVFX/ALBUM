@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Путешествие</title>
+    <title>Её альбом | Твоё путешествие</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&amp;family=Inter:opsz,wght@14..32,200;14..32,300;14..32,400;14..32,500;14..32,600&amp;display=swap');
@@ -16,24 +15,14 @@
             box-sizing: border-box;
         }
         
-        :root {
-            --dark-bg: #0a0a0c;
-            --black-rose: #111014;
-            --rose-neon: #ff2a6d;
-            --rose-soft: #ff7eb3;
-            --dark-pink: #b91c5c;
-            --charcoal-rose: #1e1a1f;
-        }
-        
         body {
-            background: var(--dark-bg);
+            background: #0a0a0c;
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
         }
         
-        /* черно-розовый градиент для бэкграунда */
         body::before {
             content: '';
             position: fixed;
@@ -46,35 +35,23 @@
             z-index: 0;
         }
         
-        /* новая обложка в черно-розовой стилистике */
         .cover-card {
             background: rgba(17, 16, 20, 0.92);
             backdrop-filter: blur(12px);
             border-radius: 48px;
-            box-shadow: 0 30px 50px -25px rgba(255, 42, 109, 0.35),
-                        0 0 0 1px rgba(255, 42, 109, 0.4),
-                        inset 0 1px 4px rgba(255, 255, 240, 0.05);
-            transition: all 0.5s ease;
+            box-shadow: 0 30px 50px -25px rgba(255, 42, 109, 0.35), 0 0 0 1px rgba(255, 42, 109, 0.4);
             border: 1px solid rgba(255, 42, 109, 0.3);
         }
         
-        .signature-line {
-            background: linear-gradient(90deg, transparent, var(--rose-neon), var(--rose-soft), var(--rose-neon), transparent);
-            height: 1px;
-            width: 120px;
-            margin: 0 auto;
-        }
-        
         .pearl-button {
-            background: var(--rose-neon);
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            background: #ff2a6d;
+            transition: all 0.3s ease;
             box-shadow: 0 6px 20px rgba(255, 42, 109, 0.3);
         }
         
         .pearl-button:hover {
             background: #ff4d82;
             transform: scale(0.97);
-            box-shadow: 0 10px 25px rgba(255, 42, 109, 0.5);
         }
         
         .gallery-grid {
@@ -95,54 +72,65 @@
         .item {
             opacity: 0;
             transform: translateY(32px);
-            animation: floatReveal 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.1) forwards;
+            animation: floatReveal 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.1) forwards;
         }
         
         @keyframes floatReveal {
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* стили фото-рамки в темной теме */
         .photo-frame-modern {
             background: #1a1a1e;
             padding: 10px 10px 14px 10px;
             border-radius: 24px;
-            box-shadow: 0 15px 30px -12px rgba(0,0,0,0.5), 
-                        0 1px 2px rgba(255,42,109,0.1),
-                        inset 0 0 0 1px rgba(255,42,109,0.2);
+            box-shadow: 0 15px 30px -12px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,42,109,0.2);
             transition: all 0.25s ease;
         }
         
         .photo-frame-modern:hover {
             transform: translateY(-5px);
             box-shadow: 0 25px 35px -16px rgba(255, 42, 109, 0.3);
-            border-color: rgba(255, 42, 109, 0.5);
         }
         
-        /* идеально круглые элементы */
-        .circle-video-item {
+        /* Круглый контейнер для видео */
+        .circle-video-wrapper {
             position: relative;
-            border-radius: 9999px !important;
+            border-radius: 50%;
             background: #1a1a1e;
             box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4), 0 0 0 4px #ff2a6d, 0 0 0 8px rgba(255,42,109,0.2);
             overflow: hidden;
             aspect-ratio: 1 / 1;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
         
-        .circle-video-item video,
-        .circle-video-item img {
-            border-radius: 9999px !important;
-            object-fit: cover;
+        .circle-video-wrapper.active-sound {
+            box-shadow: 0 0 0 4px #ff2a6d, 0 0 0 16px rgba(255,42,109,0.6), 0 20px 35px -12px rgba(0,0,0,0.4);
+            transform: scale(1.02);
+        }
+        
+        .circle-video-wrapper video {
             width: 100%;
             height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
         
-        .full-video-item {
+        /* Полноэкранный видео-контейнер */
+        .full-video-wrapper {
             position: relative;
             border-radius: 28px;
             background: #1a1a1e;
             box-shadow: 0 20px 30px -12px rgba(0,0,0,0.4), 0 0 0 3px #ff2a6d, 0 0 0 7px rgba(255,42,109,0.15);
             overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 4 / 5;
+        }
+        
+        .full-video-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .caption-text {
@@ -152,7 +140,6 @@
             color: #ff7eb3;
             text-align: center;
             margin-top: 12px;
-            letter-spacing: -0.2px;
             background: rgba(0,0,0,0.5);
             display: inline-block;
             padding: 4px 12px;
@@ -165,8 +152,8 @@
             backdrop-filter: blur(16px);
         }
         
-        /* китайский фон для альбома (карта, иероглифы, путешествие) */
-        .album-bg {
+        /* Китайский фон */
+        .china-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -174,32 +161,18 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.35;
+            opacity: 0.3;
         }
         
-        .album-bg svg {
+        .china-bg svg {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
         
-        /* дополнительная текстура */
-        .noise-texture {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjUiIG51bU9jdGF2ZXM9IjMiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZikiIG9wYWNpdHk9IjAuMDYiLz48L3N2Zz4=');
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.3;
-        }
-        
         .cover-title {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
-            letter-spacing: -2px;
             background: linear-gradient(135deg, #ff7eb3, #ff2a6d);
             background-clip: text;
             -webkit-background-clip: text;
@@ -215,393 +188,390 @@
             font-size: 9px;
             padding: 2px 8px;
             border-radius: 20px;
-            backdrop-filter: blur(4px);
             font-family: monospace;
             z-index: 2;
             pointer-events: none;
         }
         
-        /* стили для текста на обложке */
-        .cover-sub {
-            color: #ff7eb3;
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.25);
+            border-radius: inherit;
+            pointer-events: none;
         }
         
-        .cover-quote {
-            color: #ff7eb3cc;
+        .play-overlay svg {
+            width: 48px;
+            height: 48px;
+            color: white;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
         }
         
-        /* контейнер альбома с относительным позиционированием */
-        #album-content {
-            position: relative;
-            z-index: 10;
+        .circle-video-wrapper .play-overlay svg {
+            width: 40px;
+            height: 40px;
         }
         
-        /* фон для модалки */
-        .modal-content-custom {
-            background: #0f0f12;
-            border: 1px solid #ff2a6d;
+        /* Анимация пульсации */
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 4px #ff2a6d, 0 0 0 8px rgba(255,42,109,0.4); }
+            100% { box-shadow: 0 0 0 4px #ff2a6d, 0 0 0 20px rgba(255,42,109,0); }
+        }
+        
+        .sound-pulse {
+            animation: pulse-ring 0.5s ease-out;
         }
     </style>
 </head>
-<body class="relative flex flex-col items-center justify-start">
+<body>
 
-    <!-- Китайский фон для альбома (карта, иероглифы, путь) -->
-    <div class="album-bg">
-        <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <defs>
-                <linearGradient id="chinaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ff2a6d" stop-opacity="0.15"/>
-                    <stop offset="50%" stop-color="#1a0a15" stop-opacity="0.3"/>
-                    <stop offset="100%" stop-color="#ff2a6d" stop-opacity="0.1"/>
-                </linearGradient>
-                <pattern id="chinesePattern" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
-                    <path d="M40 0 L50 20 L70 25 L55 40 L60 60 L40 50 L20 60 L25 40 L10 25 L30 20 Z" fill="none" stroke="#ff2a6d" stroke-width="0.8" opacity="0.25"/>
-                    <circle cx="40" cy="40" r="3" fill="#ff7eb3" opacity="0.2"/>
-                </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#chinaGrad)"/>
-            <rect width="100%" height="100%" fill="url(#chinesePattern)"/>
-            
-            <!-- Силуэт карты Китая (стилизованный) -->
-            <path d="M300,150 L400,120 L520,140 L600,110 L700,130 L780,100 L850,120 L920,110 L980,130 L1020,160 L1050,200 L1080,250 L1100,310 L1120,380 L1130,450 L1110,520 L1080,580 L1040,630 L980,670 L900,700 L820,720 L740,730 L660,740 L580,735 L500,720 L420,700 L350,670 L300,630 L260,580 L230,520 L210,450 L200,380 L210,310 L230,250 L260,200 L300,150Z" 
-                  fill="none" stroke="#ff2a6d" stroke-width="1.5" stroke-opacity="0.3" stroke-dasharray="8 4"/>
-            
-            <!-- Маршрут путешествия (нить пути) -->
-            <path d="M350,200 C450,180 520,250 600,220 C680,190 750,280 820,260 C890,240 950,320 1000,350" 
-                  fill="none" stroke="#ff7eb3" stroke-width="2" stroke-opacity="0.5" stroke-dasharray="6 6"/>
-            <circle cx="350" cy="200" r="5" fill="#ff2a6d" opacity="0.7"/>
-            <circle cx="1000" cy="350" r="5" fill="#ff2a6d" opacity="0.7"/>
-            
-            <!-- Иероглифы (стилизованные символы) -->
-            <text x="450" y="300" font-family="serif" font-size="32" fill="#ff7eb3" opacity="0.25">旅</text>
-            <text x="650" y="400" font-family="serif" font-size="38" fill="#ff7eb3" opacity="0.2">行</text>
-            <text x="800" y="280" font-family="serif" font-size="28" fill="#ff2a6d" opacity="0.3">夢</text>
-            <text x="280" y="450" font-family="serif" font-size="34" fill="#ff7eb3" opacity="0.2">道</text>
-            <text x="900" y="550" font-family="serif" font-size="30" fill="#ff2a6d" opacity="0.25">路</text>
-            <text x="520" y="600" font-family="serif" font-size="26" fill="#ff7eb3" opacity="0.2">心</text>
-            
-            <!-- декоративные волны / облака в китайском стиле -->
-            <path d="M100,600 Q150,580 200,600 Q250,620 300,600" fill="none" stroke="#ff2a6d" stroke-width="1" opacity="0.2"/>
-            <path d="M850,650 Q900,630 950,650 Q1000,670 1050,650" fill="none" stroke="#ff2a6d" stroke-width="1" opacity="0.2"/>
-            <path d="M150,250 Q200,230 250,250" fill="none" stroke="#ff7eb3" stroke-width="1" opacity="0.2"/>
-        </svg>
+<div class="china-bg">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+            <linearGradient id="chinaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff2a6d" stop-opacity="0.15"/>
+                <stop offset="50%" stop-color="#1a0a15" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#ff2a6d" stop-opacity="0.1"/>
+            </linearGradient>
+            <pattern id="chinesePattern" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M40 0 L50 20 L70 25 L55 40 L60 60 L40 50 L20 60 L25 40 L10 25 L30 20 Z" fill="none" stroke="#ff2a6d" stroke-width="0.8" opacity="0.25"/>
+                <circle cx="40" cy="40" r="3" fill="#ff7eb3" opacity="0.2"/>
+            </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#chinaGrad)"/>
+        <rect width="100%" height="100%" fill="url(#chinesePattern)"/>
+        <path d="M300,150 L400,120 L520,140 L600,110 L700,130 L780,100 L850,120 L920,110 L980,130 L1020,160 L1050,200 L1080,250 L1100,310 L1120,380 L1130,450 L1110,520 L1080,580 L1040,630 L980,670 L900,700 L820,720 L740,730 L660,740 L580,735 L500,720 L420,700 L350,670 L300,630 L260,580 L230,520 L210,450 L200,380 L210,310 L230,250 L260,200 L300,150Z" fill="none" stroke="#ff2a6d" stroke-width="1.5" stroke-opacity="0.3" stroke-dasharray="8 4"/>
+        <path d="M350,200 C450,180 520,250 600,220 C680,190 750,280 820,260 C890,240 950,320 1000,350" fill="none" stroke="#ff7eb3" stroke-width="2" stroke-opacity="0.5" stroke-dasharray="6 6"/>
+        <circle cx="350" cy="200" r="5" fill="#ff2a6d" opacity="0.7"/>
+        <circle cx="1000" cy="350" r="5" fill="#ff2a6d" opacity="0.7"/>
+        <text x="450" y="300" font-family="serif" font-size="32" fill="#ff7eb3" opacity="0.25">旅</text>
+        <text x="650" y="400" font-family="serif" font-size="38" fill="#ff7eb3" opacity="0.2">行</text>
+        <text x="800" y="280" font-family="serif" font-size="28" fill="#ff2a6d" opacity="0.3">夢</text>
+        <text x="280" y="450" font-family="serif" font-size="34" fill="#ff7eb3" opacity="0.2">道</text>
+        <text x="900" y="550" font-family="serif" font-size="30" fill="#ff2a6d" opacity="0.25">路</text>
+        <text x="520" y="600" font-family="serif" font-size="26" fill="#ff7eb3" opacity="0.2">心</text>
+    </svg>
+</div>
+
+<!-- Обложка -->
+<div id="cover" class="relative z-20 w-full max-w-[440px] mx-auto px-5 mt-12 md:mt-16">
+    <div class="cover-card px-8 py-12 text-center">
+        <div class="flex justify-center items-center gap-3 mb-7">
+            <div class="w-12 h-px bg-gradient-to-r from-transparent to-[#ff2a6d]"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-[#ff2a6d] opacity-80"></div>
+            <div class="w-12 h-px bg-gradient-to-l from-transparent to-[#ff2a6d]"></div>
+        </div>
+        <div class="relative inline-block">
+            <h1 class="cover-title text-[58px] leading-[1.08] tracking-[-0.02em] font-black">
+                Твоё<br>путешествие
+            </h1>
+            <div class="absolute -top-4 -right-8 text-6xl text-[#ff2a6d] opacity-40">✦</div>
+        </div>
+        <p class="text-[#ff7eb3] text-[17px] font-light mt-4 tracking-wide italic">альбом дороги и открытий</p>
+        <div class="w-[120px] h-px bg-gradient-to-r from-transparent via-[#ff2a6d] to-transparent mx-auto my-8"></div>
+        <p class="text-[#ff7eb3cc] text-[13px] font-light max-w-[240px] mx-auto leading-relaxed">«каждый шаг — это новая глава»</p>
+        <button onclick="openAlbum()" class="pearl-button mt-12 w-full py-5 text-white rounded-2xl text-lg font-medium tracking-wide flex items-center justify-center gap-2 transition-all active:scale-95">
+            <span>открыть альбом</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4-4-4-4m12 0l-4 4 4 4" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+            </svg>
+        </button>
+        <div class="mt-10 text-[11px] text-[#ff7eb3]/40 font-mono tracking-widest">✦ для неё одной ✦</div>
     </div>
-    <div class="noise-texture"></div>
+</div>
 
-    <!-- НОВАЯ ОБЛОЖКА – "Твое путешествие" в черно-розовом -->
-    <div id="cover" class="relative z-20 w-full max-w-[440px] mx-auto px-5 mt-12 md:mt-16">
-        <div class="cover-card px-8 py-12 text-center">
-            <div class="flex justify-center items-center gap-3 mb-7">
-                <div class="w-12 h-px bg-gradient-to-r from-transparent to-[#ff2a6d]"></div>
-                <div class="w-1.5 h-1.5 rounded-full bg-[#ff2a6d] opacity-80"></div>
-                <div class="w-12 h-px bg-gradient-to-l from-transparent to-[#ff2a6d]"></div>
-            </div>
-            
-            <div class="relative inline-block">
-                <h1 class="cover-title text-[58px] leading-[1.08] tracking-[-0.02em] font-black">
-                    Твоё<br>путешествие
-                </h1>
-                <div class="absolute -top-4 -right-8 text-6xl text-[#ff2a6d] opacity-40">✦</div>
-            </div>
-            
-            <p class="cover-sub text-[17px] font-light mt-4 tracking-wide italic">
-                альбом дороги и открытий
-            </p>
-            
-            <div class="signature-line my-8"></div>
-            
-            <p class="cover-quote text-[13px] font-light max-w-[240px] mx-auto leading-relaxed">
-                «каждый шаг — это новая глава»
-            </p>
-            
-            <button onclick="openAlbum()" 
-                    class="pearl-button mt-12 w-full py-5 text-white rounded-2xl text-lg font-medium tracking-wide flex items-center justify-center gap-2 transition-all active:scale-95">
-                <span>открыть альбом</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4-4-4-4m12 0l-4 4 4 4" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
-                </svg>
-            </button>
-            
-            <div class="mt-10 text-[11px] text-[#ff7eb3]/40 font-mono tracking-widest">
-                ✦ для неё одной ✦
-            </div>
+<!-- Альбом (скрыт) -->
+<div id="album-content" class="hidden max-w-[500px] w-full mx-auto px-5 mt-6 relative z-10">
+    <div class="flex justify-center mb-3">
+        <div class="bg-black/50 backdrop-blur-md rounded-full px-5 py-1.5 text-[#ff7eb3] text-sm font-medium shadow-sm border border-[#ff2a6d]/30">
+            ♡  моменты пути  ♡
         </div>
     </div>
+    <div id="gallery" class="gallery-grid"></div>
+</div>
 
-    <!-- ГАЛЕРЕЯ -->
-    <div id="album-content" class="hidden max-w-[500px] w-full mx-auto px-5 mt-6 z-10 relative">
-        <div class="flex justify-center mb-3">
-            <div class="bg-black/50 backdrop-blur-md rounded-full px-5 py-1.5 text-[#ff7eb3] text-sm font-medium shadow-sm border border-[#ff2a6d]/30">
-                ♡  моменты пути  ♡
-            </div>
-        </div>
-        <div id="gallery" class="gallery-grid"></div>
+<div class="text-center mt-6 pb-8 text-[#ff7eb3]/30 text-[10px] tracking-wider font-light relative z-10">
+    создано с бесконечной нежностью
+</div>
+
+<!-- Модальное окно для видео -->
+<div id="modal" onclick="if(event.target.id === 'modal') closeModal()" 
+     class="hidden fixed inset-0 z-[200] modal-overlay flex items-center justify-center p-5">
+    <div class="max-w-[90%] w-full max-h-[85vh] bg-[#0f0f12] rounded-[44px] overflow-hidden shadow-2xl border border-[#ff2a6d]/50">
+        <button onclick="closeModal()" class="absolute top-4 right-4 w-10 h-10 bg-[#ff2a6d] text-white rounded-full flex items-center justify-center text-xl font-bold z-50 hover:bg-[#ff4d82] transition">
+            ✕
+        </button>
+        <div id="modal-inner" class="p-5 flex flex-col items-center justify-center"></div>
     </div>
+</div>
 
-    <div class="text-center mt-6 pb-8 text-[#ff7eb3]/30 text-[10px] tracking-wider font-light relative z-10">
-        создано с бесконечной нежностью
-    </div>
+<script>
+    // Медиатека с тестовыми файлами
+    const mediaItems = [
+        { type: "photo", url: "none.png", caption: "первый шаг" },
+        { type: "photo", url: "none.png", caption: "вдохновение" },
+        { type: "photo", url: "none.png", caption: "дорога" },
+        { type: "photo", url: "none.png", caption: "встречный ветер" },
+        { type: "photo", url: "none.png", caption: "новый горизонт" },
+        { type: "photo", url: "none.png", caption: "тишина в пути" },
+        { type: "photo", url: "none.png", caption: "момент истины" },
+        { type: "photo", url: "none.png", caption: "свет в конце" },
+        { type: "photo", url: "none.png", caption: "отражение" },
+        { type: "photo", url: "none.png", caption: "свобода" },
+        { type: "circle", url: "none.mp4", caption: "рассвет в пути" },
+        { type: "circle", url: "none.mp4", caption: "облака над дорогой" },
+        { type: "circle", url: "none.mp4", caption: "путь к мечте" },
+        { type: "circle", url: "none.mp4", caption: "эмоции попутчика" },
+        { type: "video", url: "none.mp4", caption: "кадры путешествия" },
+        { type: "video", url: "none.mp4", caption: "нежный миг в пути" },
+        { type: "video", url: "none.mp4", caption: "безмятежная дорога" },
+        { type: "video", url: "none.mp4", caption: "улыбка до горизонта" }
+    ];
 
-    <!-- Модальное окно -->
-    <div id="modal" onclick="if(event.target.id === 'modal') closeModal()" 
-         class="hidden fixed inset-0 z-[200] modal-overlay flex items-center justify-center p-5 transition-all duration-300">
-        <div id="modal-content" class="max-w-[90%] w-full max-h-[85vh] bg-[#0f0f12] rounded-[44px] overflow-hidden shadow-2xl border border-[#ff2a6d]/50 backdrop-blur-sm">
-            <button onclick="closeModal()" 
-                    class="absolute -top-3 -right-3 w-11 h-11 bg-[#ff2a6d] shadow-xl text-white rounded-full flex items-center justify-center text-2xl font-bold z-50 active:scale-90 hover:bg-[#ff4d82] transition">
-                ✕
-            </button>
-            <div id="modal-inner" class="p-5 flex flex-col items-center justify-center"></div>
-        </div>
-    </div>
+    // Перемешивание массива
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
 
-    <script>
-        // --------------------------------------------------------------
-        // ТЕСТОВЫЙ РЕЖИМ: none.png / none.mp4
-        // Черно-розовый стиль + китайский фон с картой и иероглифами
-        // --------------------------------------------------------------
+    // Запуск всех видео на странице (без звука)
+    function playAllVideosMuted() {
+        document.querySelectorAll('#gallery video').forEach(video => {
+            video.muted = true;
+            video.play().catch(e => console.log('auto-play muted failed:', e));
+        });
+    }
+
+    // Показать модальное окно с видео (полноэкранный режим)
+    function showVideoModal(item) {
+        const modal = document.getElementById('modal');
+        const modalInner = document.getElementById('modal-inner');
+        modalInner.innerHTML = '';
         
-        const mediaLibrary = [
-            { type: "photo", url: "none.png", caption: "первый шаг" },
-            { type: "photo", url: "none.png", caption: "вдохновение" },
-            { type: "photo", url: "none.png", caption: "дорога" },
-            { type: "photo", url: "none.png", caption: "встречный ветер" },
-            { type: "photo", url: "none.png", caption: "новый горизонт" },
-            { type: "photo", url: "none.png", caption: "тишина в пути" },
-            { type: "photo", url: "none.png", caption: "момент истины" },
-            { type: "photo", url: "none.png", caption: "свет в конце" },
-            { type: "photo", url: "none.png", caption: "отражение" },
-            { type: "photo", url: "none.png", caption: "свобода" },
-            
-            { type: "circle", url: "none.mp4", caption: "рассвет в пути" },
-            { type: "circle", url: "none.mp4", caption: "облака над дорогой" },
-            { type: "circle", url: "none.mp4", caption: "путь к мечте" },
-            { type: "circle", url: "none.mp4", caption: "эмоции попутчика" },
-            
-            { type: "video", url: "none.mp4", caption: "кадры путешествия" },
-            { type: "video", url: "none.mp4", caption: "нежный миг в пути" },
-            { type: "video", url: "none.mp4", caption: "безмятежная дорога" },
-            { type: "video", url: "none.mp4", caption: "улыбка до горизонта" }
-        ];
+        const isCircle = item.type === 'circle';
+        const container = document.createElement('div');
+        container.className = 'flex flex-col items-center w-full';
         
-        function shuffleArray(arr) {
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
+        const videoContainer = document.createElement('div');
+        if (isCircle) {
+            videoContainer.className = 'rounded-full aspect-square max-w-[90vw] md:max-w-[420px] w-full overflow-hidden bg-black';
+            videoContainer.style.borderRadius = '9999px';
+        } else {
+            videoContainer.className = 'rounded-3xl aspect-[9/16] max-w-[90vw] md:max-w-[420px] w-full overflow-hidden bg-black';
         }
         
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
+        const video = document.createElement('video');
+        video.src = item.url;
+        video.className = 'w-full h-full object-cover';
+        video.controls = true;
+        video.autoplay = true;
+        video.muted = false;
+        video.playsInline = true;
+        
+        video.onerror = () => {
+            video.style.backgroundColor = '#2a1a22';
+            video.poster = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%23ff2a6d' stroke-width='1'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolygon points='10 8 16 12 10 16 10 8' fill='%23ff2a6d' fill-opacity='0.3'/%3E%3C/svg%3E";
+        };
+        
+        videoContainer.appendChild(video);
+        container.appendChild(videoContainer);
+        
+        if (item.caption) {
+            const cap = document.createElement('div');
+            cap.className = 'text-center mt-5 text-[#ff7eb3] text-base bg-black/40 px-5 py-2 rounded-full';
+            cap.innerText = item.caption;
+            container.appendChild(cap);
         }
         
-        function createMediaCard(item, idx) {
-            const card = document.createElement('div');
-            card.className = `item cursor-pointer transform transition-all duration-300 hover:z-10 relative`;
-            card.style.animationDelay = `${Math.min(idx * 35, 500)}ms`;
-            
-            if (item.type === "photo") {
-                const rotateVal = (Math.random() * 3 - 1.5).toFixed(1);
-                card.innerHTML = `
-                    <div class="photo-frame-modern relative" style="transform: rotate(${rotateVal}deg);">
-                        <img src="${item.url}" loading="lazy" class="w-full rounded-2xl aspect-[4/5] object-cover" alt="memory" onerror="this.style.opacity='0.4'; this.style.backgroundColor='#2a1a22'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='20%';">
-                        <div class="test-badge">🧪 TEST</div>
-                        ${item.caption ? `<div class="flex justify-center mt-3"><span class="caption-text text-[12px]">${escapeHtml(item.caption)}</span></div>` : ''}
-                    </div>
-                `;
-            } 
-            else if (item.type === "circle") {
-                card.innerHTML = `
-                    <div class="relative">
-                        <div class="circle-video-item w-full overflow-hidden rounded-full" style="border-radius: 9999px !important; overflow: hidden !important;">
-                            <video src="${item.url}" 
-                                   class="w-full h-full object-cover rounded-full"
-                                   style="border-radius: 9999px !important;"
-                                   muted loop playsinline preload="metadata"
-                                   onerror="this.style.backgroundColor='#2a1a22'; this.poster='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Ccircle cx=\'12\' cy=\'12\' r=\'10\'/%3E%3Cpolygon points=\'10 8 16 12 10 16 10 8\' fill=\'%23ff2a6d\' fill-opacity=\'0.3\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.borderRadius='9999px';"></video>
-                            <div class="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full backdrop-blur-[1px] transition group-hover:bg-black/50" style="border-radius: 9999px;">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 4.01V8" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="test-badge">🧪 TEST</div>
-                        ${item.caption ? `<div class="flex justify-center mt-2"><span class="caption-text text-[11px]">${escapeHtml(item.caption)}</span></div>` : ''}
-                    </div>
-                `;
-            } 
-            else if (item.type === "video") {
-                card.innerHTML = `
-                    <div class="full-video-item aspect-[4/5] w-full overflow-hidden relative">
-                        <video src="${item.url}" 
-                               class="w-full h-full object-cover"
-                               muted loop playsinline preload="metadata"
-                               onerror="this.style.backgroundColor='#2a1a22'; this.poster='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='10%';"></video>
-                        <div class="absolute inset-0 flex items-center justify-center bg-black/35 transition group-hover:bg-black/45">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-white drop-shadow-xl" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+        modalInner.appendChild(container);
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        
+        video.play().catch(e => console.log('modal play error:', e));
+    }
+
+    // Показать модальное окно с фото
+    function showPhotoModal(item) {
+        const modal = document.getElementById('modal');
+        const modalInner = document.getElementById('modal-inner');
+        modalInner.innerHTML = '';
+        
+        const container = document.createElement('div');
+        container.className = 'flex flex-col items-center';
+        container.innerHTML = `
+            <div class="photo-frame-modern p-3 bg-[#1a1a1e] rounded-3xl border border-[#ff2a6d]/30">
+                <img src="${item.url}" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain" alt="large view" onerror="this.style.opacity='0.5'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1.2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.padding='40px';">
+                <div class="test-badge !bottom-auto !top-2 !right-2">🧪 TEST</div>
+                ${item.caption ? `<div class="text-center mt-5 text-[#ff7eb3] text-base font-light italic">${escapeHtml(item.caption)}</div>` : ''}
+            </div>
+        `;
+        modalInner.appendChild(container);
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        const modalInner = document.getElementById('modal-inner');
+        if (modalInner) modalInner.innerHTML = '';
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Создание карточки
+    function createCard(item, index) {
+        const card = document.createElement('div');
+        card.className = 'item';
+        card.style.animationDelay = `${Math.min(index * 40, 600)}ms`;
+        
+        if (item.type === 'photo') {
+            const rotate = (Math.random() * 3 - 1.5).toFixed(1);
+            card.innerHTML = `
+                <div class="photo-frame-modern relative" style="transform: rotate(${rotate}deg); cursor: pointer;">
+                    <img src="${item.url}" loading="lazy" class="w-full rounded-2xl aspect-[4/5] object-cover" alt="memory" onerror="this.style.opacity='0.4'; this.style.backgroundColor='#2a1a22'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='20%';">
+                    <div class="test-badge">🧪 TEST</div>
+                    ${item.caption ? `<div class="flex justify-center mt-3"><span class="caption-text">${escapeHtml(item.caption)}</span></div>` : ''}
+                </div>
+            `;
+            card.querySelector('.photo-frame-modern').addEventListener('click', () => showPhotoModal(item));
+        } 
+        else if (item.type === 'circle') {
+            // Круглое видео с автовоспроизведением (без звука) и кликом для звука
+            card.innerHTML = `
+                <div class="relative">
+                    <div class="circle-video-wrapper">
+                        <video src="${item.url}" muted loop playsinline preload="auto" class="circle-video"></video>
+                        <div class="play-overlay">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z" />
                                 <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none" />
                             </svg>
                         </div>
-                        <div class="test-badge">🧪 TEST</div>
-                        ${item.caption ? `<div class="flex justify-center mt-2"><span class="caption-text">${escapeHtml(item.caption)}</span></div>` : ''}
                     </div>
-                `;
-            }
+                    <div class="test-badge">🧪 TEST</div>
+                    ${item.caption ? `<div class="flex justify-center mt-2"><span class="caption-text">${escapeHtml(item.caption)}</span></div>` : ''}
+                </div>
+            `;
             
-            card.addEventListener('click', (e) => {
+            const wrapper = card.querySelector('.circle-video-wrapper');
+            const video = card.querySelector('video');
+            
+            // Запускаем видео без звука
+            video.muted = true;
+            video.play().catch(e => console.log('circle autoplay:', e));
+            
+            // Клик: включаем звук, перезапускаем, добавляем анимацию
+            wrapper.addEventListener('click', (e) => {
                 e.stopPropagation();
-                showModal(item);
-            });
-            return card;
-        }
-        
-        let currentVideoElement = null;
-        
-        function showModal(item) {
-            const modal = document.getElementById('modal');
-            const modalInner = document.getElementById('modal-inner');
-            modalInner.innerHTML = '';
-            
-            if (item.type === "photo") {
-                const containerDiv = document.createElement('div');
-                containerDiv.className = "flex flex-col items-center relative";
-                containerDiv.innerHTML = `
-                    <div class="photo-frame-modern p-3 bg-[#1a1a1e] rounded-3xl relative border border-[#ff2a6d]/30">
-                        <img src="${item.url}" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain" alt="large view" onerror="this.style.opacity='0.5'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1.2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.padding='40px'; this.style.boxSizing='border-box';">
-                        <div class="test-badge !bottom-auto !top-2 !right-2">🧪 TEST</div>
-                        ${item.caption ? `<div class="text-center mt-5 text-[#ff7eb3] text-base font-light italic">${escapeHtml(item.caption)}</div>` : ''}
-                    </div>
-                `;
-                modalInner.appendChild(containerDiv);
-            } 
-            else {
-                const isCircle = item.type === "circle";
-                const wrapper = document.createElement('div');
-                wrapper.className = `flex flex-col items-center w-full relative`;
-                const videoContainer = document.createElement('div');
+                // Добавляем визуальный эффект
+                wrapper.classList.add('active-sound', 'sound-pulse');
+                setTimeout(() => {
+                    wrapper.classList.remove('active-sound', 'sound-pulse');
+                }, 500);
                 
-                if (isCircle) {
-                    videoContainer.className = `rounded-full aspect-square max-w-[90vw] md:max-w-[420px] w-full overflow-hidden bg-black shadow-2xl`;
-                    videoContainer.style.borderRadius = '9999px';
-                } else {
-                    videoContainer.className = `rounded-3xl aspect-[9/16] max-w-[90vw] md:max-w-[420px] w-full overflow-hidden bg-black shadow-2xl`;
-                }
-                
-                const video = document.createElement('video');
-                video.src = item.url;
-                video.className = "w-full h-full object-cover";
-                if (isCircle) video.style.borderRadius = '9999px';
-                video.controls = true;
-                video.autoplay = true;
+                // Включаем звук и перезапускаем
                 video.muted = false;
-                video.playsInline = true;
-                video.loop = false;
-                video.onerror = function() {
-                    this.style.backgroundColor = '#2a1a22';
-                    this.poster = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%23ff2a6d' stroke-width='1'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolygon points='10 8 16 12 10 16 10 8' fill='%23ff2a6d' fill-opacity='0.3'/%3E%3C/svg%3E";
-                };
+                video.currentTime = 0;
+                video.play().catch(e => console.log('sound play error:', e));
                 
-                videoContainer.appendChild(video);
-                wrapper.appendChild(videoContainer);
-                
-                const testLabel = document.createElement('div');
-                testLabel.className = "test-badge !top-2 !right-2 !bottom-auto absolute z-10";
-                testLabel.innerText = "🧪 TEST";
-                videoContainer.appendChild(testLabel);
-                
-                if (item.caption) {
-                    const cap = document.createElement('div');
-                    cap.className = "text-center mt-5 text-[#ff7eb3] text-base bg-black/40 px-5 py-2 rounded-full";
-                    cap.innerText = item.caption;
-                    wrapper.appendChild(cap);
-                }
-                modalInner.appendChild(wrapper);
-                currentVideoElement = video;
-                video.play().catch(e => console.log("автоплей заблокирован", e));
-            }
+                // Через 5 секунд возвращаем в беззвучный режим
+                setTimeout(() => {
+                    if (video && !video.paused) {
+                        video.muted = true;
+                    }
+                }, 5000);
+            });
+        } 
+        else if (item.type === 'video') {
+            // Полноэкранное видео с автовоспроизведением без звука, клик -> модалка
+            card.innerHTML = `
+                <div class="full-video-wrapper">
+                    <video src="${item.url}" muted loop playsinline preload="auto" class="full-video"></video>
+                    <div class="play-overlay">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z" />
+                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none" />
+                        </svg>
+                    </div>
+                    <div class="test-badge">🧪 TEST</div>
+                    ${item.caption ? `<div class="flex justify-center mt-2"><span class="caption-text">${escapeHtml(item.caption)}</span></div>` : ''}
+                </div>
+            `;
             
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-        
-        function closeModal() {
-            const modal = document.getElementById('modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            if (currentVideoElement) {
-                currentVideoElement.pause();
-                currentVideoElement = null;
-            }
-            const inner = document.getElementById('modal-inner');
-            if (inner) inner.innerHTML = '';
-        }
-        
-        function renderGallery() {
-            const container = document.getElementById('gallery');
-            container.innerHTML = '';
-            const shuffledItems = shuffleArray([...mediaLibrary]);
-            shuffledItems.forEach((item, index) => {
-                const card = createMediaCard(item, index);
-                container.appendChild(card);
-            });
-            const allVideos = document.querySelectorAll('#gallery video');
-            allVideos.forEach(vid => {
-                vid.addEventListener('mouseenter', () => {
-                    vid.play().catch(e => {});
-                });
-                vid.addEventListener('mouseleave', () => {
-                    if (!vid.paused && !vid.hasAttribute('controls')) vid.pause();
-                });
+            const video = card.querySelector('video');
+            video.muted = true;
+            video.play().catch(e => console.log('video autoplay:', e));
+            
+            const wrapper = card.querySelector('.full-video-wrapper');
+            wrapper.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showVideoModal(item);
             });
         }
         
-        function openAlbum() {
-            const coverDiv = document.getElementById('cover');
-            if (!coverDiv) return;
-            coverDiv.style.transition = 'transform 0.9s cubic-bezier(0.3, 0.9, 0.4, 1), opacity 0.7s ease';
-            coverDiv.style.transform = 'perspective(600px) rotateX(25deg) translateY(40px)';
-            coverDiv.style.opacity = '0';
+        return card;
+    }
+
+    function renderGallery() {
+        const gallery = document.getElementById('gallery');
+        gallery.innerHTML = '';
+        const shuffled = shuffle([...mediaItems]);
+        
+        shuffled.forEach((item, idx) => {
+            const card = createCard(item, idx);
+            gallery.appendChild(card);
+        });
+        
+        // Запускаем все видео после рендера
+        setTimeout(() => {
+            playAllVideosMuted();
+        }, 100);
+    }
+
+    function openAlbum() {
+        const cover = document.getElementById('cover');
+        cover.style.transition = 'transform 0.8s ease, opacity 0.6s ease';
+        cover.style.transform = 'perspective(500px) rotateX(30deg) translateY(40px)';
+        cover.style.opacity = '0';
+        
+        setTimeout(() => {
+            cover.style.display = 'none';
+            const album = document.getElementById('album-content');
+            album.classList.remove('hidden');
+            album.style.opacity = '0';
+            album.style.transform = 'translateY(30px)';
+            
+            renderGallery();
             
             setTimeout(() => {
-                coverDiv.style.display = 'none';
-                const albumContent = document.getElementById('album-content');
-                albumContent.classList.remove('hidden');
-                albumContent.style.opacity = '0';
-                albumContent.style.transform = 'translateY(30px)';
-                renderGallery();
-                
-                setTimeout(() => {
-                    albumContent.style.transition = 'opacity 0.85s ease, transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.1)';
-                    albumContent.style.opacity = '1';
-                    albumContent.style.transform = 'translateY(0)';
-                    const galleryVideos = document.querySelectorAll('#gallery video');
-                    galleryVideos.forEach(v => {
-                        v.muted = true;
-                        v.play().catch(()=>{});
-                    });
-                }, 60);
-            }, 700);
-        }
-        
-        window.onload = () => {
-            console.log('✅ Черно-розовый стиль + китайский фон с картой и иероглифами');
-            const style = document.createElement('style');
-            style.textContent = `
-                ::-webkit-scrollbar { width: 4px; }
-                ::-webkit-scrollbar-track { background: #1a1a1e; border-radius: 10px; }
-                ::-webkit-scrollbar-thumb { background: #ff2a6d; border-radius: 10px; }
-            `;
-            document.head.appendChild(style);
-        };
-    </script>
+                album.style.transition = 'opacity 0.7s ease, transform 0.6s ease';
+                album.style.opacity = '1';
+                album.style.transform = 'translateY(0)';
+            }, 50);
+        }, 600);
+    }
+
+    window.onload = () => {
+        console.log('✅ Альбом загружен: кружочки и видео играют без звука автоматически');
+    };
+</script>
 </body>
 </html>
