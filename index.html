@@ -523,7 +523,6 @@
             <div class="album-page">
                 <h2 class="page-title">Фотографии</h2>
                 <div class="photos-grid" id="photosGrid">
-                    <!-- ЗДЕСЬ ВЫ МОЖЕТЕ ДОБАВЛЯТЬ/МЕНЯТЬ ФОТО -->
                     <div class="photo-card item-animate" data-caption="первый шаг" data-date="12.03">
                         <img src="none.png" onerror="this.style.backgroundColor='#2a1a22'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='20%';">
                         <div class="caption-wrapper"><span class="caption"></span><span class="date"></span></div>
@@ -571,7 +570,6 @@
             <div class="album-page">
                 <h2 class="page-title">Кружочки</h2>
                 <div class="circles-grid" id="circlesGrid">
-                    <!-- ЗДЕСЬ ВЫ МОЖЕТЕ ДОБАВЛЯТЬ/МЕНЯТЬ КРУЖОЧКИ -->
                     <div class="circle-card item-animate" data-caption="рассвет в пути" data-date="14.03">
                         <div class="circle-video">
                             <video src="none.mp4" muted loop playsinline preload="auto"></video>
@@ -607,7 +605,6 @@
             <div class="album-page">
                 <h2 class="page-title">Видеоролики</h2>
                 <div class="videos-grid" id="videosGrid">
-                    <!-- ЗДЕСЬ ВЫ МОЖЕТЕ ДОБАВЛЯТЬ/МЕНЯТЬ ВИДЕО -->
                     <div class="video-card item-animate" data-caption="кадры путешествия" data-date="16.03">
                         <div class="video-wrapper">
                             <video src="none.mp4" muted loop playsinline preload="auto"></video>
@@ -646,7 +643,12 @@
                     <div class="final-text">Каждая дорога уникальна, как и моменты, которые мы сохраняем.</div>
                     <div class="final-poem">
                         ✦<br>
-                        ТЕКСТ<br>
+                        Пусть этот альбом напоминает тебе<br>
+                        о тех мгновениях, когда ты была собой —<br>
+                        свободной, вдохновлённой, настоящей.<br><br>
+                        Твоё путешествие только начинается.<br>
+                        А эти кадры — лишь первые страницы<br>
+                        большой и красивой истории.<br>
                         ✦
                     </div>
                 </div>
@@ -672,6 +674,14 @@
     let currentPage = 0;
     let totalPages = 4;
     let wrapper, modal, modalInner;
+    
+    // Функция прокрутки страницы вверх
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
     
     // Функция для извлечения данных из атрибутов и заполнения подписей
     function initCards() {
@@ -836,6 +846,8 @@
             currentPage = page;
             wrapper.style.transform = `translateX(-${currentPage * 100}%)`;
             updateIndicators();
+            // Прокручиваем страницу вверх при смене страницы
+            scrollToTop();
         }
         
         function updateIndicators() {
@@ -877,7 +889,7 @@
     modalInner = document.getElementById('modalInner');
     
     window.onload = () => {
-        console.log('✅ Альбом готов! Теперь вы можете редактировать текст прямо в HTML: data-caption и data-date у каждого элемента');
+        console.log('✅ Альбом готов! При переключении страницы автоматически прокручивается вверх');
     };
 </script>
 </body>
