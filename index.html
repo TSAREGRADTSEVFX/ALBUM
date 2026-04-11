@@ -153,96 +153,146 @@
             gap: 20px 16px;
         }
         
-        .collage-grid {
+        /* ИНТЕРАКТИВНЫЙ КОЛЛАЖ - динамическая мозаика */
+        .collage-masonry {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 14px;
+            perspective: 1200px;
         }
         
-        .collage-item {
+        .collage-card {
             position: relative;
+            aspect-ratio: 1 / 1;
             border-radius: 20px;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.3s ease;
-            aspect-ratio: 1/1;
-        }
-        
-        .collage-item:hover {
-            transform: scale(1.02);
-            box-shadow: 0 10px 25px -8px rgba(255, 42, 109, 0.4);
-        }
-        
-        .collage-item.wide {
-            grid-column: span 2;
-            aspect-ratio: 2/1;
-        }
-        
-        .collage-item.tall {
-            grid-row: span 2;
-            aspect-ratio: 1/2;
-        }
-        
-        .collage-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transform-style: preserve-3d;
+            box-shadow: 0 12px 28px -12px rgba(0,0,0,0.5);
             background: #1a1a1e;
         }
         
-        .collage-video {
+        /* Разные размеры для динамичности */
+        .collage-card.wide {
+            grid-column: span 2;
+            aspect-ratio: 2 / 1;
+        }
+        
+        .collage-card.featured {
+            grid-column: span 2;
+            grid-row: span 2;
+            aspect-ratio: 1 / 1;
+        }
+        
+        .collage-media {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.4s ease, filter 0.3s ease;
+        }
+        
+        .collage-card:hover .collage-media {
+            transform: scale(1.06);
+            filter: brightness(1.05);
         }
         
         .collage-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(255,42,109,0.2), rgba(0,0,0,0.4));
+            background: linear-gradient(135deg, rgba(255,42,109,0.2), rgba(0,0,0,0.6));
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: all 0.35s ease;
+            backdrop-filter: blur(3px);
         }
         
-        .collage-item:hover .collage-overlay {
+        .collage-card:hover .collage-overlay {
             opacity: 1;
         }
         
         .collage-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255,42,109,0.8);
+            width: 48px;
+            height: 48px;
+            background: rgba(255,42,109,0.9);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 20px;
-            backdrop-filter: blur(4px);
+            font-size: 22px;
+            transform: scale(0.6) rotate(-10deg);
+            transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+        }
+        
+        .collage-card:hover .collage-icon {
+            transform: scale(1) rotate(0deg);
         }
         
         .collage-caption {
-            font-size: 10px;
+            margin-top: 10px;
+            font-size: 11px;
+            font-weight: 500;
             color: #ff7eb3;
-            text-align: center;
-            margin-top: 4px;
-            background: rgba(0,0,0,0.5);
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 4px 12px;
+            border-radius: 40px;
+            transform: translateY(15px);
+            opacity: 0;
+            transition: all 0.3s ease 0.05s;
+        }
+        
+        .collage-card:hover .collage-caption {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* 3D Tilt эффект */
+        .collage-card {
+            transition: transform 0.2s ease-out, box-shadow 0.3s ease;
+        }
+        
+        .collage-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 22px 40px -14px rgba(255, 42, 109, 0.35);
+            z-index: 10;
+        }
+        
+        .collage-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,42,109,0.2), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            border-radius: 20px;
+        }
+        
+        .collage-card:hover .collage-glow {
+            opacity: 1;
         }
         
         @media (max-width: 480px) {
+            .collage-masonry {
+                gap: 8px;
+            }
+            .collage-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+            .collage-caption {
+                font-size: 9px;
+                padding: 3px 8px;
+            }
             .circles-grid {
                 grid-template-columns: repeat(2, 1fr);
-            }
-            .collage-grid {
-                gap: 8px;
             }
         }
         
@@ -703,11 +753,11 @@
                 <div class="videos-grid" id="videosGrid"></div>
             </div>
             
-            <!-- СТРАНИЦА 4: КОЛЛАЖ -->
+            <!-- СТРАНИЦА 4: КОЛЛАЖ (все элементы из альбома) -->
             <div class="album-page">
-                <h2 class="page-title">Коллаж воспоминаний</h2>
-                <div class="collage-grid" id="collageGrid"></div>
-                <div class="final-text" style="font-size: 12px; text-align: center; margin-top: 10px; opacity: 0.7;">✨ каждый квадратик — частичка пути ✨</div>
+                <h2 class="page-title">Живой коллаж</h2>
+                <div class="collage-masonry" id="collageGrid"></div>
+                <div class="final-text" style="font-size: 12px; text-align: center; margin-top: 20px; opacity: 0.7;">✨ все воспоминания в одной мозаике ✨</div>
             </div>
             
             <!-- СТРАНИЦА 5: ЗАКЛЮЧЕНИЕ -->
@@ -717,7 +767,7 @@
                     <div class="final-text">Каждая дорога уникальна, как и моменты, которые мы сохраняем.</div>
                     <div class="final-poem">
                         ✦<br>
-                        ///<br>
+                        \\\\\\\\\<br>
                         ✦
                     </div>
                 </div>
@@ -741,27 +791,32 @@
 
 <script>
     const CORRECT_PASSWORD = "2024";
-    
     let currentPage = 0;
     let totalPages = 5;
     let wrapper, modal, modalInner;
     
-    const collageItems = [
-        { type: "photo", caption: "рассвет", date: "12.03", size: "normal" },
-        { type: "circle", caption: "облака", date: "15.03", size: "normal" },
-        { type: "video", caption: "дорога", date: "18.03", size: "wide" },
-        { type: "photo", caption: "встреча", date: "21.03", size: "normal" },
-        { type: "circle", caption: "ветер", date: "24.03", size: "normal" },
-        { type: "photo", caption: "закат", date: "27.03", size: "tall" },
-        { type: "video", caption: "момент", date: "30.03", size: "normal" },
-        { type: "photo", caption: "улыбка", date: "02.04", size: "normal" },
-        { type: "circle", caption: "свет", date: "05.04", size: "normal" }
+    // Данные всех элементов альбома (единый источник)
+    const photosData = [
+        { caption: "первый шаг", date: "12.03" }, { caption: "вдохновение", date: "15.03" },
+        { caption: "дорога", date: "18.03" }, { caption: "встречный ветер", date: "21.03" },
+        { caption: "новый горизонт", date: "25.03" }, { caption: "тишина в пути", date: "28.03" },
+        { caption: "момент истины", date: "01.04" }, { caption: "свет в конце", date: "05.04" },
+        { caption: "отражение", date: "08.04" }, { caption: "свобода", date: "10.04" }
+    ];
+    
+    const circlesData = [
+        { caption: "рассвет в пути", date: "14.03" }, { caption: "облака над дорогой", date: "19.03" },
+        { caption: "путь к мечте", date: "24.03" }, { caption: "эмоции попутчика", date: "29.03" }
+    ];
+    
+    const videosData = [
+        { caption: "кадры путешествия", date: "16.03" }, { caption: "нежный миг в пути", date: "22.03" },
+        { caption: "безмятежная дорога", date: "27.03" }, { caption: "улыбка до горизонта", date: "02.04" }
     ];
     
     function showPasswordPrompt() {
         const overlay = document.createElement('div');
         overlay.className = 'password-overlay';
-        overlay.id = 'passwordOverlay';
         overlay.innerHTML = `
             <div class="password-box">
                 <div class="password-title">🔐 Введите пароль</div>
@@ -771,24 +826,20 @@
             </div>
         `;
         document.body.appendChild(overlay);
-        
         const input = document.getElementById('passwordInput');
         const errorDiv = document.getElementById('passwordError');
         const submitBtn = document.getElementById('passwordSubmit');
-        
         input.focus();
-        
         function checkPassword() {
             if (input.value === CORRECT_PASSWORD) {
                 overlay.remove();
                 openAlbum();
             } else {
-                errorDiv.textContent = '❌ Неверный пароль. Попробуйте еще раз';
+                errorDiv.textContent = '❌ Неверный пароль';
                 input.value = '';
                 input.focus();
             }
         }
-        
         submitBtn.addEventListener('click', checkPassword);
         input.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPassword(); });
         input.addEventListener('input', (e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4); });
@@ -797,146 +848,7 @@
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
     function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m)); }
     
-    function renderCollage() {
-        const container = document.getElementById('collageGrid');
-        if (!container) return;
-        container.innerHTML = '';
-        
-        collageItems.forEach((item, idx) => {
-            const colItem = document.createElement('div');
-            colItem.className = `collage-item ${item.size === 'wide' ? 'wide' : item.size === 'tall' ? 'tall' : ''} item-animate`;
-            colItem.style.animationDelay = `${idx * 40}ms`;
-            
-            if (item.type === 'photo') {
-                colItem.innerHTML = `
-                    <img src="none.png" class="collage-img" onerror="this.style.backgroundColor='#2a1a22'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='20%';">
-                    <div class="collage-overlay"><div class="collage-icon">📷</div></div>
-                `;
-                colItem.addEventListener('click', () => showPhotoModal(item));
-            } else if (item.type === 'circle') {
-                colItem.innerHTML = `
-                    <video src="none.mp4" class="collage-video" muted loop playsinline></video>
-                    <div class="collage-overlay"><div class="collage-icon">🎬</div></div>
-                `;
-                const video = colItem.querySelector('video');
-                video.muted = true; video.loop = true; video.play().catch(() => {});
-                colItem.addEventListener('click', () => showVideoModal(item, true));
-            } else {
-                colItem.innerHTML = `
-                    <video src="none.mp4" class="collage-video" muted loop playsinline></video>
-                    <div class="collage-overlay"><div class="collage-icon">▶</div></div>
-                `;
-                const video = colItem.querySelector('video');
-                video.muted = true; video.loop = true; video.play().catch(() => {});
-                colItem.addEventListener('click', () => showVideoModal(item, false));
-            }
-            
-            const captionSpan = document.createElement('div');
-            captionSpan.className = 'collage-caption';
-            captionSpan.innerText = `${item.caption} • ${item.date}`;
-            colItem.appendChild(captionSpan);
-            container.appendChild(colItem);
-        });
-    }
-    
-    function renderPhotos() {
-        const container = document.getElementById('photosGrid');
-        if (!container) return;
-        const photos = [
-            { caption: "первый шаг", date: "12.03" }, { caption: "вдохновение", date: "15.03" },
-            { caption: "дорога", date: "18.03" }, { caption: "встречный ветер", date: "21.03" },
-            { caption: "новый горизонт", date: "25.03" }, { caption: "тишина в пути", date: "28.03" },
-            { caption: "момент истины", date: "01.04" }, { caption: "свет в конце", date: "05.04" },
-            { caption: "отражение", date: "08.04" }, { caption: "свобода", date: "10.04" }
-        ];
-        container.innerHTML = '';
-        photos.forEach((item, idx) => {
-            const rotate = (Math.random() * 3 - 1.5).toFixed(1);
-            const card = document.createElement('div');
-            card.className = 'photo-card item-animate';
-            card.style.animationDelay = `${idx * 30}ms`;
-            card.innerHTML = `
-                <img src="none.png" onerror="this.style.backgroundColor='#2a1a22'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='20%';">
-                <div class="caption-wrapper"><span class="caption">${escapeHtml(item.caption)}</span><span class="date">📅 ${escapeHtml(item.date)}</span></div>
-            `;
-            card.addEventListener('click', () => showPhotoModal(item));
-            container.appendChild(card);
-        });
-    }
-    
-    function renderCircles() {
-        const container = document.getElementById('circlesGrid');
-        if (!container) return;
-        const circles = [
-            { caption: "рассвет в пути", date: "14.03" }, { caption: "облака над дорогой", date: "19.03" },
-            { caption: "путь к мечте", date: "24.03" }, { caption: "эмоции попутчика", date: "29.03" }
-        ];
-        container.innerHTML = '';
-        circles.forEach((item, idx) => {
-            const card = document.createElement('div');
-            card.className = 'circle-card item-animate';
-            card.style.animationDelay = `${idx * 30}ms`;
-            card.innerHTML = `
-                <div class="circle-video">
-                    <video src="none.mp4" muted loop playsinline preload="auto"></video>
-                    <div class="play-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z" /><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none" /></svg></div>
-                </div>
-                <div class="caption-wrapper"><span class="caption">${escapeHtml(item.caption)}</span><span class="date">📅 ${escapeHtml(item.date)}</span></div>
-            `;
-            const wrapper = card.querySelector('.circle-video');
-            const video = card.querySelector('video');
-            video.muted = true; video.loop = true; video.play().catch(() => {});
-            
-            let soundPlaying = false;
-            const reset = () => {
-                if (soundPlaying) {
-                    soundPlaying = false;
-                    wrapper.classList.remove('sound-playing');
-                    video.muted = true; video.loop = true; video.currentTime = 0;
-                    video.play().catch(() => {});
-                }
-            };
-            video.addEventListener('ended', reset);
-            wrapper.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (soundPlaying) return;
-                video.pause();
-                video.muted = false; video.loop = false; video.currentTime = 0;
-                soundPlaying = true;
-                wrapper.classList.add('sound-playing');
-                video.play().catch(() => reset());
-            });
-            container.appendChild(card);
-        });
-    }
-    
-    function renderVideos() {
-        const container = document.getElementById('videosGrid');
-        if (!container) return;
-        const videos = [
-            { caption: "кадры путешествия", date: "16.03" }, { caption: "нежный миг в пути", date: "22.03" },
-            { caption: "безмятежная дорога", date: "27.03" }, { caption: "улыбка до горизонта", date: "02.04" }
-        ];
-        container.innerHTML = '';
-        videos.forEach((item, idx) => {
-            const card = document.createElement('div');
-            card.className = 'video-card item-animate';
-            card.style.animationDelay = `${idx * 30}ms`;
-            card.innerHTML = `
-                <div class="video-wrapper">
-                    <video src="none.mp4" muted loop playsinline preload="auto"></video>
-                    <div class="play-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z" /><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none" /></svg></div>
-                </div>
-                <div class="caption-wrapper"><span class="caption">${escapeHtml(item.caption)}</span><span class="date">📅 ${escapeHtml(item.date)}</span></div>
-            `;
-            const video = card.querySelector('video');
-            const wrapper = card.querySelector('.video-wrapper');
-            video.muted = true; video.loop = true; video.play().catch(() => {});
-            wrapper.addEventListener('click', () => showVideoModal(item, false));
-            container.appendChild(card);
-        });
-    }
-    
+    // Модальные окна
     function showPhotoModal(item) {
         modalInner.innerHTML = `
             <div class="photo-card" style="padding: 16px; max-width: 400px;">
@@ -948,22 +860,15 @@
         modal.classList.remove('hidden');
     }
     
-    function showVideoModal(item, isCircle) {
+    function showVideoModal(item) {
         modalInner.innerHTML = '';
         const container = document.createElement('div');
         container.className = 'flex flex-col items-center';
         const videoContainer = document.createElement('div');
-        if (isCircle) {
-            videoContainer.style.borderRadius = '9999px';
-            videoContainer.style.overflow = 'hidden';
-            videoContainer.style.aspectRatio = '1/1';
-            videoContainer.style.width = 'min(80vw, 400px)';
-        } else {
-            videoContainer.style.borderRadius = '28px';
-            videoContainer.style.overflow = 'hidden';
-            videoContainer.style.aspectRatio = '9/16';
-            videoContainer.style.maxHeight = '70vh';
-        }
+        videoContainer.style.borderRadius = '28px';
+        videoContainer.style.overflow = 'hidden';
+        videoContainer.style.aspectRatio = '9/16';
+        videoContainer.style.maxHeight = '70vh';
         videoContainer.style.background = '#000';
         const video = document.createElement('video');
         video.src = "none.mp4";
@@ -974,7 +879,6 @@
         video.autoplay = true;
         video.muted = false;
         video.playsInline = true;
-        video.onerror = () => { video.style.backgroundColor = '#2a1a22'; };
         videoContainer.appendChild(video);
         container.appendChild(videoContainer);
         const captionDiv = document.createElement('div');
@@ -991,6 +895,195 @@
     }
     
     function closeModal() { modal.classList.add('hidden'); modalInner.innerHTML = ''; }
+    
+    // Функция для кружочков (со звуком и подсветкой)
+    function setupCircleVideo(wrapper, video, item) {
+        let soundPlaying = false;
+        const reset = () => {
+            if (soundPlaying) {
+                soundPlaying = false;
+                wrapper.classList.remove('sound-playing');
+                video.muted = true;
+                video.loop = true;
+                video.currentTime = 0;
+                video.play().catch(() => {});
+            }
+        };
+        video.addEventListener('ended', reset);
+        wrapper.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (soundPlaying) return;
+            video.pause();
+            video.muted = false;
+            video.loop = false;
+            video.currentTime = 0;
+            soundPlaying = true;
+            wrapper.classList.add('sound-playing');
+            video.play().catch(() => reset());
+        });
+    }
+    
+    // Рендер основных страниц
+    function renderPhotos() {
+        const container = document.getElementById('photosGrid');
+        if (!container) return;
+        container.innerHTML = '';
+        photosData.forEach((item, idx) => {
+            const rotate = (Math.random() * 3 - 1.5).toFixed(1);
+            const card = document.createElement('div');
+            card.className = 'photo-card item-animate';
+            card.style.animationDelay = `${idx * 30}ms`;
+            card.innerHTML = `
+                <img src="none.png" onerror="this.style.backgroundColor='#2a1a22'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='20%';">
+                <div class="caption-wrapper"><span class="caption">${escapeHtml(item.caption)}</span><span class="date">📅 ${escapeHtml(item.date)}</span></div>
+            `;
+            card.addEventListener('click', () => showPhotoModal(item));
+            container.appendChild(card);
+        });
+    }
+    
+    function renderCircles() {
+        const container = document.getElementById('circlesGrid');
+        if (!container) return;
+        container.innerHTML = '';
+        circlesData.forEach((item, idx) => {
+            const card = document.createElement('div');
+            card.className = 'circle-card item-animate';
+            card.style.animationDelay = `${idx * 30}ms`;
+            card.innerHTML = `
+                <div class="circle-video">
+                    <video src="none.mp4" muted loop playsinline preload="auto"></video>
+                    <div class="play-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z" /><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none" /></svg></div>
+                </div>
+                <div class="caption-wrapper"><span class="caption">${escapeHtml(item.caption)}</span><span class="date">📅 ${escapeHtml(item.date)}</span></div>
+            `;
+            const wrapper = card.querySelector('.circle-video');
+            const video = card.querySelector('video');
+            video.muted = true; video.loop = true; video.play().catch(() => {});
+            setupCircleVideo(wrapper, video, item);
+            container.appendChild(card);
+        });
+    }
+    
+    function renderVideos() {
+        const container = document.getElementById('videosGrid');
+        if (!container) return;
+        container.innerHTML = '';
+        videosData.forEach((item, idx) => {
+            const card = document.createElement('div');
+            card.className = 'video-card item-animate';
+            card.style.animationDelay = `${idx * 30}ms`;
+            card.innerHTML = `
+                <div class="video-wrapper">
+                    <video src="none.mp4" muted loop playsinline preload="auto"></video>
+                    <div class="play-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132z" /><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none" /></svg></div>
+                </div>
+                <div class="caption-wrapper"><span class="caption">${escapeHtml(item.caption)}</span><span class="date">📅 ${escapeHtml(item.date)}</span></div>
+            `;
+            const video = card.querySelector('video');
+            const wrapper = card.querySelector('.video-wrapper');
+            video.muted = true; video.loop = true; video.play().catch(() => {});
+            wrapper.addEventListener('click', () => showVideoModal(item));
+            container.appendChild(card);
+        });
+    }
+    
+    // КОЛЛАЖ: собираем все элементы из альбома + добавляем случайные размеры
+    function renderCollage() {
+        const container = document.getElementById('collageGrid');
+        if (!container) return;
+        
+        // Собираем все элементы
+        const allItems = [
+            ...photosData.map(p => ({ ...p, type: 'photo' })),
+            ...circlesData.map(c => ({ ...c, type: 'circle' })),
+            ...videosData.map(v => ({ ...v, type: 'video' }))
+        ];
+        
+        // Перемешиваем для динамичности
+        for (let i = allItems.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [allItems[i], allItems[j]] = [allItems[j], allItems[i]];
+        }
+        
+        // Назначаем размеры для красивой мозаики
+        const sizes = ['normal', 'wide', 'normal', 'featured', 'normal', 'wide', 'normal', 'normal'];
+        allItems.forEach((item, idx) => {
+            let sizeType = sizes[idx % sizes.length];
+            // Чтобы featured был не слишком часто
+            if (sizeType === 'featured' && idx % 3 !== 0) sizeType = 'normal';
+            item.span = sizeType;
+        });
+        
+        container.innerHTML = '';
+        
+        allItems.forEach((item, idx) => {
+            const card = document.createElement('div');
+            let spanClass = '';
+            if (item.span === 'wide') spanClass = 'wide';
+            if (item.span === 'featured') spanClass = 'featured';
+            card.className = `collage-card ${spanClass} item-animate`;
+            card.style.animationDelay = `${idx * 25}ms`;
+            
+            if (item.type === 'photo') {
+                card.innerHTML = `
+                    <img src="none.png" class="collage-media" onerror="this.style.backgroundColor='#2a1a22'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='20%';">
+                    <div class="collage-overlay">
+                        <div class="collage-icon">📷</div>
+                        <div class="collage-caption">${escapeHtml(item.caption)} • ${item.date}</div>
+                    </div>
+                    <div class="collage-glow"></div>
+                `;
+                card.addEventListener('click', () => showPhotoModal(item));
+            } else if (item.type === 'circle') {
+                card.innerHTML = `
+                    <video src="none.mp4" class="collage-media" muted loop playsinline preload="auto"></video>
+                    <div class="collage-overlay">
+                        <div class="collage-icon">🎬</div>
+                        <div class="collage-caption">${escapeHtml(item.caption)} • ${item.date}</div>
+                    </div>
+                    <div class="collage-glow"></div>
+                `;
+                const video = card.querySelector('video');
+                const mediaWrapper = card.querySelector('.collage-media');
+                video.muted = true; video.loop = true; video.play().catch(() => {});
+                // Используем ту же функцию, что и для кружочков — со звуком и подсветкой
+                setupCircleVideo(mediaWrapper, video, item);
+            } else if (item.type === 'video') {
+                card.innerHTML = `
+                    <video src="none.mp4" class="collage-media" muted loop playsinline preload="auto"></video>
+                    <div class="collage-overlay">
+                        <div class="collage-icon">▶</div>
+                        <div class="collage-caption">${escapeHtml(item.caption)} • ${item.date}</div>
+                    </div>
+                    <div class="collage-glow"></div>
+                `;
+                const video = card.querySelector('video');
+                video.muted = true; video.loop = true; video.play().catch(() => {});
+                card.addEventListener('click', () => showVideoModal(item));
+            }
+            
+            // 3D Tilt эффект при движении мыши
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                const rotateY = x * 6;
+                const rotateX = y * -6;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+                const glow = card.querySelector('.collage-glow');
+                if (glow) {
+                    glow.style.setProperty('--x', `${e.clientX - rect.left}px`);
+                    glow.style.setProperty('--y', `${e.clientY - rect.top}px`);
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+            
+            container.appendChild(card);
+        });
+    }
     
     function initPagination() {
         wrapper = document.getElementById('pagesWrapper');
@@ -1040,7 +1133,7 @@
     
     modal = document.getElementById('modal');
     modalInner = document.getElementById('modalInner');
-    window.onload = () => { console.log('✅ Альбом готов: 5 страниц (фото, кружочки, видео, коллаж, заключение)'); };
+    window.onload = () => { console.log('✅ Альбом готов: коллаж собирает все фото, кружочки и видео из альбома!'); };
 </script>
 </body>
 </html>
