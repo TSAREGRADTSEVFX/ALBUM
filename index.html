@@ -153,27 +153,23 @@
             gap: 20px 16px;
         }
         
-        /* ИНТЕРАКТИВНЫЙ КОЛЛАЖ - динамическая мозаика */
+        /* КОЛЛАЖ - стильная мозаика */
         .collage-masonry {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 14px;
-            perspective: 1200px;
         }
         
         .collage-card {
             position: relative;
-            aspect-ratio: 1 / 1;
             border-radius: 20px;
             overflow: hidden;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            transform-style: preserve-3d;
             box-shadow: 0 12px 28px -12px rgba(0,0,0,0.5);
             background: #1a1a1e;
         }
         
-        /* Разные размеры для динамичности */
         .collage-card.wide {
             grid-column: span 2;
             aspect-ratio: 2 / 1;
@@ -182,6 +178,10 @@
         .collage-card.featured {
             grid-column: span 2;
             grid-row: span 2;
+            aspect-ratio: 1 / 1;
+        }
+        
+        .collage-card.normal {
             aspect-ratio: 1 / 1;
         }
         
@@ -224,12 +224,12 @@
             justify-content: center;
             color: white;
             font-size: 22px;
-            transform: scale(0.6) rotate(-10deg);
+            transform: scale(0.6);
             transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
         }
         
         .collage-card:hover .collage-icon {
-            transform: scale(1) rotate(0deg);
+            transform: scale(1);
         }
         
         .collage-caption {
@@ -250,7 +250,6 @@
             opacity: 1;
         }
         
-        /* 3D Tilt эффект */
         .collage-card {
             transition: transform 0.2s ease-out, box-shadow 0.3s ease;
         }
@@ -259,23 +258,6 @@
             transform: translateY(-6px) scale(1.02);
             box-shadow: 0 22px 40px -14px rgba(255, 42, 109, 0.35);
             z-index: 10;
-        }
-        
-        .collage-glow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,42,109,0.2), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.2s;
-            border-radius: 20px;
-        }
-        
-        .collage-card:hover .collage-glow {
-            opacity: 1;
         }
         
         @media (max-width: 480px) {
@@ -442,16 +424,6 @@
             line-height: 1.5;
             margin-bottom: 20px;
             font-style: italic;
-        }
-        
-        .final-poem {
-            color: #ff7eb3;
-            font-size: 15px;
-            line-height: 1.7;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 42, 109, 0.3);
-            white-space: pre-line;
         }
         
         .nav-bar {
@@ -656,12 +628,6 @@
             transform: scale(0.98);
         }
         
-        .password-hint {
-            color: #ff7eb3cc;
-            font-size: 11px;
-            margin-top: 15px;
-        }
-        
         .hidden {
             display: none;
         }
@@ -718,7 +684,7 @@
             <div class="w-10 h-px bg-gradient-to-l from-transparent to-[#ff2a6d]"></div>
         </div>
         <h1 class="cover-title text-[42px] md:text-[48px]">Путешествие</h1>
-        <p class="text-[#ff7eb3] text-[15px] font-light mt-3 tracking-wide italic">альбом дороги и открытий</p>
+        <p class="text-[#ff7eb3] text-[15px] font-light mt-3 tracking-wide italic">ТЕСТ</p>
         <div class="w-[100px] h-px bg-gradient-to-r from-transparent via-[#ff2a6d] to-transparent mx-auto my-6"></div>
         <p class="text-[#ff7eb3cc] text-[12px] font-light max-w-[220px] mx-auto leading-relaxed">«каждый шаг — это новая глава»</p>
         <button onclick="showPasswordPrompt()" class="pearl-button mt-10 w-full py-4 text-white rounded-2xl text-base font-medium tracking-wide flex items-center justify-center gap-2 transition-all active:scale-95">
@@ -753,23 +719,18 @@
                 <div class="videos-grid" id="videosGrid"></div>
             </div>
             
-            <!-- СТРАНИЦА 4: КОЛЛАЖ (все элементы из альбома) -->
+            <!-- СТРАНИЦА 4: КОЛЛАЖ -->
             <div class="album-page">
-                <h2 class="page-title">Живой коллаж</h2>
+                <h2 class="page-title">Коллаж</h2>
                 <div class="collage-masonry" id="collageGrid"></div>
-                <div class="final-text" style="font-size: 12px; text-align: center; margin-top: 20px; opacity: 0.7;">✨ все воспоминания в одной мозаике ✨</div>
+                <div class="final-text" style="font-size: 12px; text-align: center; margin-top: 20px; opacity: 0.7;">✨ все моменты в одной мозаике ✨</div>
             </div>
             
-            <!-- СТРАНИЦА 5: ЗАКЛЮЧЕНИЕ -->
+            <!-- СТРАНИЦА 5: ТЕСТ -->
             <div class="album-page">
                 <div class="final-content">
-                    <h2 class="final-title">В пути</h2>
-                    <div class="final-text">Каждая дорога уникальна, как и моменты, которые мы сохраняем.</div>
-                    <div class="final-poem">
-                        ✦<br>
-                        \\\\\\\\\<br>
-                        ✦
-                    </div>
+                    <h2 class="final-title">ТЕСТ</h2>
+                    <div class="final-text">ТЕСТ</div>
                 </div>
             </div>
         </div>
@@ -795,7 +756,7 @@
     let totalPages = 5;
     let wrapper, modal, modalInner;
     
-    // Данные всех элементов альбома (единый источник)
+    // Данные всех элементов
     const photosData = [
         { caption: "первый шаг", date: "12.03" }, { caption: "вдохновение", date: "15.03" },
         { caption: "дорога", date: "18.03" }, { caption: "встречный ветер", date: "21.03" },
@@ -848,7 +809,6 @@
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
     function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m)); }
     
-    // Модальные окна
     function showPhotoModal(item) {
         modalInner.innerHTML = `
             <div class="photo-card" style="padding: 16px; max-width: 400px;">
@@ -923,7 +883,6 @@
         });
     }
     
-    // Рендер основных страниц
     function renderPhotos() {
         const container = document.getElementById('photosGrid');
         if (!container) return;
@@ -988,7 +947,7 @@
         });
     }
     
-    // КОЛЛАЖ: собираем все элементы из альбома + добавляем случайные размеры
+    // КОЛЛАЖ - исправленная версия с корректным отображением кружочков
     function renderCollage() {
         const container = document.getElementById('collageGrid');
         if (!container) return;
@@ -1000,17 +959,16 @@
             ...videosData.map(v => ({ ...v, type: 'video' }))
         ];
         
-        // Перемешиваем для динамичности
+        // Перемешиваем
         for (let i = allItems.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [allItems[i], allItems[j]] = [allItems[j], allItems[i]];
         }
         
-        // Назначаем размеры для красивой мозаики
+        // Назначаем размеры
         const sizes = ['normal', 'wide', 'normal', 'featured', 'normal', 'wide', 'normal', 'normal'];
         allItems.forEach((item, idx) => {
             let sizeType = sizes[idx % sizes.length];
-            // Чтобы featured был не слишком часто
             if (sizeType === 'featured' && idx % 3 !== 0) sizeType = 'normal';
             item.span = sizeType;
         });
@@ -1022,7 +980,7 @@
             let spanClass = '';
             if (item.span === 'wide') spanClass = 'wide';
             if (item.span === 'featured') spanClass = 'featured';
-            card.className = `collage-card ${spanClass} item-animate`;
+            card.className = `collage-card ${spanClass} normal item-animate`;
             card.style.animationDelay = `${idx * 25}ms`;
             
             if (item.type === 'photo') {
@@ -1032,23 +990,55 @@
                         <div class="collage-icon">📷</div>
                         <div class="collage-caption">${escapeHtml(item.caption)} • ${item.date}</div>
                     </div>
-                    <div class="collage-glow"></div>
                 `;
                 card.addEventListener('click', () => showPhotoModal(item));
             } else if (item.type === 'circle') {
+                // Кружочки в коллаже - с сохранением круглой формы и функциональности
                 card.innerHTML = `
-                    <video src="none.mp4" class="collage-media" muted loop playsinline preload="auto"></video>
-                    <div class="collage-overlay">
+                    <div style="width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: #1a1a1e;">
+                        <video src="none.mp4" class="collage-media" style="border-radius: 50%; object-fit: cover; width: 100%; height: 100%;" muted loop playsinline preload="auto"></video>
+                    </div>
+                    <div class="collage-overlay" style="border-radius: 50%;">
                         <div class="collage-icon">🎬</div>
                         <div class="collage-caption">${escapeHtml(item.caption)} • ${item.date}</div>
                     </div>
-                    <div class="collage-glow"></div>
                 `;
+                const videoWrapper = card.querySelector('div[style*="border-radius: 50%"]');
                 const video = card.querySelector('video');
-                const mediaWrapper = card.querySelector('.collage-media');
                 video.muted = true; video.loop = true; video.play().catch(() => {});
-                // Используем ту же функцию, что и для кружочков — со звуком и подсветкой
-                setupCircleVideo(mediaWrapper, video, item);
+                // Сохраняем функциональность кружочков
+                let soundPlaying = false;
+                const reset = () => {
+                    if (soundPlaying) {
+                        soundPlaying = false;
+                        if (videoWrapper) videoWrapper.classList.remove('sound-playing');
+                        video.muted = true;
+                        video.loop = true;
+                        video.currentTime = 0;
+                        video.play().catch(() => {});
+                    }
+                };
+                video.addEventListener('ended', reset);
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (soundPlaying) return;
+                    video.pause();
+                    video.muted = false;
+                    video.loop = false;
+                    video.currentTime = 0;
+                    soundPlaying = true;
+                    if (videoWrapper) {
+                        videoWrapper.style.boxShadow = '0 0 0 4px #ff2a6d, 0 0 0 12px rgba(255,42,109,0.5)';
+                        videoWrapper.style.transform = 'scale(1.02)';
+                        setTimeout(() => {
+                            if (videoWrapper && !soundPlaying) {
+                                videoWrapper.style.boxShadow = '';
+                                videoWrapper.style.transform = '';
+                            }
+                        }, 500);
+                    }
+                    video.play().catch(() => reset());
+                });
             } else if (item.type === 'video') {
                 card.innerHTML = `
                     <video src="none.mp4" class="collage-media" muted loop playsinline preload="auto"></video>
@@ -1056,30 +1046,11 @@
                         <div class="collage-icon">▶</div>
                         <div class="collage-caption">${escapeHtml(item.caption)} • ${item.date}</div>
                     </div>
-                    <div class="collage-glow"></div>
                 `;
                 const video = card.querySelector('video');
                 video.muted = true; video.loop = true; video.play().catch(() => {});
                 card.addEventListener('click', () => showVideoModal(item));
             }
-            
-            // 3D Tilt эффект при движении мыши
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width - 0.5;
-                const y = (e.clientY - rect.top) / rect.height - 0.5;
-                const rotateY = x * 6;
-                const rotateX = y * -6;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-                const glow = card.querySelector('.collage-glow');
-                if (glow) {
-                    glow.style.setProperty('--x', `${e.clientX - rect.left}px`);
-                    glow.style.setProperty('--y', `${e.clientY - rect.top}px`);
-                }
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
             
             container.appendChild(card);
         });
@@ -1133,7 +1104,7 @@
     
     modal = document.getElementById('modal');
     modalInner = document.getElementById('modalInner');
-    window.onload = () => { console.log('✅ Альбом готов: коллаж собирает все фото, кружочки и видео из альбома!'); };
+    window.onload = () => { console.log('✅ Альбом готов'); };
 </script>
 </body>
 </html>
