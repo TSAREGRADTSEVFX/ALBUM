@@ -192,6 +192,30 @@
             transition: transform 0.4s ease, filter 0.3s ease;
         }
         
+        /* Стили для кружочков в коллаже (полностью как в разделе кружочков) */
+        .collage-circle-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #1a1a1e;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4), 0 0 0 4px #ff2a6d, 0 0 0 8px rgba(255,42,109,0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .collage-circle-wrapper.sound-playing {
+            box-shadow: 0 0 0 4px #ff2a6d, 0 0 0 16px rgba(255,42,109,0.7);
+            transform: scale(1.02);
+        }
+        
+        .collage-circle-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
         .collage-card:hover .collage-media {
             transform: scale(1.06);
             filter: brightness(1.05);
@@ -208,6 +232,7 @@
             opacity: 0;
             transition: all 0.35s ease;
             backdrop-filter: blur(3px);
+            border-radius: inherit;
         }
         
         .collage-card:hover .collage-overlay {
@@ -248,10 +273,6 @@
         .collage-card:hover .collage-caption {
             transform: translateY(0);
             opacity: 1;
-        }
-        
-        .collage-card {
-            transition: transform 0.2s ease-out, box-shadow 0.3s ease;
         }
         
         .collage-card:hover {
@@ -756,7 +777,6 @@
     let totalPages = 5;
     let wrapper, modal, modalInner;
     
-    // Данные всех элементов
     const photosData = [
         { caption: "первый шаг", date: "12.03" }, { caption: "вдохновение", date: "15.03" },
         { caption: "дорога", date: "18.03" }, { caption: "встречный ветер", date: "21.03" },
@@ -856,7 +876,7 @@
     
     function closeModal() { modal.classList.add('hidden'); modalInner.innerHTML = ''; }
     
-    // Функция для кружочков (со звуком и подсветкой)
+    // Функция для кружочков (со звуком и подсветкой) - ОДИНАКОВАЯ ДЛЯ ВСЕХ
     function setupCircleVideo(wrapper, video, item) {
         let soundPlaying = false;
         const reset = () => {
@@ -947,25 +967,22 @@
         });
     }
     
-    // КОЛЛАЖ - исправленная версия с корректным отображением кружочков
+    // КОЛЛАЖ - кружочки работают точно как в разделе кружочков
     function renderCollage() {
         const container = document.getElementById('collageGrid');
         if (!container) return;
         
-        // Собираем все элементы
         const allItems = [
             ...photosData.map(p => ({ ...p, type: 'photo' })),
             ...circlesData.map(c => ({ ...c, type: 'circle' })),
             ...videosData.map(v => ({ ...v, type: 'video' }))
         ];
         
-        // Перемешиваем
         for (let i = allItems.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [allItems[i], allItems[j]] = [allItems[j], allItems[i]];
         }
         
-        // Назначаем размеры
         const sizes = ['normal', 'wide', 'normal', 'featured', 'normal', 'wide', 'normal', 'normal'];
         allItems.forEach((item, idx) => {
             let sizeType = sizes[idx % sizes.length];
@@ -992,54 +1009,27 @@
                     </div>
                 `;
                 card.addEventListener('click', () => showPhotoModal(item));
-            } else if (item.type === 'circle') {
-                // Кружочки в коллаже - с сохранением круглой формы и функциональности
+            } 
+            else if (item.type === 'circle') {
+                // Кружочки в коллаже - полная копия функционала из раздела кружочков
                 card.innerHTML = `
-                    <div style="width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: #1a1a1e;">
-                        <video src="none.mp4" class="collage-media" style="border-radius: 50%; object-fit: cover; width: 100%; height: 100%;" muted loop playsinline preload="auto"></video>
+                    <div class="collage-circle-wrapper">
+                        <video src="none.mp4" muted loop playsinline preload="auto"></video>
                     </div>
-                    <div class="collage-overlay" style="border-radius: 50%;">
+                    <div class="collage-overlay">
                         <div class="collage-icon">🎬</div>
                         <div class="collage-caption">${escapeHtml(item.caption)} • ${item.date}</div>
                     </div>
                 `;
-                const videoWrapper = card.querySelector('div[style*="border-radius: 50%"]');
+                const wrapper = card.querySelector('.collage-circle-wrapper');
                 const video = card.querySelector('video');
-                video.muted = true; video.loop = true; video.play().catch(() => {});
-                // Сохраняем функциональность кружочков
-                let soundPlaying = false;
-                const reset = () => {
-                    if (soundPlaying) {
-                        soundPlaying = false;
-                        if (videoWrapper) videoWrapper.classList.remove('sound-playing');
-                        video.muted = true;
-                        video.loop = true;
-                        video.currentTime = 0;
-                        video.play().catch(() => {});
-                    }
-                };
-                video.addEventListener('ended', reset);
-                card.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    if (soundPlaying) return;
-                    video.pause();
-                    video.muted = false;
-                    video.loop = false;
-                    video.currentTime = 0;
-                    soundPlaying = true;
-                    if (videoWrapper) {
-                        videoWrapper.style.boxShadow = '0 0 0 4px #ff2a6d, 0 0 0 12px rgba(255,42,109,0.5)';
-                        videoWrapper.style.transform = 'scale(1.02)';
-                        setTimeout(() => {
-                            if (videoWrapper && !soundPlaying) {
-                                videoWrapper.style.boxShadow = '';
-                                videoWrapper.style.transform = '';
-                            }
-                        }, 500);
-                    }
-                    video.play().catch(() => reset());
-                });
-            } else if (item.type === 'video') {
+                video.muted = true;
+                video.loop = true;
+                video.play().catch(() => {});
+                // Та же самая функция, что и для кружочков
+                setupCircleVideo(wrapper, video, item);
+            } 
+            else if (item.type === 'video') {
                 card.innerHTML = `
                     <video src="none.mp4" class="collage-media" muted loop playsinline preload="auto"></video>
                     <div class="collage-overlay">
@@ -1048,7 +1038,9 @@
                     </div>
                 `;
                 const video = card.querySelector('video');
-                video.muted = true; video.loop = true; video.play().catch(() => {});
+                video.muted = true;
+                video.loop = true;
+                video.play().catch(() => {});
                 card.addEventListener('click', () => showVideoModal(item));
             }
             
@@ -1104,7 +1096,7 @@
     
     modal = document.getElementById('modal');
     modalInner = document.getElementById('modalInner');
-    window.onload = () => { console.log('✅ Альбом готов'); };
+    window.onload = () => { console.log('✅ Альбом готов: кружочки в коллаже работают как в разделе кружочков'); };
 </script>
 </body>
 </html>
