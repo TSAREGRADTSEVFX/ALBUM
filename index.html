@@ -192,7 +192,7 @@
             transition: transform 0.4s ease, filter 0.3s ease;
         }
         
-        /* Стили для кружочков в коллаже (полностью как в разделе кружочков) */
+        /* Стили для кружочков в коллаже (идентично разделу кружочков) */
         .collage-circle-wrapper {
             position: relative;
             width: 100%;
@@ -876,7 +876,7 @@
     
     function closeModal() { modal.classList.add('hidden'); modalInner.innerHTML = ''; }
     
-    // Функция для кружочков (со звуком и подсветкой) - ОДИНАКОВАЯ ДЛЯ ВСЕХ
+    // ЕДИНАЯ ФУНКЦИЯ ДЛЯ КРУЖОЧКОВ (везде одинаковая)
     function setupCircleVideo(wrapper, video, item) {
         let soundPlaying = false;
         const reset = () => {
@@ -1026,7 +1026,7 @@
                 video.muted = true;
                 video.loop = true;
                 video.play().catch(() => {});
-                // Та же самая функция, что и для кружочков
+                // Та же самая функция, что и для кружочков в разделе
                 setupCircleVideo(wrapper, video, item);
             } 
             else if (item.type === 'video') {
