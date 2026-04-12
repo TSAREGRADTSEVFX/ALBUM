@@ -525,6 +525,81 @@
                 transform: translateY(0);
             }
         }
+
+        /* Стили для коллажа */
+        .collage-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .collage-item {
+            position: relative;
+            cursor: pointer;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 1/1;
+            background: #1a1a1e;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .collage-item:hover {
+            transform: scale(1.05);
+            z-index: 10;
+            box-shadow: 0 8px 20px rgba(255, 42, 109, 0.4);
+        }
+
+        .collage-item img, .collage-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .collage-item.circle-item {
+            border-radius: 50%;
+            border: 2px solid #ff2a6d;
+        }
+
+        .collage-item .item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 4px 6px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .collage-item:hover .item-overlay {
+            opacity: 1;
+        }
+
+        .collage-item .item-label {
+            color: #ff7eb3;
+            font-size: 8px;
+            font-weight: 500;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .collage-title {
+            text-align: center;
+            color: #ff7eb3;
+            font-size: 14px;
+            margin-top: 12px;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 480px) {
+            .collage-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
@@ -600,7 +675,14 @@
                 <div class="videos-grid" id="videosGrid"></div>
             </div>
             
-            <!-- СТРАНИЦА 4: ТЕСТ -->
+            <!-- СТРАНИЦА 4: КОЛЛАЖ (НОВАЯ) -->
+            <div class="album-page">
+                <h2 class="page-title">Коллаж</h2>
+                <div id="collageContainer"></div>
+                <div class="collage-title">✨ все моменты вместе ✨</div>
+            </div>
+            
+            <!-- СТРАНИЦА 5: ТЕСТ -->
             <div class="album-page">
                 <div class="final-content">
                     <h2 class="final-title">ТЕСТ</h2>
@@ -627,7 +709,7 @@
 <script>
     const CORRECT_PASSWORD = "2024";
     let currentPage = 0;
-    let totalPages = 4;
+    let totalPages = 5; // Обновлено: теперь 5 страниц
     let wrapper, modal, modalInner;
     
     const photosData = [
@@ -819,25 +901,115 @@
         });
     }
     
+    // НОВАЯ ФУНКЦИЯ: Отрисовка коллажа
+    function renderCollage() {
+        const container = document.getElementById('collageContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        
+        // Создаем контейнер для коллажа
+        const collageDiv = document.createElement('div');
+        collageDiv.className = 'collage-container';
+        
+        // Собираем все элементы в один массив
+        const allItems = [
+            ...photosData.map(item => ({ ...item, type: 'photo' })),
+            ...circlesData.map(item => ({ ...item, type: 'circle' })),
+            ...videosData.map(item => ({ ...item, type: 'video' }))
+        ];
+        
+        // Перемешиваем элементы для интересного коллажа
+        allItems.sort(() => Math.random() - 0.5);
+        
+        // Создаем элементы коллажа
+        allItems.forEach((item, idx) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = `collage-item ${item.type === 'circle' ? 'circle-item' : ''} item-animate`;
+            itemDiv.style.animationDelay = `${idx * 20}ms`;
+            
+            if (item.type === 'photo') {
+                itemDiv.innerHTML = `
+                    <img src="none.png" onerror="this.style.backgroundColor='#2a1a22'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.objectFit='contain'; this.style.padding='20%';">
+                    <div class="item-overlay">
+                        <div class="item-label">📷 ${escapeHtml(item.caption)}</div>
+                    </div>
+                `;
+                itemDiv.addEventListener('click', () => showPhotoModal(item));
+            } else {
+                const isCircle = item.type === 'circle';
+                itemDiv.innerHTML = `
+                    <video src="none.mp4" muted loop playsinline></video>
+                    <div class="item-overlay">
+                        <div class="item-label">${isCircle ? '⭕' : '🎬'} ${escapeHtml(item.caption)}</div>
+                    </div>
+                `;
+                
+                const video = itemDiv.querySelector('video');
+                video.muted = true;
+                video.loop = true;
+                video.play().catch(() => {});
+                
+                if (isCircle) {
+                    // Для кружочков в коллаже добавляем специальное поведение
+                    let soundPlaying = false;
+                    const reset = () => {
+                        if (soundPlaying) {
+                            soundPlaying = false;
+                            video.muted = true;
+                            video.loop = true;
+                            video.currentTime = 0;
+                            video.play().catch(() => {});
+                        }
+                    };
+                    video.addEventListener('ended', reset);
+                    itemDiv.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (soundPlaying) return;
+                        video.pause();
+                        video.muted = false;
+                        video.loop = false;
+                        video.currentTime = 0;
+                        soundPlaying = true;
+                        video.play().catch(() => reset());
+                    });
+                } else {
+                    // Для обычных видео
+                    itemDiv.addEventListener('click', () => showVideoModal(item));
+                }
+            }
+            
+            collageDiv.appendChild(itemDiv);
+        });
+        
+        container.appendChild(collageDiv);
+    }
+    
     function initPagination() {
         wrapper = document.getElementById('pagesWrapper');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const indicator = document.getElementById('pageIndicator');
+        
+        indicator.innerHTML = '';
         for (let i = 0; i < totalPages; i++) {
             const dot = document.createElement('div');
             dot.className = 'indicator-dot';
             dot.addEventListener('click', () => goToPage(i));
             indicator.appendChild(dot);
         }
+        
         function goToPage(page) {
             if (page < 0 || page >= totalPages) return;
             currentPage = page;
             wrapper.style.transform = `translateX(-${currentPage * 100}%)`;
             const dots = document.querySelectorAll('.indicator-dot');
-            dots.forEach((dot, i) => { if (i === currentPage) dot.classList.add('active'); else dot.classList.remove('active'); });
+            dots.forEach((dot, i) => { 
+                if (i === currentPage) dot.classList.add('active'); 
+                else dot.classList.remove('active'); 
+            });
             scrollToTop();
         }
+        
         prevBtn.addEventListener('click', () => goToPage(currentPage - 1));
         nextBtn.addEventListener('click', () => goToPage(currentPage + 1));
         goToPage(0);
@@ -856,6 +1028,7 @@
             renderPhotos();
             renderCircles();
             renderVideos();
+            renderCollage(); // Добавляем отрисовку коллажа
             initPagination();
             setTimeout(() => {
                 album.style.transition = 'opacity 0.6s ease';
@@ -866,7 +1039,7 @@
     
     modal = document.getElementById('modal');
     modalInner = document.getElementById('modalInner');
-    window.onload = () => { console.log('✅ Альбом готов: фотографии, кружочки, видео'); };
+    window.onload = () => { console.log('✅ Альбом готов: фотографии, кружочки, видео, коллаж'); };
 </script>
 </body>
 </html>
