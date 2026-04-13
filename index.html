@@ -768,7 +768,10 @@
     // Фоновая музыка
     let backgroundMusic = null;
     let isMusicMuted = false;
-    let originalMusicVolume = 0.3; // 30% громкости по умолчанию
+    let originalMusicVolume = 0.3;
+    
+    // Отслеживание активных видео/кружочков
+    let activeMediaCount = 0;
     
     const photosData = [
         { caption: "первый шаг", date: "12.03" }, { caption: "вдохновение", date: "15.03" },
@@ -788,19 +791,16 @@
         { caption: "безмятежная дорога", date: "27.03" }, { caption: "улыбка до горизонта", date: "02.04" }
     ];
     
-    // Инициализация фоновой музыки
     function initBackgroundMusic() {
         if (backgroundMusic) return;
         
-        backgroundMusic = new Audio('music.mp3');
+        backgroundMusic = new Audio('music.mp4');
         backgroundMusic.loop = true;
         backgroundMusic.volume = originalMusicVolume;
         
-        // Показываем кнопку управления музыкой
         document.getElementById('musicControl').classList.remove('hidden');
     }
     
-    // Воспроизведение фоновой музыки
     function playBackgroundMusic() {
         if (!backgroundMusic) {
             initBackgroundMusic();
@@ -811,21 +811,36 @@
         });
     }
     
-    // Приглушение музыки
     function duckBackgroundMusic() {
+        activeMediaCount++;
         if (backgroundMusic && !isMusicMuted) {
             backgroundMusic.volume = 0;
         }
     }
     
-    // Восстановление громкости музыки
     function restoreBackgroundMusic() {
-        if (backgroundMusic && !isMusicMuted) {
+        activeMediaCount = Math.max(0, activeMediaCount - 1);
+        
+        // Восстанавливаем музыку только если нет других активных медиа
+        if (activeMediaCount === 0 && backgroundMusic && !isMusicMuted) {
             backgroundMusic.volume = originalMusicVolume;
+            // Убеждаемся что музыка играет
+            if (backgroundMusic.paused) {
+                backgroundMusic.play().catch(() => {});
+            }
         }
     }
     
-    // Переключение музыки (вкл/выкл)
+    function forceRestoreMusic() {
+        activeMediaCount = 0;
+        if (backgroundMusic && !isMusicMuted) {
+            backgroundMusic.volume = originalMusicVolume;
+            if (backgroundMusic.paused) {
+                backgroundMusic.play().catch(() => {});
+            }
+        }
+    }
+    
     function toggleMusic() {
         if (!backgroundMusic) {
             initBackgroundMusic();
@@ -897,7 +912,6 @@
     }
     
     function showVideoModal(item) {
-        // Приглушаем фоновую музыку
         duckBackgroundMusic();
         
         modalInner.innerHTML = '';
@@ -933,29 +947,34 @@
         
         video.play().catch(e => console.log('play error:', e));
         
-        // Восстанавливаем музыку при паузе или окончании видео
-        video.addEventListener('pause', restoreBackgroundMusic);
-        video.addEventListener('ended', restoreBackgroundMusic);
+        const handleVideoEnd = () => {
+            restoreBackgroundMusic();
+            video.removeEventListener('ended', handleVideoEnd);
+            video.removeEventListener('pause', handleVideoPause);
+        };
         
-        // Сохраняем обработчики для очистки при закрытии
-        video._pauseHandler = () => restoreBackgroundMusic();
-        video._endedHandler = () => restoreBackgroundMusic();
+        const handleVideoPause = () => {
+            if (video.paused && !video.ended) {
+                restoreBackgroundMusic();
+            }
+        };
+        
+        video.addEventListener('ended', handleVideoEnd);
+        video.addEventListener('pause', handleVideoPause);
+        
+        video._cleanup = () => {
+            video.removeEventListener('ended', handleVideoEnd);
+            video.removeEventListener('pause', handleVideoPause);
+        };
     }
     
     function closeModal() {
-        // Восстанавливаем музыку при закрытии модального окна
-        restoreBackgroundMusic();
-        
-        // Очищаем обработчики с видео если есть
         const video = modalInner.querySelector('video');
-        if (video) {
-            if (video._pauseHandler) {
-                video.removeEventListener('pause', video._pauseHandler);
-            }
-            if (video._endedHandler) {
-                video.removeEventListener('ended', video._endedHandler);
-            }
+        if (video && video._cleanup) {
+            video._cleanup();
         }
+        
+        forceRestoreMusic();
         
         modal.classList.add('hidden');
         modalInner.innerHTML = '';
@@ -970,38 +989,61 @@
                 wrapper.classList.remove('sound-playing');
                 video.muted = true;
                 video.loop = true;
-                video.currentTime = 0;
-                video.play().catch(() => {});
                 
                 // Восстанавливаем фоновую музыку
                 restoreBackgroundMusic();
+                
+                // Продолжаем воспроизведение с начала
+                video.currentTime = 0;
+                video.play().catch(() => {});
             }
         };
         
-        video.addEventListener('ended', reset);
+        const handleEnded = () => {
+            reset();
+        };
+        
+        const handlePause = () => {
+            // Если видео было остановлено вручную (не из-за окончания)
+            if (soundPlaying && video.currentTime < video.duration - 0.1) {
+                reset();
+            }
+        };
+        
+        video.addEventListener('ended', handleEnded);
+        video.addEventListener('pause', handlePause);
         
         wrapper.addEventListener('click', (e) => {
             e.stopPropagation();
+            
+            // Если уже играет со звуком - ничего не делаем
             if (soundPlaying) return;
             
             // Приглушаем фоновую музыку
             duckBackgroundMusic();
             
+            // Останавливаем текущее loop-воспроизведение
             video.pause();
+            
+            // Настраиваем для воспроизведения со звуком
             video.muted = false;
             video.loop = false;
             video.currentTime = 0;
             soundPlaying = true;
             wrapper.classList.add('sound-playing');
-            video.play().catch(() => reset());
+            
+            // Запускаем воспроизведение
+            video.play().catch(() => {
+                // В случае ошибки сбрасываем состояние
+                reset();
+            });
         });
         
-        // Если видео было остановлено вручную
-        video.addEventListener('pause', () => {
-            if (soundPlaying && video.currentTime < video.duration - 0.1) {
-                reset();
-            }
-        });
+        // Сохраняем обработчики для возможной очистки
+        video._circleHandlers = {
+            ended: handleEnded,
+            pause: handlePause
+        };
     }
     
     function renderPhotos() {
@@ -1009,7 +1051,6 @@
         if (!container) return;
         container.innerHTML = '';
         photosData.forEach((item, idx) => {
-            const rotate = (Math.random() * 3 - 1.5).toFixed(1);
             const card = document.createElement('div');
             card.className = 'photo-card item-animate';
             card.style.animationDelay = `${idx * 30}ms`;
@@ -1039,7 +1080,9 @@
             `;
             const wrapper = card.querySelector('.circle-video');
             const video = card.querySelector('video');
-            video.muted = true; video.loop = true; video.play().catch(() => {});
+            video.muted = true; 
+            video.loop = true; 
+            video.play().catch(() => {});
             setupCircleVideo(wrapper, video, item);
             container.appendChild(card);
         });
@@ -1062,13 +1105,14 @@
             `;
             const video = card.querySelector('video');
             const wrapper = card.querySelector('.video-wrapper');
-            video.muted = true; video.loop = true; video.play().catch(() => {});
+            video.muted = true; 
+            video.loop = true; 
+            video.play().catch(() => {});
             wrapper.addEventListener('click', () => showVideoModal(item));
             container.appendChild(card);
         });
     }
     
-    // Функция отрисовки коллажа
     function renderCollage() {
         const container = document.getElementById('collageContainer');
         if (!container) return;
@@ -1114,20 +1158,32 @@
                 
                 if (isCircle) {
                     let soundPlaying = false;
+                    
                     const reset = () => {
                         if (soundPlaying) {
                             soundPlaying = false;
                             video.muted = true;
                             video.loop = true;
+                            restoreBackgroundMusic();
                             video.currentTime = 0;
                             video.play().catch(() => {});
-                            restoreBackgroundMusic();
                         }
                     };
-                    video.addEventListener('ended', reset);
+                    
+                    const handleEnded = () => reset();
+                    const handlePause = () => {
+                        if (soundPlaying && video.currentTime < video.duration - 0.1) {
+                            reset();
+                        }
+                    };
+                    
+                    video.addEventListener('ended', handleEnded);
+                    video.addEventListener('pause', handlePause);
+                    
                     itemDiv.addEventListener('click', (e) => {
                         e.stopPropagation();
                         if (soundPlaying) return;
+                        
                         duckBackgroundMusic();
                         video.pause();
                         video.muted = false;
@@ -1135,11 +1191,6 @@
                         video.currentTime = 0;
                         soundPlaying = true;
                         video.play().catch(() => reset());
-                    });
-                    video.addEventListener('pause', () => {
-                        if (soundPlaying && video.currentTime < video.duration - 0.1) {
-                            reset();
-                        }
                     });
                 } else {
                     itemDiv.addEventListener('click', () => showVideoModal(item));
@@ -1195,7 +1246,6 @@
             album.classList.remove('hidden');
             album.style.opacity = '0';
             
-            // Инициализируем и запускаем фоновую музыку
             initBackgroundMusic();
             playBackgroundMusic();
             
@@ -1215,7 +1265,6 @@
     modal = document.getElementById('modal');
     modalInner = document.getElementById('modalInner');
     
-    // Делаем функцию toggleMusic глобальной
     window.toggleMusic = toggleMusic;
     
     window.onload = () => { 
