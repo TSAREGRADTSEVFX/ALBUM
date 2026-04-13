@@ -768,10 +768,7 @@
     // Фоновая музыка
     let backgroundMusic = null;
     let isMusicMuted = false;
-    let originalMusicVolume = 0.3;
-    
-    // Отслеживание активных видео/кружочков
-    let activeMediaCount = 0;
+    const originalMusicVolume = 0.3;
     
     const photosData = [
         { caption: "первый шаг", date: "12.03" }, { caption: "вдохновение", date: "15.03" },
@@ -812,27 +809,12 @@
     }
     
     function duckBackgroundMusic() {
-        activeMediaCount++;
         if (backgroundMusic && !isMusicMuted) {
             backgroundMusic.volume = 0;
         }
     }
     
     function restoreBackgroundMusic() {
-        activeMediaCount = Math.max(0, activeMediaCount - 1);
-        
-        // Восстанавливаем музыку только если нет других активных медиа
-        if (activeMediaCount === 0 && backgroundMusic && !isMusicMuted) {
-            backgroundMusic.volume = originalMusicVolume;
-            // Убеждаемся что музыка играет
-            if (backgroundMusic.paused) {
-                backgroundMusic.play().catch(() => {});
-            }
-        }
-    }
-    
-    function forceRestoreMusic() {
-        activeMediaCount = 0;
         if (backgroundMusic && !isMusicMuted) {
             backgroundMusic.volume = originalMusicVolume;
             if (backgroundMusic.paused) {
@@ -965,6 +947,7 @@
         video._cleanup = () => {
             video.removeEventListener('ended', handleVideoEnd);
             video.removeEventListener('pause', handleVideoPause);
+            restoreBackgroundMusic();
         };
     }
     
@@ -974,50 +957,39 @@
             video._cleanup();
         }
         
-        forceRestoreMusic();
-        
+        restoreBackgroundMusic();
         modal.classList.add('hidden');
         modalInner.innerHTML = '';
     }
     
     function setupCircleVideo(wrapper, video, item) {
-        let soundPlaying = false;
+        let isPlayingWithSound = false;
         
-        const reset = () => {
-            if (soundPlaying) {
-                soundPlaying = false;
+        const resetToMutedLoop = () => {
+            if (isPlayingWithSound) {
+                isPlayingWithSound = false;
                 wrapper.classList.remove('sound-playing');
-                video.muted = true;
-                video.loop = true;
                 
-                // Восстанавливаем фоновую музыку
+                // Восстанавливаем музыку
                 restoreBackgroundMusic();
                 
-                // Продолжаем воспроизведение с начала
+                // Переключаем в режим muted loop
+                video.muted = true;
+                video.loop = true;
                 video.currentTime = 0;
                 video.play().catch(() => {});
             }
         };
         
-        const handleEnded = () => {
-            reset();
-        };
+        // Обработчик окончания видео
+        video.addEventListener('ended', resetToMutedLoop);
         
-        const handlePause = () => {
-            // Если видео было остановлено вручную (не из-за окончания)
-            if (soundPlaying && video.currentTime < video.duration - 0.1) {
-                reset();
-            }
-        };
-        
-        video.addEventListener('ended', handleEnded);
-        video.addEventListener('pause', handlePause);
-        
+        // Обработчик клика
         wrapper.addEventListener('click', (e) => {
             e.stopPropagation();
             
-            // Если уже играет со звуком - ничего не делаем
-            if (soundPlaying) return;
+            // Если уже играет со звуком - игнорируем
+            if (isPlayingWithSound) return;
             
             // Приглушаем фоновую музыку
             duckBackgroundMusic();
@@ -1025,25 +997,26 @@
             // Останавливаем текущее loop-воспроизведение
             video.pause();
             
-            // Настраиваем для воспроизведения со звуком
+            // Переключаем в режим со звуком
             video.muted = false;
             video.loop = false;
             video.currentTime = 0;
-            soundPlaying = true;
+            isPlayingWithSound = true;
             wrapper.classList.add('sound-playing');
             
             // Запускаем воспроизведение
-            video.play().catch(() => {
-                // В случае ошибки сбрасываем состояние
-                reset();
-            });
+            const playPromise = video.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                    // В случае ошибки сбрасываем состояние
+                    resetToMutedLoop();
+                });
+            }
         });
         
-        // Сохраняем обработчики для возможной очистки
-        video._circleHandlers = {
-            ended: handleEnded,
-            pause: handlePause
-        };
+        // Сохраняем функцию сброса для внешнего использования
+        video._resetToMutedLoop = resetToMutedLoop;
     }
     
     function renderPhotos() {
@@ -1157,40 +1130,36 @@
                 video.play().catch(() => {});
                 
                 if (isCircle) {
-                    let soundPlaying = false;
+                    let isPlayingWithSound = false;
                     
-                    const reset = () => {
-                        if (soundPlaying) {
-                            soundPlaying = false;
+                    const resetToMutedLoop = () => {
+                        if (isPlayingWithSound) {
+                            isPlayingWithSound = false;
+                            restoreBackgroundMusic();
                             video.muted = true;
                             video.loop = true;
-                            restoreBackgroundMusic();
                             video.currentTime = 0;
                             video.play().catch(() => {});
                         }
                     };
                     
-                    const handleEnded = () => reset();
-                    const handlePause = () => {
-                        if (soundPlaying && video.currentTime < video.duration - 0.1) {
-                            reset();
-                        }
-                    };
-                    
-                    video.addEventListener('ended', handleEnded);
-                    video.addEventListener('pause', handlePause);
+                    video.addEventListener('ended', resetToMutedLoop);
                     
                     itemDiv.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        if (soundPlaying) return;
+                        if (isPlayingWithSound) return;
                         
                         duckBackgroundMusic();
                         video.pause();
                         video.muted = false;
                         video.loop = false;
                         video.currentTime = 0;
-                        soundPlaying = true;
-                        video.play().catch(() => reset());
+                        isPlayingWithSound = true;
+                        
+                        const playPromise = video.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(() => resetToMutedLoop());
+                        }
                     });
                 } else {
                     itemDiv.addEventListener('click', () => showVideoModal(item));
@@ -1268,7 +1237,7 @@
     window.toggleMusic = toggleMusic;
     
     window.onload = () => { 
-        console.log('✅ Альбом готов: фотографии, кружочки, видео, коллаж и музыка!'); 
+        console.log('✅ Альбом готов! Музыка: music.mp3'); 
     };
 </script>
 </body>
