@@ -886,7 +886,7 @@
     function showPhotoModal(item) {
         modalInner.innerHTML = `
             <div class="photo-card" style="padding: 16px; max-width: 400px;">
-                <img src="none.jpg" style="width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 18px;" onerror="this.style.backgroundColor='#2a1a22'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1.2\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.padding='40px'; this.style.boxSizing='border-box';">
+                <img src="none.png" style="width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 18px;" onerror="this.style.backgroundColor='#2a1a22'; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff2a6d\' stroke-width=\'1.2\'%3E%3Crect x=\'2\' y=\'2\' width=\'20\' height=\'20\' rx=\'2.18\'/%3E%3Ccircle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/%3E%3Cpath d=\'M21 15l-5-4-3 3-4-4-5 6\'/%3E%3C/svg%3E'; this.style.padding='40px'; this.style.boxSizing='border-box';">
                 <div class="modal-caption">${escapeHtml(item.caption)}</div>
                 <div class="modal-date">📅 ${escapeHtml(item.date)}</div>
             </div>
@@ -907,7 +907,7 @@
         videoContainer.style.maxHeight = '70vh';
         videoContainer.style.background = '#000';
         const video = document.createElement('video');
-        video.src = "none.MP4";
+        video.src = "none.mp4";
         video.style.width = '100%';
         video.style.height = '100%';
         video.style.objectFit = 'cover';
